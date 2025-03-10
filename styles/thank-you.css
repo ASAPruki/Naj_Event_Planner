@@ -1,0 +1,184 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* Thank You Page Styles */
+.thank-you-section {
+  padding: 120px 0 80px;
+  background-color: var(--light-color);
+  min-height: calc(100vh - 80px - 400px); /* Adjust for header and footer */
+}
+
+.thank-you-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  padding: 50px 30px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.thank-you-icon {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(40, 167, 69, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.thank-you-icon svg {
+  width: 40px;
+  height: 40px;
+  color: var(--success-color);
+}
+
+.thank-you-title {
+  font-size: 2.5rem;
+  color: var(--dark-color);
+  margin-bottom: 20px;
+}
+
+.thank-you-message {
+  margin-bottom: 30px;
+}
+
+.thank-you-message p {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.next-steps {
+  background-color: var(--light-color);
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.next-steps h3 {
+  font-size: 1.3rem;
+  color: var(--dark-color);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.next-steps ol {
+  padding-left: 20px;
+}
+
+.next-steps li {
+  margin-bottom: 10px;
+  color: var(--secondary-color);
+  font-size: 1rem;
+  padding-left: 10px;
+}
+
+.contact-info {
+  margin-bottom: 30px;
+}
+
+.contact-info p {
+  margin-bottom: 5px;
+  color: var(--secondary-color);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Animation */
+.thank-you-icon,
+.thank-you-title,
+.thank-you-message,
+.next-steps,
+.contact-info,
+.action-buttons {
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+.thank-you-icon {
+  animation-delay: 0.2s;
+}
+
+.thank-you-title {
+  animation-delay: 0.4s;
+}
+
+.thank-you-message {
+  animation-delay: 0.6s;
+}
+
+.next-steps {
+  animation-delay: 0.8s;
+}
+
+.contact-info {
+  animation-delay: 1s;
+}
+
+.action-buttons {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .thank-you-container {
+    padding: 30px 20px;
+  }
+
+  .thank-you-title {
+    font-size: 2rem;
+  }
+
+  .thank-you-message p {
+    font-size: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .action-buttons .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .thank-you-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .thank-you-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .thank-you-title {
+    font-size: 1.8rem;
+  }
+
+  .next-steps {
+    padding: 20px 15px;
+  }
+}

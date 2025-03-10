@@ -1,0 +1,26 @@
+I want you to do these following tasks for me:
+
+1. I want you to replace the 'Login / Sign up' nav element in every page if the user is already logged in.
+2. I want the logo in the navbar to return me to the home page in every page that contains this logo.
+3. When logged in with another acc, and i do a reservation with a different email, if i press (show my events), i get redirected to the dashboard of the wrong user. (I should prevent the user from doing areservation without being logged in).
+
+IMPORTANT FOR LATER: 4. In the accessories page, Dr wants me to make the accessories pressable so the customer can observe the item and its pics and details (color, weight, can endure what weight, etc..).
+
+Note: even when im logged in for example mohamadharouki2@gmail.com, if i do a reservation but with another gmail, for example awd@gmail.com, the reservation is saved in the dashboard of awd@gmail.com acc, not mohamadharouki2@gmail.com.
+
+IMPORTANT: create pages in admin panel:
+
+1. edit-accessory.php
+2. edit-event (for user after the event gets approved)
+3. user-details.php
+4. edit-admin.php
+5. settings.php
+6. add-user.php (admin adds a user) (if possible make it a collapsable form such as the add accessory and add admin (show/hide form))
+
+7. OPTIONAL: delete-user.php (if i want an admin to delete a user's account).
+
+These are the pages for now.
+
+NOTE: maybe i want the user to be connected to the reservation in the database, for example when i delete a user, also his reservations should be deleted. (maybe foreign key stuff)
+
+ANOTHER NOTE: IF I HAVE free time, make a page only accessible by the super admin, to see the admin logs activities from the database

@@ -60,10 +60,11 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details - Naj Events Admin</title>
-    <link rel="stylesheet" href="../../styles/styles.css">
-    <link rel="stylesheet" href="../admin-styles/admin-styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../admin-styles/admin-styles.css">
+    <link rel="stylesheet" href="../admin-styles/admin-event-details.css">
+    <link rel="stylesheet" href="../../styles/styles.css">
 </head>
 
 <body class="admin-body">
@@ -143,7 +144,7 @@ $conn->close();
             <div class="admin-content">
                 <div class="admin-card">
                     <div class="admin-card-header">
-                        <div class="admin-card-header-actions">
+                        <div class="admin-card-header-left">
                             <a href="events.php" class="admin-btn admin-btn-light">
                                 <i class="fas fa-arrow-left"></i> Back to Events
                             </a>
@@ -151,9 +152,9 @@ $conn->close();
                         <h2 class="admin-card-title">
                             <?php echo ucfirst($event['event_type']); ?> Event #<?php echo $event['id']; ?>
                         </h2>
-                        <div>
+                        <div class="admin-card-header-right">
                             <?php
-                            $status_class = '';
+                            $status_class = 'warning';
                             $status_text = 'Pending';
 
                             if (isset($event['status'])) {
@@ -174,8 +175,6 @@ $conn->close();
                                         $status_class = 'warning';
                                         $status_text = 'Pending';
                                 }
-                            } else {
-                                $status_class = 'warning';
                             }
                             ?>
                             <span class="admin-badge <?php echo $status_class; ?>"><?php echo $status_text; ?></span>

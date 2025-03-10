@@ -1,0 +1,145 @@
+.admin-detail-section {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.admin-detail-section-title {
+  color: var(--admin-dark);
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.admin-detail-item {
+  margin-bottom: 10px;
+}
+
+.admin-detail-label {
+  font-size: 0.9rem;
+  color: var(--admin-gray);
+  margin-bottom: 5px;
+}
+
+.admin-detail-value {
+  font-weight: 500;
+  color: var(--admin-dark);
+}
+
+.admin-accessories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-accessory-item {
+  display: flex;
+  align-items: center;
+  background-color: rgba(63, 81, 181, 0.05);
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.admin-accessory-item i {
+  color: var(--admin-primary);
+  margin-right: 8px;
+}
+
+.admin-detail-message {
+  background-color: rgba(0, 0, 0, 0.02);
+  padding: 15px;
+  border-radius: 5px;
+  white-space: pre-line;
+}
+
+.admin-event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.admin-modal {
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.admin-modal-content {
+  background-color: white;
+  margin: 10% auto;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  animation: modalFadeIn 0.3s;
+}
+
+.admin-modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.admin-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--admin-gray);
+}
+
+.admin-modal-body {
+  padding: 20px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-event-actions {
+    flex-direction: column;
+  }
+
+  .admin-event-actions .admin-btn {
+    width: 100%;
+  }
+
+  .admin-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

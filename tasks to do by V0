@@ -10,14 +10,13 @@ Note: even when im logged in for example mohamadharouki2@gmail.com, if i do a re
 
 IMPORTANT: create pages in admin panel:
 
-1. edit-accessory.php
-2. edit-event (for user after the event gets approved)
-3. user-details.php
-4. edit-admin.php
-5. settings.php
-6. add-user.php (admin adds a user) (if possible make it a collapsable form such as the add accessory and add admin (show/hide form))
+1. edit-event (for user after the event gets approved) (USER SIDE NOT ADMIN)
+2. user-details.php (just recheck "view user's events" button in the page)
+3. edit-admin.php
+4. settings.php
+5. add-user.php (admin adds a user) (if possible make it a collapsable form such as the add accessory and add admin (show/hide form))
 
-7. OPTIONAL: delete-user.php (if i want an admin to delete a user's account).
+6. OPTIONAL: delete-user.php (if i want an admin to delete a user's account).
 
 These are the pages for now.
 
@@ -30,3 +29,9 @@ ADDITIONAL STUFF TO DO IN FREE TIME
 2. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK
 3. is there anyway that the "contact organizer" message is shown in the admin panel and not only in the database?
    }
+
+to push to github:
+
+1. git add .
+2. git commit -m "message"
+3. git push -u origin master

@@ -1,0 +1,382 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* User Summary */
+.user-summary {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.user-summary-avatar {
+  width: 60px;
+  height: 60px;
+  background-color: var(--admin-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.user-summary-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: var(--admin-dark);
+}
+
+.user-summary-info p {
+  color: var(--admin-gray);
+  margin: 2px 0;
+  font-size: 0.9rem;
+}
+
+.user-summary-info p i {
+  width: 16px;
+  margin-right: 5px;
+  color: var(--admin-primary);
+}
+
+/* Status Filter Tabs */
+.status-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.status-tab {
+  padding: 8px 15px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: var(--admin-gray);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.status-tab.active {
+  background-color: var(--admin-primary);
+  color: white;
+}
+
+.status-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 8px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+}
+
+.status-tab.active .status-count {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Admin Filters */
+.admin-filters {
+  margin-bottom: 20px;
+}
+
+.admin-filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-search-input {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.admin-search-input input {
+  width: 100%;
+  padding: 8px 15px;
+  padding-right: 40px;
+  border: 1px solid var(--admin-border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.admin-search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background: none;
+  border: none;
+  color: var(--admin-gray);
+  cursor: pointer;
+}
+
+.admin-select {
+  padding: 8px 15px;
+  border: 1px solid var(--admin-border);
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+/* Events List */
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.event-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid var(--admin-border);
+}
+
+.event-card-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.event-date {
+  width: 60px;
+  height: 60px;
+  background-color: var(--admin-primary);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.event-date-day {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.event-date-month {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.event-title {
+  flex: 1;
+}
+
+.event-title h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  color: var(--admin-dark);
+}
+
+.event-type {
+  color: var(--admin-gray);
+  font-size: 0.9rem;
+}
+
+.event-status {
+  margin-left: auto;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.badge-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.badge-info {
+  background-color: #cff4fc;
+  color: #055160;
+}
+
+.badge-secondary {
+  background-color: #e2e3e5;
+  color: #41464b;
+}
+
+.event-card-body {
+  padding: 15px;
+}
+
+.event-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  color: var(--admin-gray);
+  font-size: 0.9rem;
+}
+
+.event-detail i {
+  width: 16px;
+  margin-right: 8px;
+  color: var(--admin-primary);
+}
+
+.event-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/* Empty State */
+.admin-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.admin-empty-state-icon {
+  font-size: 3rem;
+  color: var(--admin-gray);
+  margin-bottom: 15px;
+}
+
+.admin-empty-state h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--admin-dark);
+}
+
+.admin-empty-state p {
+  color: var(--admin-gray);
+  margin-bottom: 20px;
+}
+
+/* Pagination */
+.admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.admin-pagination-btn {
+  padding: 8px 15px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: var(--admin-gray);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-pagination-pages {
+  display: flex;
+  gap: 5px;
+}
+
+.admin-pagination-page {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: var(--admin-gray);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.admin-pagination-page.active {
+  background-color: var(--admin-primary);
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .event-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .event-date {
+    margin-bottom: 10px;
+  }
+
+  .event-status {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .event-details {
+    grid-template-columns: 1fr;
+  }
+
+  .event-actions {
+    justify-content: flex-start;
+  }
+
+  .admin-filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-input {
+    width: 100%;
+  }
+
+  .status-filter-tabs {
+    overflow-x: auto;
+    padding-bottom: 5px;
+    flex-wrap: nowrap;
+  }
+
+  .status-tab {
+    white-space: nowrap;
+  }
+}

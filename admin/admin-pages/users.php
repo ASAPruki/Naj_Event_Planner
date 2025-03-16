@@ -14,6 +14,37 @@ $admin_role = $_SESSION['admin_role'];
 
 require "../../APIs/connect.php";
 
+// Process form submission for adding a new user
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $password = $_POST['password'];
+    $address = $_POST['address'];
+
+    // Insert new user
+    $insert_query = "INSERT INTO users (name, email, phone, password, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+    $insert_stmt = $conn->prepare($insert_query);
+    $insert_stmt->bind_param("sssss", $name, $email, $phone, $password, $address);
+
+    if ($insert_stmt->execute()) {
+        // Log admin activity
+        $activity = "Added new user: $name (Email: $email)";
+        $log_query = "INSERT INTO admin_activity_log (admin_id, activity, timestamp) VALUES (?, ?, NOW())";
+        $log_stmt = $conn->prepare($log_query);
+        $log_stmt->bind_param("is", $admin_id, $activity);
+        $log_stmt->execute();
+
+        // Set success message
+        $success_message = "User added successfully!";
+    } else {
+        // Set error message
+        $error_message = "Error adding user: " . $insert_stmt->error;
+    }
+
+    $insert_stmt->close();
+}
+
 // Initialize variables
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -79,6 +110,129 @@ $conn->close();
     <link rel="stylesheet" href="../admin-styles/admin-styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Modal Styles */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 30px 0;
+        }
+
+        .admin-modal-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .admin-modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--admin-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(63, 81, 181, 0.05);
+        }
+
+        .admin-modal-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+
+        .admin-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--admin-gray);
+            transition: var(--admin-transition);
+        }
+
+        .admin-modal-close:hover {
+            color: var(--admin-danger);
+        }
+
+        .admin-modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .admin-modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--admin-border);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Form Grid */
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .admin-form-grid .admin-form-group:last-child {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 768px) {
+            .admin-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-form-grid .admin-form-group:last-child {
+                grid-column: span 1;
+            }
+        }
+
+        /* Alert Messages */
+        .admin-alert {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .admin-alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--admin-success);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .admin-alert-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--admin-danger);
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+    </style>
 </head>
 
 <body class="admin-body">
@@ -156,13 +310,25 @@ $conn->close();
             </header>
 
             <div class="admin-content">
+                <?php if (isset($success_message)): ?>
+                    <div class="admin-alert admin-alert-success">
+                        <i class="fas fa-check-circle"></i> <?php echo $success_message; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($error_message)): ?>
+                    <div class="admin-alert admin-alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> <?php echo $error_message; ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- Search and Add User -->
                 <div class="admin-card">
                     <div class="admin-card-header">
                         <h2 class="admin-card-title">Search Users</h2>
-                        <a href="add-user.php" class="admin-btn admin-btn-primary admin-btn-sm">
+                        <button id="openAddUserModal" class="admin-btn admin-btn-primary admin-btn-sm">
                             <i class="fas fa-plus"></i> Add New User
-                        </a>
+                        </button>
                     </div>
                     <div class="admin-card-body">
                         <form method="get" action="users.php" class="admin-filters">
@@ -261,6 +427,46 @@ $conn->close();
         </main>
     </div>
 
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-modal-header">
+                <h3 class="admin-modal-title">Add New User</h3>
+                <button type="button" class="admin-modal-close" id="closeAddUserModal">&times;</button>
+            </div>
+            <form method="post" action="users.php">
+                <div class="admin-modal-body">
+                    <div class="admin-form-grid">
+                        <div class="admin-form-group">
+                            <label for="name">Full Name <span style="color: red;">*</span></label>
+                            <input type="text" id="name" name="name" class="admin-form-control" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="email">Email Address <span style="color: red;">*</span></label>
+                            <input type="email" id="email" name="email" class="admin-form-control" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="admin-form-control">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="password">Password <span style="color: red;">*</span></label>
+                            <input type="password" id="password" name="password" class="admin-form-control" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" name="address" class="admin-form-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="button" class="admin-btn admin-btn-light" id="cancelAddUser">Cancel</button>
+                    <button type="submit" name="add_user" class="admin-btn admin-btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Toggle sidebar on mobile
         const toggleSidebar = document.getElementById('toggleSidebar');
@@ -284,6 +490,53 @@ $conn->close();
                 adminMain.classList.remove('sidebar-active');
             }
         });
+
+        // Modal functionality
+        const addUserModal = document.getElementById('addUserModal');
+        const openAddUserModal = document.getElementById('openAddUserModal');
+        const closeAddUserModal = document.getElementById('closeAddUserModal');
+        const cancelAddUser = document.getElementById('cancelAddUser');
+
+        // Open modal
+        openAddUserModal.addEventListener('click', function() {
+            addUserModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+        });
+
+        // Close modal functions
+        function closeModal() {
+            addUserModal.style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        closeAddUserModal.addEventListener('click', closeModal);
+        cancelAddUser.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === addUserModal) {
+                closeModal();
+            }
+        });
+
+        // Prevent closing when clicking inside the modal content
+        addUserModal.querySelector('.admin-modal-content').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+
+        // Auto-hide alerts after 5 seconds
+        const alerts = document.querySelectorAll('.admin-alert');
+        if (alerts.length > 0) {
+            setTimeout(function() {
+                alerts.forEach(function(alert) {
+                    alert.style.opacity = '0';
+                    alert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 500);
+                });
+            }, 5000);
+        }
     </script>
 </body>
 

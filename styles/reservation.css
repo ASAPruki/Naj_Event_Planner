@@ -29,10 +29,6 @@ html {
   margin-bottom: 20px;
 }
 
-.reservation-info p {
-  margin-bottom: 30px;
-}
-
 .contact-info {
   margin-top: 40px;
 }
@@ -40,7 +36,7 @@ html {
 .contact-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .icon {

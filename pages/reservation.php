@@ -36,7 +36,9 @@ if (!$logged_in) {
     <header>
         <div class="container">
             <div class="logo">
-                <h1>Naj Events</h1>
+                <a href="index.html">
+                    <h1>Naj Events</h1>
+                </a>
             </div>
             <nav>
                 <div class="menu-toggle">
@@ -167,6 +169,10 @@ if (!$logged_in) {
                                 <label class="checkbox-label">
                                     <input type="checkbox" name="accessories[]" value="catering">
                                     Catering Equipment
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="accessories[]" value="photography">
+                                    Photography
                                 </label>
                             </div>
                         </div>

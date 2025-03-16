@@ -111,12 +111,8 @@ $total_pages = ceil($total_records / $limit);
 $count_stmt->close();
 
 // Get events for this page
-$events_query = "SELECT r.*, 
-                    e.name as event_name, 
-                    e.type as event_type,
-                    e.price as event_price
+$events_query = "SELECT r.* 
                 FROM reservations r
-                LEFT JOIN events e ON r.event_id = e.id
                 WHERE $where_clause
                 ORDER BY r.event_date DESC, r.created_at DESC
                 LIMIT ?, ?";
@@ -388,7 +384,7 @@ function formatCurrency($amount)
                                                 <div class="event-date-month"><?php echo date('M', strtotime($event['event_date'])); ?></div>
                                             </div>
                                             <div class="event-title">
-                                                <h3><?php echo htmlspecialchars($event['event_name']); ?></h3>
+                                                <h3><?php echo htmlspecialchars($event['event_type']); ?></h3>
                                                 <p class="event-type"><?php echo htmlspecialchars($event['event_type']); ?></p>
                                             </div>
                                             <div class="event-status">
@@ -405,15 +401,11 @@ function formatCurrency($amount)
                                                 </div>
                                                 <div class="event-detail">
                                                     <i class="fas fa-clock"></i>
-                                                    <span><?php echo date('h:i A', strtotime($event['event_time'])); ?></span>
+                                                    <span><?php echo date('h:i A', strtotime($event['event_date'])); ?></span>
                                                 </div>
                                                 <div class="event-detail">
                                                     <i class="fas fa-users"></i>
                                                     <span><?php echo htmlspecialchars($event['guests']); ?> Guests</span>
-                                                </div>
-                                                <div class="event-detail">
-                                                    <i class="fas fa-money-bill-wave"></i>
-                                                    <span><?php echo formatCurrency($event['total_price']); ?></span>
                                                 </div>
                                             </div>
                                             <div class="event-actions">
@@ -480,7 +472,7 @@ function formatCurrency($amount)
                 <button class="admin-modal-close">&times;</button>
             </div>
             <div class="admin-modal-body">
-                <form id="statusForm" action="update_event_status.php" method="post">
+                <form id="statusForm" action="update-event-status.php" method="post">
                     <input type="hidden" name="event_id" id="event_id">
                     <input type="hidden" name="redirect_url" value="user-events.php?user_id=<?php echo $user_id; ?><?php echo !empty($status_filter) ? '&status=' . $status_filter : ''; ?><?php echo !empty($date_filter) ? '&date_range=' . $date_filter : ''; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($page) ? '&page=' . $page : ''; ?>">
 

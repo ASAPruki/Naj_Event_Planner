@@ -45,6 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Get the date input field and today's date
+  const dateInput = document.getElementById("event-date");
+  const today = new Date();
+
+  // Format today's date as YYYY-MM-DD (to match the date input format)
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Add leading zero if month is less than 10
+  const day = String(today.getDate()).padStart(2, "0"); // Add leading zero if day is less than 10
+  const formattedDate = `${year}-${month}-${day}`;
+
+  // Set the 'min' attribute to today's date
+  dateInput.setAttribute("min", formattedDate);
+
   // Check if URL has #login hash and open modal if it does
   if (window.location.hash === "#login" && modal) {
     openLoginModal();
@@ -138,6 +151,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!validateEmail(email)) {
         alert("Please enter a valid email address");
+        return;
+      }
+
+      if (dateInput < today.getDate()) {
+        alert("Please enter a valid date");
         return;
       }
 

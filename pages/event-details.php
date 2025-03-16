@@ -73,7 +73,9 @@ $conn->close();
     <header>
         <div class="container">
             <div class="logo">
-                <h1>Naj Events</h1>
+                <a href="index.html">
+                    <h1>Naj Events</h1>
+                </a>
             </div>
             <nav>
                 <div class="menu-toggle">
@@ -181,7 +183,9 @@ $conn->close();
                         <h3>Actions</h3>
                         <div class="action-buttons">
                             <?php if (strtotime($event['event_date']) > time()): ?>
-                                <?php if (!isset($event['status']) || $event['status'] !== 'pending'): ?>
+
+                                <!-- ONLY ALLOW USER TO ALTER AN EVENT IF IT'S PENDING (NOT CONFIRMED YET) -->
+                                <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
                                     <a href="edit_event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
                                 <?php endif; ?>
                                 <button class="btn btn-secondary" id="contact-organizer">Contact Organizer</button>

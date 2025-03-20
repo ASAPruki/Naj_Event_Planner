@@ -581,7 +581,14 @@ footer {
 #address,
 #current-password,
 #new-password,
-#confirm-password {
+#confirm-password,
+#signup-name,
+#signup-email,
+#signup-password,
+#signup-confirm,
+#login-email,
+#login-password,
+#password {
   width: 100%;
 }
 

@@ -32,17 +32,20 @@ $offset = ($page - 1) * $per_page;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
     $name = htmlspecialchars($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $phone = htmlspecialchars($_POST['phone']);
+    $phone = htmlspecialchars(str_replace(" ", "", $_POST['phone'])); // Gets rid of the spaces in the phone number
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    // Validate input
+    // Validate form inputs
     if (empty($name) || empty($email) || empty($phone) || empty($password) || empty($role)) {
         $error_message = "All fields are required.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_message = "Invalid email format.";
     } elseif (strlen($password) < 6) {
         $error_message = "Password must be at least 6 characters.";
+    } elseif (!preg_match("/^\d{2}\s?\d{3}\s?\d{3}$/", $phone)) { //Check if the number is in this lebanese numbers format
+        echo "<script>alert('Please enter a valid phone number. Accepted formats:\n12345678\n12 345678\n12 345 678');</script>";
+        $error_message = "Please enter a valid phone number.";
     } else {
         // Check if email already exists
         $check_stmt = $conn->prepare("SELECT id FROM admins WHERE email = ?");
@@ -282,10 +285,7 @@ $conn->close();
                         </button>
                     </div>
                     <div class="admin-card-body" id="addAdminForm" style="display: none;">
-                        <div class="security-warning" style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 0.9rem;">
-                            <strong>Note:</strong> This system uses plain text passwords for demonstration purposes. This is not secure for production environments.
-                        </div>
-                        <form method="post" action="admins.php">
+                        <form method="post" action="admins.php" onsubmit="return validatePhone();">
                             <input type="hidden" name="action" value="add">
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                                 <div class="admin-form-group">
@@ -518,6 +518,18 @@ $conn->close();
                 deleteModal.style.display = 'none';
             }
         });
+
+        function validatePhone() {
+            let phoneInput = document.getElementById("phone").value.trim();
+
+            let phonePattern = /^\d{2}\s?\d{3}\s?\d{3}$/; // Matches "76xxxxxxx"
+
+            if (!phonePattern.test(phoneInput)) {
+                alert("Please enter a valid phone number.\nAccepted formats:\n12345678\n12 345678\n12 345 678");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
     </script>
 </body>
 

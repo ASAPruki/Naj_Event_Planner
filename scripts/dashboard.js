@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!validatePhone(phone)) {
         alert(
-          "Please enter a valid phone number. Accepted formats:\n12345678\n12 345678\n12 345 678"
+          "Please enter a valid phone number.\nAccepted formats:\n12345678\n12 345678\n12 345 678"
         );
         return;
       }
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validatePhone(phone) {
-    const re = /^76\s?\d{3}\s?\d{3}$/;
+    const re = /^\d{2}\s?\d{3}\s?\d{3}$/;
     return re.test(phone);
   }
 });

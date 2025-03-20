@@ -106,12 +106,6 @@ $conn->close();
                             Admin Management
                         </a>
                     </li>
-                    <li class="admin-nav-item">
-                        <a href="settings.php" class="admin-nav-link">
-                            <i class="fas fa-cog admin-nav-icon"></i>
-                            Settings
-                        </a>
-                    </li>
                 </ul>
             </div>
             <div class="admin-sidebar-footer">

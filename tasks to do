@@ -10,13 +10,12 @@ IMPORTANT: create pages in admin panel:
 
 1. user-details.php (in "view user's events", all events time is 12:00Am, so add a field for the reservations which is what hour they want their event).
 2. edit-admin.php
-3. settings.php (FOR NOW I REMOVED THIS PAGE FROM THE WIREFRAMES) (OPTIONAL)
-4. OPTIONAL: delete-user.php (if i want an admin to delete a user's account)
+3. OPTIONAL: delete-user.php (if i want an admin to delete a user's account)
    NOTE: maybe i want the user to be connected to the reservation in the database, for example when i delete a user, also his reservations should be deleted. (maybe foreign key stuff)
 
 IMPORTANT: create pages in user website:
 
-1. edit-event.php in the dashboard section
+1. edit-event.php in the dashboard section (user edits his event before it gets approved)
 2. Later on: A notifications page that the user can see for example if an admin cancels his event (show the message).
    or if the event becomes past/completed event (show a message that the event is completed)
    }

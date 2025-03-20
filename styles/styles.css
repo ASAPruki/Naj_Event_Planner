@@ -574,7 +574,14 @@ footer {
 #phone,
 #event-date,
 #guests,
-#venue {
+#venue,
+#subject,
+#message,
+#cancel-reason,
+#address,
+#current-password,
+#new-password,
+#confirm-password {
   width: 100%;
 }
 

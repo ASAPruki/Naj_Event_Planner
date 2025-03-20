@@ -18,19 +18,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $event_id = $_GET['id'];
 $user_email = $_SESSION['user_email'];
 
-// Database connection parameters
-$host = "localhost";
-$username = "root";
-$password = "99Vm6tBhw";
-$database = "najevents_db";
-
-// Create connection
-$conn = new mysqli($host, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require "../APIs/connect.php";
 
 // Get event details
 $event_query = "SELECT * FROM reservations WHERE id = ? AND email = ?";
@@ -214,7 +202,7 @@ $conn->close();
                 </div>
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+                    <textarea id="message" name="message" rows="5" style="resize: vertical;" required></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Send Message</button>

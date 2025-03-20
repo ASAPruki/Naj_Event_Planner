@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize input data
     $name = htmlspecialchars($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $phone = isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '';
+    $phone = isset($_POST['phone']) ? htmlspecialchars(str_replace(" ", "", $_POST['phone'])) : '';
     $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '';
 
     // Validate input

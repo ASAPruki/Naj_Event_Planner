@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const name = document.getElementById("name").value;
       const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
 
       if (name.trim() === "") {
         alert("Please enter your name");
@@ -90,6 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!validateEmail(email)) {
         alert("Please enter a valid email address");
+        return;
+      }
+
+      if (!validatePhone(phone)) {
+        alert(
+          "Please enter a valid phone number. Accepted formats:\n12345678\n12 345678\n12 345 678"
+        );
         return;
       }
 
@@ -144,5 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  }
+
+  function validatePhone(phone) {
+    const re = /^76\s?\d{3}\s?\d{3}$/;
+    return re.test(phone);
   }
 });

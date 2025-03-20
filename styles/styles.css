@@ -562,12 +562,20 @@ footer {
 }
 
 .form-group input {
-  width: 100%;
   padding: 12px 15px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   font-size: 1rem;
   transition: var(--transition);
+}
+
+#name,
+#email,
+#phone,
+#event-date,
+#guests,
+#venue {
+  width: 100%;
 }
 
 .form-group input:focus {

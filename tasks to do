@@ -1,6 +1,7 @@
 I want to do these following tasks for me:
 
 1. I want to replace the 'Login / Sign up' nav element in every page if the user is already logged in.
+2. For later: The 'admin_notes' when an admin cancels an event, I want this note to show in a page in the user's dashboard that is maybe a 'notification page'.
 
 IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessories pressable so the customer can observe the item and its pics and details (color, weight, can endure what weight, etc..).
 
@@ -16,6 +17,8 @@ IMPORTANT: create pages in admin panel:
 IMPORTANT: create pages in user website:
 
 1. edit-event.php in the dashboard section
+2. Later on: A notifications page that the user can see for example if an admin cancels his event (show the message).
+   or if the event becomes past/completed event (show a message that the event is completed)
    }
 
 {

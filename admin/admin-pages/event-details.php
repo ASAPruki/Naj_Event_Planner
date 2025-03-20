@@ -366,7 +366,7 @@ $conn->close();
                     <input type="hidden" name="status" value="cancelled">
                     <div class="admin-form-group">
                         <label for="cancellation_reason">Reason for Cancellation</label>
-                        <textarea id="cancellation_reason" name="admin_notes" rows="3" class="admin-form-control" required></textarea>
+                        <textarea id="cancellation_reason" name="admin_notes" rows="3" class="admin-form-control" style="resize: vertical;" required></textarea>
                     </div>
                     <div class="admin-form-group">
                         <button type="submit" class="admin-btn admin-btn-danger">Cancel Event</button>

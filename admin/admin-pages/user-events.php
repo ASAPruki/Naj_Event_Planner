@@ -90,7 +90,7 @@ if (!empty($date_filter)) {
 
 if (!empty($search)) {
     $search_term = "%$search%";
-    $conditions[] = "(event_name LIKE ? OR event_type LIKE ? OR venue LIKE ?)";
+    $conditions[] = "(name LIKE ? OR event_type LIKE ? OR venue LIKE ?)";
     $params[] = $search_term;
     $params[] = $search_term;
     $params[] = $search_term;

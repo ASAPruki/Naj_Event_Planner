@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
     $name = htmlspecialchars($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $phone = isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : '';
+    $phone = isset($_POST['phone']) ? htmlspecialchars(preg_replace('/\s+/', '', $_POST['phone'])) : '';
     $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : '';
     $new_password = isset($_POST['new_password']) ? $_POST['new_password'] : '';
 

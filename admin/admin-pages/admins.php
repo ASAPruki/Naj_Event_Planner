@@ -32,7 +32,7 @@ $offset = ($page - 1) * $per_page;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
     $name = htmlspecialchars($_POST['name']);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $phone = htmlspecialchars(str_replace(" ", "", $_POST['phone'])); // Gets rid of the spaces in the phone number
+    $phone = htmlspecialchars(preg_replace('/\s+/', '', $_POST['phone'])); // Gets rid of the spaces in the phone number
     $password = $_POST['password'];
     $role = $_POST['role'];
 
@@ -44,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     } elseif (strlen($password) < 6) {
         $error_message = "Password must be at least 6 characters.";
     } elseif (!preg_match("/^\d{2}\s?\d{3}\s?\d{3}$/", $phone)) { //Check if the number is in this lebanese numbers format
-        echo "<script>alert('Please enter a valid phone number. Accepted formats:\n12345678\n12 345678\n12 345 678');</script>";
         $error_message = "Please enter a valid phone number.";
     } else {
         // Check if email already exists
@@ -453,78 +452,7 @@ $conn->close();
         </div>
     </div>
 
-    <script>
-        // Toggle sidebar on mobile
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const adminMain = document.getElementById('adminMain');
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                adminSidebar.classList.toggle('active');
-                adminMain.classList.toggle('sidebar-active');
-            });
-        }
-
-        // Toggle add admin form
-        const toggleAddForm = document.getElementById('toggleAddForm');
-        const addAdminForm = document.getElementById('addAdminForm');
-
-        if (toggleAddForm && addAdminForm) {
-            toggleAddForm.addEventListener('click', function() {
-                if (addAdminForm.style.display === 'none') {
-                    addAdminForm.style.display = 'block';
-                    toggleAddForm.innerHTML = '<i class="fas fa-minus"></i> Hide Form';
-                } else {
-                    addAdminForm.style.display = 'none';
-                    toggleAddForm.innerHTML = '<i class="fas fa-plus"></i> Show Form';
-                }
-            });
-        }
-
-        // Delete confirmation modal
-        const deleteButtons = document.querySelectorAll('.delete-admin');
-        const deleteModal = document.getElementById('deleteModal');
-        const deleteAdminName = document.getElementById('deleteAdminName');
-        const deleteAdminId = document.getElementById('deleteAdminId');
-        const cancelDelete = document.getElementById('cancelDelete');
-
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const name = this.getAttribute('data-name');
-
-                deleteAdminId.value = id;
-                deleteAdminName.textContent = name;
-                deleteModal.style.display = 'block';
-            });
-        });
-
-        if (cancelDelete) {
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.style.display = 'none';
-            });
-        }
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target === deleteModal) {
-                deleteModal.style.display = 'none';
-            }
-        });
-
-        function validatePhone() {
-            let phoneInput = document.getElementById("phone").value.trim();
-
-            let phonePattern = /^\d{2}\s?\d{3}\s?\d{3}$/; // Matches "76xxxxxxx"
-
-            if (!phonePattern.test(phoneInput)) {
-                alert("Please enter a valid phone number.\nAccepted formats:\n12345678\n12 345678\n12 345 678");
-                return false; // Prevent form submission
-            }
-            return true; // Allow form submission
-        }
-    </script>
+    <script src="../admin-scripts/admins.js"></script>
 </body>
 
 </html>

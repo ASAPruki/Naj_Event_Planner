@@ -22,10 +22,9 @@ IMPORTANT: create pages in user website:
 {
 ADDITIONAL STUFF TO DO IN FREE TIME
 
-1. user-events (search bar is not working because of database issues).
-2. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
-3. is there anyway that the "contact organizer" message is shown in the admin panel and not only in the database?
-4. The "Venue" field when empty is returning 0 value instead of Null, even tho its varchar, please check it.
+1. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
+2. is there anyway that the "contact organizer" message is shown in the admin panel and not only in the database?
+3. The "Venue" field when empty is returning 0 value instead of Null, even tho its varchar, please check it.
    }
 
 NOTE: When an event is for example is in today's date, and today is already here, the event status doesn't change to past/completed. So admin should do it manually.

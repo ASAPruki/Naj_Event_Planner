@@ -14,38 +14,64 @@ $admin_role = $_SESSION['admin_role'];
 
 require "../../APIs/connect.php";
 
+// Initialize variables
+$success_message = "";
+$error_message = "";
+
 // Process form submission for adding a new user
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
+    $name = htmlspecialchars($_POST['name']);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $phone = htmlspecialchars(preg_replace('/\s+/', '', $_POST['phone']));
     $password = $_POST['password'];
-    $address = $_POST['address'];
+    $address = htmlspecialchars($_POST['address']);
 
-    // Insert new user
-    $insert_query = "INSERT INTO users (name, email, phone, password, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
-    $insert_stmt = $conn->prepare($insert_query);
-    $insert_stmt->bind_param("sssss", $name, $email, $phone, $password, $address);
-
-    if ($insert_stmt->execute()) {
-        // Log admin activity
-        $activity = "Added new user: $name (Email: $email)";
-        $log_query = "INSERT INTO admin_activity_log (admin_id, activity, timestamp) VALUES (?, ?, NOW())";
-        $log_stmt = $conn->prepare($log_query);
-        $log_stmt->bind_param("is", $admin_id, $activity);
-        $log_stmt->execute();
-
-        // Set success message
-        $success_message = "User added successfully!";
+    // Validate input
+    if (empty($name) || empty($email) || empty($password)) {
+        $error_message = "Name, email and password are required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Invalid email format.";
+    } elseif (strlen($_POST['password']) < 6) {
+        $error_message = "Password must be at least 6 characters.";
+    } elseif (!preg_match("/^\d{2}\s?\d{3}\s?\d{3}$/", $phone)) { //Check if the number is in this lebanese numbers format
+        $error_message = "Please enter a valid phone number.";
     } else {
-        // Set error message
-        $error_message = "Error adding user: " . $insert_stmt->error;
-    }
+        // Check if email already exists
+        $check_stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $check_stmt->bind_param("s", $email);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
 
-    $insert_stmt->close();
+        if ($check_result->num_rows > 0) {
+            $error_message = "Email already exists.";
+        } else {
+            // Insert new user
+            $stmt = $conn->prepare("INSERT INTO users (name, email, phone, password, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+            $stmt->bind_param("sssss", $name, $email, $phone, $password, $address);
+
+            if ($stmt->execute()) {
+                $success_message = "User added successfully!";
+
+                // Log the activity
+                $action_details = "Admin added new user: $name";
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+
+                $log_stmt = $conn->prepare("INSERT INTO admin_activity_log (admin_id, action_type, action_details, ip_address) VALUES (?, 'add_user', ?, ?)");
+                $log_stmt->bind_param("iss", $admin_id, $action_details, $ip_address);
+                $log_stmt->execute();
+                $log_stmt->close();
+            } else {
+                $error_message = "Error adding user: " . $stmt->error;
+            }
+
+            $stmt->close();
+        }
+
+        $check_stmt->close();
+    }
 }
 
-// Initialize variables
+// Initialize variables for user listing
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 10;
@@ -110,129 +136,6 @@ $conn->close();
     <link rel="stylesheet" href="../admin-styles/admin-styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Modal Styles */
-        .admin-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            overflow-y: auto;
-            padding: 30px 0;
-        }
-
-        .admin-modal-content {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .admin-modal-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--admin-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: rgba(63, 81, 181, 0.05);
-        }
-
-        .admin-modal-title {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: var(--admin-dark);
-            margin: 0;
-        }
-
-        .admin-modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--admin-gray);
-            transition: var(--admin-transition);
-        }
-
-        .admin-modal-close:hover {
-            color: var(--admin-danger);
-        }
-
-        .admin-modal-body {
-            padding: 20px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .admin-modal-footer {
-            padding: 15px 20px;
-            border-top: 1px solid var(--admin-border);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* Form Grid */
-        .admin-form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .admin-form-grid .admin-form-group:last-child {
-            grid-column: span 2;
-        }
-
-        @media (max-width: 768px) {
-            .admin-form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-form-grid .admin-form-group:last-child {
-                grid-column: span 1;
-            }
-        }
-
-        /* Alert Messages */
-        .admin-alert {
-            padding: 12px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-
-        .admin-alert-success {
-            background-color: rgba(76, 175, 80, 0.1);
-            color: var(--admin-success);
-            border: 1px solid rgba(76, 175, 80, 0.2);
-        }
-
-        .admin-alert-danger {
-            background-color: rgba(244, 67, 54, 0.1);
-            color: var(--admin-danger);
-            border: 1px solid rgba(244, 67, 54, 0.2);
-        }
-    </style>
 </head>
 
 <body class="admin-body">
@@ -304,25 +207,65 @@ $conn->close();
             </header>
 
             <div class="admin-content">
-                <?php if (isset($success_message)): ?>
-                    <div class="admin-alert admin-alert-success">
-                        <i class="fas fa-check-circle"></i> <?php echo $success_message; ?>
+                <?php if (!empty($success_message)): ?>
+                    <div class="success-message" style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <?php echo $success_message; ?>
                     </div>
                 <?php endif; ?>
 
-                <?php if (isset($error_message)): ?>
-                    <div class="admin-alert admin-alert-danger">
-                        <i class="fas fa-exclamation-circle"></i> <?php echo $error_message; ?>
+                <?php if (!empty($error_message)): ?>
+                    <div class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <?php echo $error_message; ?>
                     </div>
                 <?php endif; ?>
 
-                <!-- Search and Add User -->
+                <!-- Add New User Form -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Add New User</h2>
+                        <button id="toggleAddForm" class="admin-btn admin-btn-primary admin-btn-sm">
+                            <i class="fas fa-plus"></i> Show Form
+                        </button>
+                    </div>
+                    <div class="admin-card-body" id="addUserForm" style="display: none;">
+                        <div class="security-warning" style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 0.9rem;">
+                            <strong>Note:</strong> Passwords are NOT securely hashed before storage for security purposes.
+                        </div>
+                        <form id="add-new-user-form" method="post" action="users.php">
+                            <input type="hidden" name="action" value="add">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                                <div class="admin-form-group">
+                                    <label for="name">Full Name*</label>
+                                    <input type="text" id="name" name="name" class="admin-form-control" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="email">Email*</label>
+                                    <input type="email" id="email" name="email" class="admin-form-control" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="admin-form-control">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="password">Password*</label>
+                                    <input type="password" id="password" name="password" class="admin-form-control" required>
+                                </div>
+                                <div class="admin-form-group" style="grid-column: 1 / -1;">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" name="address" class="admin-form-textarea" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="admin-form-group" style="margin-top: 20px;">
+                                <button type="submit" class="admin-btn admin-btn-primary">Add User</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Search Users -->
                 <div class="admin-card">
                     <div class="admin-card-header">
                         <h2 class="admin-card-title">Search Users</h2>
-                        <button id="openAddUserModal" class="admin-btn admin-btn-primary admin-btn-sm">
-                            <i class="fas fa-plus"></i> Add New User
-                        </button>
                     </div>
                     <div class="admin-card-body">
                         <form method="get" action="users.php" class="admin-filters">
@@ -420,118 +363,8 @@ $conn->close();
             </div>
         </main>
     </div>
-
-    <!-- Add User Modal -->
-    <div id="addUserModal" class="admin-modal">
-        <div class="admin-modal-content">
-            <div class="admin-modal-header">
-                <h3 class="admin-modal-title">Add New User</h3>
-                <button type="button" class="admin-modal-close" id="closeAddUserModal">&times;</button>
-            </div>
-            <form method="post" action="users.php">
-                <div class="admin-modal-body">
-                    <div class="admin-form-grid">
-                        <div class="admin-form-group">
-                            <label for="name">Full Name <span style="color: red;">*</span></label>
-                            <input type="text" id="name" name="name" class="admin-form-control" required>
-                        </div>
-                        <div class="admin-form-group">
-                            <label for="email">Email Address <span style="color: red;">*</span></label>
-                            <input type="email" id="email" name="email" class="admin-form-control" required>
-                        </div>
-                        <div class="admin-form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" class="admin-form-control">
-                        </div>
-                        <div class="admin-form-group">
-                            <label for="password">Password <span style="color: red;">*</span></label>
-                            <input type="password" id="password" name="password" class="admin-form-control" required>
-                        </div>
-                        <div class="admin-form-group">
-                            <label for="address">Address</label>
-                            <textarea id="address" name="address" class="admin-form-textarea" rows="3"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="admin-modal-footer">
-                    <button type="button" class="admin-btn admin-btn-light" id="cancelAddUser">Cancel</button>
-                    <button type="submit" name="add_user" class="admin-btn admin-btn-primary">Add User</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Toggle sidebar on mobile
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const adminMain = document.getElementById('adminMain');
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                adminSidebar.classList.toggle('active');
-                adminMain.classList.toggle('sidebar-active');
-            });
-        }
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = adminSidebar.contains(event.target);
-            const isClickInsideToggle = toggleSidebar.contains(event.target);
-
-            if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickInsideToggle && adminSidebar.classList.contains('active')) {
-                adminSidebar.classList.remove('active');
-                adminMain.classList.remove('sidebar-active');
-            }
-        });
-
-        // Modal functionality
-        const addUserModal = document.getElementById('addUserModal');
-        const openAddUserModal = document.getElementById('openAddUserModal');
-        const closeAddUserModal = document.getElementById('closeAddUserModal');
-        const cancelAddUser = document.getElementById('cancelAddUser');
-
-        // Open modal
-        openAddUserModal.addEventListener('click', function() {
-            addUserModal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-        });
-
-        // Close modal functions
-        function closeModal() {
-            addUserModal.style.display = 'none';
-            document.body.style.overflow = ''; // Restore scrolling
-        }
-
-        closeAddUserModal.addEventListener('click', closeModal);
-        cancelAddUser.addEventListener('click', closeModal);
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target === addUserModal) {
-                closeModal();
-            }
-        });
-
-        // Prevent closing when clicking inside the modal content
-        addUserModal.querySelector('.admin-modal-content').addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-
-        // Auto-hide alerts after 5 seconds
-        const alerts = document.querySelectorAll('.admin-alert');
-        if (alerts.length > 0) {
-            setTimeout(function() {
-                alerts.forEach(function(alert) {
-                    alert.style.opacity = '0';
-                    alert.style.transition = 'opacity 0.5s ease';
-                    setTimeout(function() {
-                        alert.style.display = 'none';
-                    }, 500);
-                });
-            }, 5000);
-        }
-    </script>
 </body>
+
+<script src="../admin-scripts/users.js"></script>
 
 </html>

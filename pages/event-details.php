@@ -4,38 +4,47 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: index.html");
+    header("Location: index.html#login");
     exit();
 }
 
 // Check if event ID is provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    // Redirect to dashboard if no valid event ID
     header("Location: dashboard.php");
     exit();
 }
 
 $event_id = $_GET['id'];
+$user_id = $_SESSION['user_id'];
 $user_email = $_SESSION['user_email'];
 
 require "../APIs/connect.php";
 
 // Get event details
-$event_query = "SELECT * FROM reservations WHERE id = ? AND email = ?";
+$event_query = "SELECT * FROM reservations WHERE id = ? AND (user_id = ? OR email = ?)";
 $stmt = $conn->prepare($event_query);
-$stmt->bind_param("is", $event_id, $user_email);
+$stmt->bind_param("iis", $event_id, $user_id, $user_email);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Check if event exists and belongs to the user
 if ($result->num_rows === 0) {
-    // Redirect to dashboard if event not found or doesn't belong to user
     header("Location: dashboard.php");
     exit();
 }
 
 $event = $result->fetch_assoc();
 $stmt->close();
+
+// Mark related notification as read if coming from notification click
+if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
+    $notification_id = $_GET['notification_id'];
+    $update_query = "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?";
+    $update_stmt = $conn->prepare($update_query);
+    $update_stmt->bind_param("ii", $notification_id, $user_id);
+    $update_stmt->execute();
+    $update_stmt->close();
+}
 
 $conn->close();
 ?>
@@ -50,10 +59,13 @@ $conn->close();
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
     <link rel="stylesheet" href="../styles/event-details.css">
+    <link rel="stylesheet" href="../styles/notification-styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script src="../scripts/script.js"></script>
     <script src="../scripts/event-details.js"></script>
+    <script src="../scripts/notification.js"></script>
 </head>
 
 <body>
@@ -77,6 +89,7 @@ $conn->close();
                     <li><a href="reservation.php">Book an Event</a></li>
                     <li><a href="index.html#about">About Us</a></li>
                     <li><a href="dashboard.php" class="active">My Account</a></li>
+                    <?php include 'notification-sidebar.php'; ?>
                 </ul>
             </nav>
         </div>

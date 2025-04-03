@@ -3,10 +3,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = document.querySelector(".menu-toggle");
   const navMenu = document.querySelector(".nav-menu");
 
-  if (menuToggle) {
+  if (menuToggle && navMenu) {
     menuToggle.addEventListener("click", function () {
       navMenu.classList.toggle("active");
       this.classList.toggle("active");
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        !menuToggle.contains(e.target) && // Not clicking the menu button
+        !navMenu.contains(e.target) // Not clicking inside the menu
+      ) {
+        navMenu.classList.remove("active");
+        menuToggle.classList.remove("active");
+      }
     });
   }
 

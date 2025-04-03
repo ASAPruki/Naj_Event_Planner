@@ -4,11 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const dashboardSidebar = document.querySelector(".dashboard-sidebar");
 
   if (sidebarToggle && dashboardSidebar) {
-    console.log("Sidebar toggle and sidebar elements found");
-
     sidebarToggle.addEventListener("click", function (e) {
       e.stopPropagation(); // Prevent event from bubbling up
-      console.log("Sidebar toggle clicked");
+      console.log("Sidebar toggle clicked"); // Debugging purposes only
       dashboardSidebar.classList.toggle("active");
       this.classList.toggle("active");
     });

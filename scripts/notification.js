@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const notificationSidebar = document.getElementById("notificationSidebar");
   const closeNotifications = document.getElementById("closeNotifications");
   const notificationOverlay = document.getElementById("notificationOverlay");
-  const markAllReadBtn = document.getElementById("markAllRead");
+  const markAllRead = document.getElementById("markAllRead");
   const notificationItems = document.querySelectorAll(".notification-item");
 
   // Toggle notification sidebar
@@ -18,22 +18,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Close notification sidebar
   if (closeNotifications) {
-    closeNotifications.addEventListener("click", closeNotificationSidebar);
+    closeNotifications.addEventListener("click", () => {
+      notificationSidebar.classList.remove("active");
+      notificationOverlay.classList.remove("active");
+      document.body.style.overflow = "";
+    });
   }
 
-  // Close when clicking on overlay
+  // Close sidebar when clicking on overlay
   if (notificationOverlay) {
-    notificationOverlay.addEventListener("click", closeNotificationSidebar);
+    notificationOverlay.addEventListener("click", () => {
+      notificationSidebar.classList.remove("active");
+      notificationOverlay.classList.remove("active");
+      document.body.style.overflow = "";
+    });
   }
 
   // Mark all notifications as read
-  if (markAllReadBtn) {
-    markAllReadBtn.addEventListener("click", () => {
+  if (markAllRead) {
+    markAllRead.addEventListener("click", () => {
       // Send AJAX request to mark all as read
       fetch("../APIs/mark-all-read.php", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       })
         .then((response) => response.json())
@@ -47,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.querySelector(".notification-status")?.remove();
               });
 
-            // Remove notification badge
+            // Update badge
             const badge = document.querySelector(".notification-badge");
             if (badge) {
               badge.remove();
@@ -55,56 +63,49 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .catch((error) => {
-          console.error("Error marking notifications as read:", error);
+          console.error("Error marking all notifications as read:", error);
         });
     });
   }
 
-  // Mark individual notification as read when clicked
+  // Mark individual notification as read
   notificationItems.forEach((item) => {
     item.addEventListener("click", function () {
       const notificationId = this.dataset.id;
+      const isUnread = this.classList.contains("unread");
 
-      // Send AJAX request to mark as read
-      fetch("../APIs/mark-notification-read.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: notificationId }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            // Update UI
-            this.classList.remove("unread");
-            const statusDot = this.querySelector(".notification-status");
-            if (statusDot) {
-              statusDot.remove();
-            }
+      if (isUnread) {
+        // Send AJAX request to mark as read
+        fetch("../APIs/mark-notification-read.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `notification_id=${notificationId}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Update UI
+              this.classList.remove("unread");
+              this.querySelector(".notification-status")?.remove();
 
-            // Update badge count
-            const badge = document.querySelector(".notification-badge");
-            if (badge) {
-              const currentCount = Number.parseInt(badge.textContent);
-              if (currentCount > 1) {
-                badge.textContent = currentCount - 1;
-              } else {
-                badge.remove();
+              // Update badge count
+              const badge = document.querySelector(".notification-badge");
+              if (badge) {
+                const currentCount = Number.parseInt(badge.textContent);
+                if (currentCount > 1) {
+                  badge.textContent = currentCount - 1;
+                } else {
+                  badge.remove();
+                }
               }
             }
-          }
-        })
-        .catch((error) => {
-          console.error("Error marking notification as read:", error);
-        });
+          })
+          .catch((error) => {
+            console.error("Error marking notification as read:", error);
+          });
+      }
     });
   });
-
-  // Function to close notification sidebar
-  function closeNotificationSidebar() {
-    notificationSidebar.classList.remove("active");
-    notificationOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
 });

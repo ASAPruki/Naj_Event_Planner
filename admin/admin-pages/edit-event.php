@@ -27,7 +27,7 @@ $success_message = '';
 $error_message = '';
 
 // Get event details
-$event_query = "SELECT r.*, u.name as user_name, u.email as user_email, u.phone as user_phone 
+$event_query = "SELECT r.*, u.name as user_name, u.email as user_email, u.phone as user_phone, u.id as user_id 
                 FROM reservations r 
                 LEFT JOIN users u ON r.user_id = u.id 
                 WHERE r.id = ?";
@@ -136,7 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $types .= "s";
         }
 
-        if ($status !== $event['status']) {
+        // Check if status has changed - we'll need this for notification
+        $status_changed = ($status !== $event['status']);
+
+        if ($status_changed) {
             $update_fields[] = "status = ?";
             $params[] = $status;
             $types .= "s";
@@ -184,6 +187,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $log_stmt->bind_param("iss", $admin_id, $action_details, $ip_address);
                 $log_stmt->execute();
                 $log_stmt->close();
+
+                // Create notification if status has changed and user_id exists
+                if ($status_changed && isset($event['user_id']) && !empty($event['user_id'])) {
+                    $user_id = $event['user_id'];
+                    $event_type_display = ucfirst($event_type);
+                    $notification_type = '';
+                    $notification_message = '';
+
+                    // Set notification type and message based on status
+                    switch ($status) {
+                        case 'confirmed':
+                            $notification_type = 'success';
+                            $notification_message = "Your $event_type_display event on " . date('F d, Y', strtotime($event_date)) . " has been confirmed.";
+                            break;
+                        case 'cancelled':
+                            $notification_type = 'danger';
+                            $notification_message = "Your $event_type_display event on " . date('F d, Y', strtotime($event_date)) . " has been cancelled.";
+                            break;
+                        case 'completed':
+                            $notification_type = 'info';
+                            $notification_message = "Your $event_type_display event on " . date('F d, Y', strtotime($event_date)) . " has been marked as completed.";
+                            break;
+                        default:
+                            $notification_type = 'warning';
+                            $notification_message = "The status of your $event_type_display event on " . date('F d, Y', strtotime($event_date)) . " has been updated to $status.";
+                    }
+
+                    // Insert notification
+                    $notification_query = "INSERT INTO notifications (user_id, event_id, message, type) VALUES (?, ?, ?, ?)";
+                    $notification_stmt = $conn->prepare($notification_query);
+                    $notification_stmt->bind_param("iiss", $user_id, $event_id, $notification_message, $notification_type);
+                    $notification_stmt->execute();
+                    $notification_stmt->close();
+                }
 
                 $success_message = "Event updated successfully!";
 

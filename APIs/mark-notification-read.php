@@ -7,51 +7,42 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Get user ID
-$user_id = $_SESSION['user_id'];
-
-// Get notification ID from POST data
-$data = json_decode(file_get_contents('php://input'), true);
-$notification_id = isset($data['id']) ? (int)$data['id'] : 0;
-
-if ($notification_id <= 0) {
+// Check if notification ID is provided
+if (!isset($_POST['notification_id']) || !is_numeric($_POST['notification_id'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid notification ID']);
     exit();
 }
 
-require "connect.php";
+$notification_id = (int)$_POST['notification_id'];
+$user_id = $_SESSION['user_id'];
 
-// Get notification details to check if it belongs to the user and get event_id
-$query = "SELECT n.*, r.id as event_id FROM notifications n LEFT JOIN reservations r ON n.event_id = r.id WHERE n.id = ? AND n.user_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("ii", $notification_id, $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// Database connection parameters
+$host = "localhost";
+$username = "root";
+$password = "99Vm6tBhw";
+$database = "najevents_db";
 
-if ($result->num_rows === 0) {
-    echo json_encode(['success' => false, 'message' => 'Notification not found or not authorized']);
-    $stmt->close();
-    $conn->close();
+// Create connection
+$conn = new mysqli($host, $username, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit();
 }
 
-$notification = $result->fetch_assoc();
-$stmt->close();
+// Update notification to mark as read
+$query = "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ii", $notification_id, $user_id);
+$stmt->execute();
 
-// Mark notification as read
-$update_query = "UPDATE notifications SET is_read = 1 WHERE id = ? AND user_id = ?";
-$update_stmt = $conn->prepare($update_query);
-$update_stmt->bind_param("ii", $notification_id, $user_id);
-
-if ($update_stmt->execute()) {
-    echo json_encode([
-        'success' => true,
-        'message' => 'Notification marked as read',
-        'event_id' => $notification['event_id']
-    ]);
+// Check if update was successful
+if ($stmt->affected_rows > 0) {
+    echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to mark notification as read']);
 }
 
-$update_stmt->close();
+$stmt->close();
 $conn->close();

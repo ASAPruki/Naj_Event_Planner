@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement
     $stmt = $conn->prepare("INSERT INTO reservations (user_id, name, email, phone, event_type, event_date, guests, location_type, venue, accessories, budget, message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("isssssisisss", $user_id, $name, $email, $phone, $event_type, $event_date, $guests, $location_type, $venue, $accessories_string, $budget, $message);
+    $stmt->bind_param("isssssisssss", $user_id, $name, $email, $phone, $event_type, $event_date, $guests, $location_type, $venue, $accessories_string, $budget, $message);
 
     // Execute the statement
     if ($stmt->execute()) {

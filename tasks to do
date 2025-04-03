@@ -15,8 +15,6 @@ IMPORTANT: create pages in admin panel:
 IMPORTANT: create pages in user website:
 
 1. edit-event.php in the dashboard section (user edits his event before it gets approved)
-2. Later on: A notifications page that the user can see for example if an admin cancels his event (show the message).
-   or if the event becomes past/completed event (show a message that the event is completed)
    }
 
 {
@@ -24,7 +22,6 @@ ADDITIONAL STUFF TO DO IN FREE TIME
 
 1. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
 2. is there anyway that the "contact organizer" message is shown in the admin panel and not only in the database?
-3. The "Venue" field when empty is returning 0 value instead of Null, even tho its varchar, please check it.
    }
 
 NOTE: When an event is for example is in today's date, and today is already here, the event status doesn't change to past/completed. So admin should do it manually.

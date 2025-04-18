@@ -406,13 +406,6 @@ function formatCurrency($amount)
                                                 <a href="event-details.php?id=<?php echo $event['id']; ?>" class="admin-btn admin-btn-sm admin-btn-primary">
                                                     <i class="fas fa-eye"></i> View Details
                                                 </a>
-                                                <?php if ($event['status'] !== 'cancelled' && $event['status'] !== 'completed'): ?>
-                                                    <button class="admin-btn admin-btn-sm admin-btn-secondary update-status-btn"
-                                                        data-id="<?php echo $event['id']; ?>"
-                                                        data-current="<?php echo $event['status'] ?: 'pending'; ?>">
-                                                        <i class="fas fa-exchange-alt"></i> Update Status
-                                                    </button>
-                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>

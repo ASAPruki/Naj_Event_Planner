@@ -25,38 +25,3 @@ document.addEventListener("click", function (event) {
     adminMain.classList.remove("sidebar-active");
   }
 });
-
-// Status Update Modal
-const statusModal = document.getElementById("statusModal");
-const statusForm = document.getElementById("statusForm");
-const eventIdInput = document.getElementById("event_id");
-const eventStatusSelect = document.getElementById("event_status");
-const closeBtn = statusModal.querySelector(".admin-modal-close");
-const cancelBtn = statusModal.querySelector(".admin-modal-cancel");
-const updateStatusBtns = document.querySelectorAll(".update-status-btn");
-
-updateStatusBtns.forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const eventId = this.getAttribute("data-id");
-    const currentStatus = this.getAttribute("data-current");
-
-    eventIdInput.value = eventId;
-    eventStatusSelect.value = currentStatus;
-
-    statusModal.style.display = "block";
-  });
-});
-
-closeBtn.addEventListener("click", function () {
-  statusModal.style.display = "none";
-});
-
-cancelBtn.addEventListener("click", function () {
-  statusModal.style.display = "none";
-});
-
-window.addEventListener("click", function (event) {
-  if (event.target === statusModal) {
-    statusModal.style.display = "none";
-  }
-});

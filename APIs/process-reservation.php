@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_date = htmlspecialchars($_POST['event_date']);
     $guests = (int)$_POST['guests'];
     $location_type = htmlspecialchars($_POST['location_type']);
-    $venue = isset($_POST['venue']) ? htmlspecialchars($_POST['venue']) : '';
+    $venue = isset($_POST['venue']) && trim($_POST['venue']) !== '' ? htmlspecialchars($_POST['venue']) : 'Not set';
     $budget = isset($_POST['budget']) ? htmlspecialchars($_POST['budget']) : '';
     $message = isset($_POST['message']) ? htmlspecialchars($_POST['message']) : '';
 

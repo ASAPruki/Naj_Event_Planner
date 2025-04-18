@@ -8,9 +8,8 @@ IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessorie
 {
 IMPORTANT: create pages in admin panel:
 
-1. edit-admin.php
-2. OPTIONAL: delete-user.php (if i want an admin to delete a user's account. NOTE that the Dr wants me to "block" a user, not delete, so we can still access his data of reservations).
-3. Make a page for the admins activity logs, that only the super admin can see, also make them appear from the latest to the newest since the logs are too many.
+1. OPTIONAL: delete-user.php (if i want an admin to delete a user's account. NOTE that the Dr wants me to "block" a user, not delete, so we can still access his data of reservations).
+2. Make a page for the admins activity logs, that only the super admin can see, also make them appear from the latest to the newest since the logs are too many.
 
 IMPORTANT: create pages in user website:
 

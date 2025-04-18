@@ -75,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate required fields
     if (empty($name) || empty($email) || empty($phone) || empty($event_type) || empty($event_date)) {
         $error_message = "Please fill in all required fields.";
+    } elseif (!preg_match("/^\d{2}\s?\d{3}\s?\d{3}$/", $phone)) { //Check if the number is in this lebanese numbers format
+        $error_message = "Please enter a valid phone number.";
     } else {
         // Build update query dynamically based on changed fields
         $update_fields = [];
@@ -340,18 +342,18 @@ $conn->close();
                     </div>
                     <div class="admin-card-body">
                         <?php if (!empty($success_message)): ?>
-                            <div class="admin-alert admin-alert-success">
+                            <div class="admin-alert admin-alert-success" style="text-align: center;">
                                 <i class="fas fa-check-circle"></i> <?php echo $success_message; ?>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($error_message)): ?>
-                            <div class="admin-alert admin-alert-danger">
+                            <div class="admin-alert admin-alert-danger" style="text-align: center;">
                                 <i class="fas fa-exclamation-circle"></i> <?php echo $error_message; ?>
                             </div>
                         <?php endif; ?>
 
-                        <form method="post" action="edit-event.php?id=<?php echo $event_id; ?>" class="admin-form">
+                        <form id="edit-event-form" method="post" action="edit-event.php?id=<?php echo $event_id; ?>" class="admin-form">
                             <div class="admin-form-section">
                                 <h3 class="admin-form-section-title">Client Information</h3>
                                 <div class="admin-form-row">
@@ -487,30 +489,7 @@ $conn->close();
         </main>
     </div>
 
-    <script>
-        // Toggle sidebar on mobile
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const adminMain = document.getElementById('adminMain');
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                adminSidebar.classList.toggle('active');
-                adminMain.classList.toggle('sidebar-active');
-            });
-        }
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = adminSidebar.contains(event.target);
-            const isClickInsideToggle = toggleSidebar.contains(event.target);
-
-            if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickInsideToggle && adminSidebar.classList.contains('active')) {
-                adminSidebar.classList.remove('active');
-                adminMain.classList.remove('sidebar-active');
-            }
-        });
-    </script>
+    <script src="../admin-scripts/edit-event.js"></script>
 </body>
 
 </html>

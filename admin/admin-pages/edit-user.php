@@ -62,6 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Invalid email format";
     }
 
+    if (!preg_match("/^\d{2}\s?\d{3}\s?\d{3}$/", $phone)) {
+        $error[] = "Please enter a valid phone number.";
+    }
+
     // Check if email already exists for another user
     if ($email !== $user['email']) {
         $check_stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
@@ -225,7 +229,7 @@ $conn->close();
                             <strong>Note:</strong> This system uses plain text passwords for demonstration purposes. This is not secure for production environments.
                         </div>
 
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $user_id); ?>">
+                        <form id="edit-user-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $user_id); ?>">
                             <div class="admin-form-group">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" name="name" class="admin-form-control" value="<?php echo $user['name']; ?>" required>
@@ -257,30 +261,7 @@ $conn->close();
         </main>
     </div>
 
-    <script>
-        // Toggle sidebar on mobile
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const adminMain = document.getElementById('adminMain');
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                adminSidebar.classList.toggle('active');
-                adminMain.classList.toggle('sidebar-active');
-            });
-        }
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideSidebar = adminSidebar.contains(event.target);
-            const isClickInsideToggle = toggleSidebar.contains(event.target);
-
-            if (window.innerWidth <= 992 && !isClickInsideSidebar && !isClickInsideToggle && adminSidebar.classList.contains('active')) {
-                adminSidebar.classList.remove('active');
-                adminMain.classList.remove('sidebar-active');
-            }
-        });
-    </script>
+    <script src="../admin-scripts/edit-user.js"></script>
 </body>
 
 </html>

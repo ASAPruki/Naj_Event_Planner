@@ -11,22 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Toggle add user form
-  const toggleAddForm = document.getElementById("toggleAddForm");
-  const addUserForm = document.getElementById("addUserForm");
-
-  if (toggleAddForm && addUserForm) {
-    toggleAddForm.addEventListener("click", function () {
-      if (addUserForm.style.display === "none") {
-        addUserForm.style.display = "block";
-        toggleAddForm.innerHTML = '<i class="fas fa-minus"></i> Hide Form';
-      } else {
-        addUserForm.style.display = "none";
-        toggleAddForm.innerHTML = '<i class="fas fa-plus"></i> Show Form';
-      }
-    });
-  }
-
   // Close sidebar when clicking outside on mobile
   document.addEventListener("click", function (event) {
     const isClickInsideSidebar = adminSidebar.contains(event.target);
@@ -43,11 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const addNewUserForm = document.getElementById("add-new-user-form");
+  const editEventForm = document.getElementById("edit-event-form");
 
   // Validation for the add new user form
-  if (addNewUserForm) {
-    addUserForm.addEventListener("submit", function (e) {
+  if (editEventForm) {
+    editEventForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
       if (!validatePhone(phone)) {
@@ -58,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // If validation passes, submit the form
-      addNewUserForm.submit();
+      editEventForm.submit();
     });
   }
 

@@ -46,6 +46,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         if ($stmt->execute()) {
             $success_message = "Accessory added successfully!";
 
+            $accessory_id = $stmt->insert_id; // Get the inserted accessory ID
+
+            // Directory to store uploaded images
+            $upload_dir = "../../images/accessories/";
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true); // Create directory if not exists
+            }
+
+            if (!empty($_FILES['pictures']['name'][0])) {
+                $total_files = count($_FILES['pictures']['name']);
+
+                for ($i = 0; $i < $total_files; $i++) {
+                    $file_name = basename($_FILES['pictures']['name'][$i]);
+                    $file_tmp = $_FILES['pictures']['tmp_name'][$i];
+                    $file_type = mime_content_type($file_tmp);
+
+                    // Only process image files
+                    if (strpos($file_type, 'image/') !== 0) {
+                        continue; // Skip non-image files
+                    }
+
+                    $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+                    $new_file_name = uniqid("img_", true) . "." . $extension;
+                    $destination = $upload_dir . $new_file_name;
+
+                    if (move_uploaded_file($file_tmp, $destination)) {
+                        // Store the relative path (you can also store full URL if needed)
+                        $relative_path = "../../images/accessories/" . $new_file_name;
+
+                        // Insert image into accessory_images
+                        $img_stmt = $conn->prepare("INSERT INTO accessory_images (accessory_id, image_url) VALUES (?, ?)");
+                        $img_stmt->bind_param("is", $accessory_id, $relative_path);
+                        $img_stmt->execute();
+                        $img_stmt->close();
+                    }
+                }
+            }
+
+
             // Log the activity
             $action_details = "Admin added new accessory: $name";
             $ip_address = $_SERVER['REMOTE_ADDR'];
@@ -251,7 +290,7 @@ $conn->close();
                         <div class="admin-user-role"><?php echo ucfirst($admin_role); ?></div>
                     </div>
                 </div>
-                <a href="../../APIs/logout.php" class="admin-logout">
+                <a href="admin-logout.php" class="admin-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>
@@ -290,7 +329,7 @@ $conn->close();
                         </button>
                     </div>
                     <div class="admin-card-body" id="addAccessoryForm" style="display: none;">
-                        <form method="post" action="accessories.php">
+                        <form method="post" action="accessories.php" enctype="multipart/form-data">
                             <input type="hidden" name="action" value="add">
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                                 <div class="admin-form-group">
@@ -305,7 +344,6 @@ $conn->close();
                                         <option value="tables">Tables</option>
                                         <option value="lighting">Lighting</option>
                                         <option value="decoration">Decoration</option>
-                                        <option value="furniture">Furniture</option>
                                         <option value="sound">Sound Equipment</option>
                                         <option value="catering">Catering Equipment</option>
                                         <option value="other">Other</option>
@@ -330,6 +368,10 @@ $conn->close();
                                 <div class="admin-form-group">
                                     <label for="quantity">Quantity*</label>
                                     <input type="number" id="quantity" name="quantity" class="admin-form-control" min="0" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="pictures">Accessory Images*</label>
+                                    <input type="file" id="pictures" name="pictures[]" class="admin-form-control" accept="image/*" multiple required>
                                 </div>
                             </div>
                             <div class="admin-form-group">

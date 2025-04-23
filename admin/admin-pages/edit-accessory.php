@@ -70,6 +70,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Quantity cannot be negative";
     }
 
+    $uploaded_images = [];
+
+    if (!empty($_FILES['pictures']['name'][0])) {
+        $upload_dir = '../../images/accessories/';
+
+        foreach ($_FILES['pictures']['tmp_name'] as $index => $tmp_name) {
+            $original_name = basename($_FILES['pictures']['name'][$index]);
+            $target_file = $upload_dir . time() . "_" . $original_name;
+
+            if (move_uploaded_file($tmp_name, $target_file)) {
+                $uploaded_images[] = $target_file;
+            } else {
+                $error_message .= "<br>Failed to upload image: $original_name";
+            }
+        }
+
+        // Optionally: Save image paths to a related table or a field
+        if (!empty($uploaded_images)) {
+            $stmt = $conn->prepare("INSERT INTO accessory_images (accessory_id, image_url) VALUES (?, ?)");
+            foreach ($uploaded_images as $image_path) {
+                $stmt->bind_param("is", $accessory_id, $image_path);
+                $stmt->execute();
+            }
+            $stmt->close();
+        }
+    }
+
     // If no errors, update accessory
     if (empty($errors)) {
         $stmt = $conn->prepare("UPDATE accessories_inventory SET name = ?, category = ?, description = ?, material = ?, color = ?, dimensions = ?, weight_capacity = ?, quantity = ?, is_available = ? WHERE id = ?");
@@ -211,7 +238,7 @@ $conn->close();
                             </div>
                         <?php endif; ?>
 
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $accessory_id); ?>">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $accessory_id); ?>" enctype="multipart/form-data">
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                                 <div class="admin-form-group">
                                     <label for="name">Accessory Name*</label>
@@ -250,6 +277,10 @@ $conn->close();
                                 <div class="admin-form-group">
                                     <label for="quantity">Quantity*</label>
                                     <input type="number" id="quantity" name="quantity" class="admin-form-control" min="0" value="<?php echo $accessory['quantity']; ?>" required>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label for="pictures">Accessory Images*</label>
+                                    <input type="file" id="pictures" name="pictures[]" class="admin-form-control" accept="image/*" multiple required>
                                 </div>
                             </div>
                             <div class="admin-form-group">

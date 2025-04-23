@@ -181,7 +181,7 @@ $conn->close();
                         <div class="admin-user-role"><?php echo ucfirst($admin_role); ?></div>
                     </div>
                 </div>
-                <a href="../../APIs/logout.php" class="admin-logout">
+                <a href="admin-logout.php" class="admin-logout">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
             </div>

@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+require "../APIs/connect.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -65,158 +68,55 @@ session_start();
             <h2 class="section-title">Browse by Category</h2>
             <div class="category-tabs">
                 <button class="category-tab active" data-category="all">All</button>
-                <button class="category-tab" data-category="wedding">Wedding</button>
-                <button class="category-tab" data-category="birthday">Birthday</button>
-                <button class="category-tab" data-category="corporate">Corporate</button>
+                <button class="category-tab" data-category="chairs">Chairs</button>
+                <button class="category-tab" data-category="tables">Tables</button>
+                <button class="category-tab" data-category="lighting">Lighting</button>
                 <button class="category-tab" data-category="decoration">Decoration</button>
-                <button class="category-tab" data-category="furniture">Furniture</button>
+                <button class="category-tab" data-category="sound">Sound Equipment</button>
+                <button class="category-tab" data-category="catering">Catering Equipment</button>
+                <button class="category-tab" data-category="other">Other</button>
             </div>
 
             <div class="accessories-grid">
-                <!-- Wedding Accessories -->
-                <div class="accessory-card" data-category="wedding furniture">
-                    <div class="accessory-image">
-                        <img src="images/wedding-chairs.jpg" alt="Wedding Chairs">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Elegant Wedding Chairs</h3>
-                        <p>Beautiful white chairs perfect for wedding ceremonies and receptions.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$5 per chair</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                $sql = "SELECT ai.*, (
+                    SELECT image_url
+                    FROM accessory_images 
+                    WHERE accessory_id = ai.id 
+                    ORDER BY id ASC 
+                    LIMIT 1
+                ) AS first_image 
+                FROM accessories_inventory ai";
 
-                <div class="accessory-card" data-category="wedding decoration">
-                    <div class="accessory-image">
-                        <img src="images/wedding-arch.jpg" alt="Wedding Arch">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Floral Wedding Arch</h3>
-                        <p>Stunning floral arch for wedding ceremonies and photo opportunities.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$300 per event</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                $result = mysqli_query($conn, $sql);
 
-                <!-- Birthday Accessories -->
-                <div class="accessory-card" data-category="birthday decoration">
-                    <div class="accessory-image">
-                        <img src="images/birthday-balloons.jpg" alt="Birthday Balloons">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Premium Balloon Arrangements</h3>
-                        <p>Colorful balloon arrangements to brighten up any birthday celebration.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$100 per set</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $name = htmlspecialchars($row['name']);
+                        $description = htmlspecialchars($row['description']);
+                        $category = htmlspecialchars($row['category']);
 
-                <div class="accessory-card" data-category="birthday">
-                    <div class="accessory-image">
-                        <img src="images/birthday-cake-stand.jpg" alt="Cake Stand">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Luxury Cake Stand</h3>
-                        <p>Elegant cake stand to showcase your birthday cake in style.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$50 per event</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                        // Get image filename or fallback
+                        $image_filename = $row['first_image'] ?? 'no-image.png';
 
-                <!-- Corporate Accessories -->
-                <div class="accessory-card" data-category="corporate furniture">
-                    <div class="accessory-image">
-                        <img src="images/corporate-tables.jpg" alt="Conference Tables">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Conference Tables</h3>
-                        <p>Professional tables for corporate events, meetings, and conferences.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$30 per table</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                        // Use correct relative path to the images folder
+                        $image_path = "../images/accessories/" . htmlspecialchars($image_filename);
 
-                <div class="accessory-card" data-category="corporate">
-                    <div class="accessory-image">
-                        <img src="images/corporate-podium.jpg" alt="Podium">
+                        echo "
+                <div class='accessory-card' data-category='$category'>
+                    <div class='accessory-image'>
+                        <img src='$image_path' alt='$name'>
                     </div>
-                    <div class="accessory-content">
-                        <h3>Professional Podium</h3>
-                        <p>Sleek podium for speeches and presentations at corporate events.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$75 per event</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
+                    <div class='accessory-content'>
+                        <h3>$name</h3>
+                        <p>$description</p>
                     </div>
-                </div>
-
-                <!-- Decoration Items -->
-                <div class="accessory-card" data-category="decoration">
-                    <div class="accessory-image">
-                        <img src="images/string-lights.jpg" alt="String Lights">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Fairy String Lights</h3>
-                        <p>Beautiful string lights to create a magical atmosphere at any event.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$50 per set</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accessory-card" data-category="decoration">
-                    <div class="accessory-image">
-                        <img src="images/flower-centerpieces.jpg" alt="Flower Centerpieces">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Flower Centerpieces</h3>
-                        <p>Elegant floral centerpieces to adorn tables at any special event.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$40 per piece</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Furniture Items -->
-                <div class="accessory-card" data-category="furniture">
-                    <div class="accessory-image">
-                        <img src="images/cocktail-tables.jpg" alt="Cocktail Tables">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Cocktail Tables</h3>
-                        <p>Stylish cocktail tables perfect for receptions and networking events.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$25 per table</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accessory-card" data-category="furniture">
-                    <div class="accessory-image">
-                        <img src="images/lounge-furniture.jpg" alt="Lounge Furniture">
-                    </div>
-                    <div class="accessory-content">
-                        <h3>Lounge Furniture Set</h3>
-                        <p>Comfortable and stylish lounge furniture for a relaxed event atmosphere.</p>
-                        <div class="accessory-meta">
-                            <span class="accessory-price">$200 per set</span>
-                            <a href="reservation.php" class="btn btn-secondary">Reserve</a>
-                        </div>
-                    </div>
-                </div>
+                </div>";
+                    }
+                } else {
+                    echo "<p>No accessories found.</p>";
+                }
+                ?>
             </div>
         </div>
     </section>

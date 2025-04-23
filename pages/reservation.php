@@ -11,7 +11,7 @@ $user_phone = $logged_in ? (isset($_SESSION['user_phone']) ? $_SESSION['user_pho
 if (!$logged_in) {
     // Store the current page as the intended destination after login
     $_SESSION['redirect_after_login'] = '../pages/reservation.php';
-    header("Location: index.html#login");
+    header("Location: index.php#login");
     exit();
 }
 ?>
@@ -36,7 +36,7 @@ if (!$logged_in) {
     <header>
         <div class="container">
             <div class="logo">
-                <a href="index.html">
+                <a href="index.php">
                     <h1>Naj Events</h1>
                 </a>
             </div>
@@ -47,10 +47,10 @@ if (!$logged_in) {
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="accessories.html">Accessories</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="accessories.php">Accessories</a></li>
                     <li><a href="reservation.php" class="active">Book an Event</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
+                    <li><a href="index.php#about">About Us</a></li>
                     <?php if ($logged_in): ?>
                         <li><a href="dashboard.php">My Account</a></li>
                     <?php else: ?>

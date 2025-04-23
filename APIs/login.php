@@ -58,6 +58,6 @@ $conn->close();
 // If there was an error, redirect back to the login page with error message
 if (isset($error_message)) {
     $_SESSION['login_error'] = $error_message;
-    header("Location: ../pages/index.html");
+    header("Location: ../pages/index.php");
     exit();
 }

@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
 
             <div class="admin-login-footer">
-                <a href="../../pages/index.html">Return to Website</a>
+                <a href="../../pages/index.php">Return to Website</a>
             </div>
         </div>
     </div>

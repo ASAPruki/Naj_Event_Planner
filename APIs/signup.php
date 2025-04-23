@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If there were errors, store them in session and redirect back to signup page
     if (!empty($errors)) {
         $_SESSION['signup_errors'] = $errors;
-        header("Location: ../pages/index.html");
+        header("Location: ../pages/index.php");
         exit();
     }
 }

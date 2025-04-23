@@ -4,7 +4,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: index.html#login");
+    header("Location: index.php#login");
     exit();
 }
 
@@ -73,7 +73,7 @@ $conn->close();
     <header>
         <div class="container">
             <div class="logo">
-                <a href="index.html">
+                <a href="index.php">
                     <h1>Naj Events</h1>
                 </a>
             </div>
@@ -84,10 +84,10 @@ $conn->close();
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="accessories.html">Accessories</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="accessories.php">Accessories</a></li>
                     <li><a href="reservation.php">Book an Event</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
+                    <li><a href="index.php#about">About Us</a></li>
                     <li><a href="dashboard.php" class="active">My Account</a></li>
                     <?php include 'notification-sidebar.php'; ?>
                 </ul>

@@ -22,5 +22,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to home page
-header("Location: ../pages/index.html");
+header("Location: ../pages/index.php");
 exit();

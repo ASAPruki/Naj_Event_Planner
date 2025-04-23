@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +23,7 @@
     <header>
         <div class="container">
             <div class="logo">
-                <a href="index.html">
+                <a href="index.php">
                     <h1>Naj Events</h1>
                 </a>
             </div>
@@ -30,11 +34,15 @@
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="accessories.html" class="active">Accessories</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="accessories.php" class="active">Accessories</a></li>
                     <li><a href="reservation.php">Book an Event</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
-                    <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                    <li><a href="index.php#about">About Us</a></li>
+                    <?php if (isset($_SESSION['user_name'])): ?>
+                        <li><a href="dashboard.php">My Profile</a></li>
+                    <?php else: ?>
+                        <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>

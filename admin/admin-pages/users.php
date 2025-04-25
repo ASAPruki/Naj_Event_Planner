@@ -323,6 +323,11 @@ $conn->close();
                                                     <div class="admin-table-actions">
                                                         <a href="user-details.php?id=<?php echo $user['id']; ?>" class="admin-btn admin-btn-info admin-btn-sm">View</a>
                                                         <a href="edit-user.php?id=<?php echo $user['id']; ?>" class="admin-btn admin-btn-primary admin-btn-sm">Edit</a>
+                                                        <?php if ($user['blocked']): ?>
+                                                            <a href="toggle-block.php?id=<?php echo $user['id']; ?>&action=unblock" class="admin-btn admin-btn-success admin-btn-sm">Unblock</a>
+                                                        <?php else: ?>
+                                                            <a href="toggle-block.php?id=<?php echo $user['id']; ?>&action=block" class="admin-btn admin-btn-danger admin-btn-sm">Block</a>
+                                                        <?php endif; ?>
                                                     </div>
                                                 </td>
                                             </tr>

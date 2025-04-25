@@ -1,7 +1,6 @@
 I want to do these following tasks for me:
 
-1. I want to replace the 'Login / Sign up' nav element in every page if the user is already logged in.
-2. user-details.php (in "view user's events", all events time is 12:00Am, so add a field for the reservations which is what hour they want their event. NOTE that events start early at 12pm and start late at 9pm).
+1. user-details.php (in "view user's events", all events time is 12:00Am, so add a field for the reservations which is what hour they want their event. NOTE that events start early at 12pm and start late at 9pm).
 
 IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessories pressable so the customer can observe the item and its pics and details (color, weight, can endure what weight, etc..).
 
@@ -9,7 +8,6 @@ IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessorie
 IMPORTANT: create pages in admin panel:
 
 1. OPTIONAL: delete-user.php (if i want an admin to delete a user's account. NOTE that the Dr wants me to "block" a user, not delete, so we can still access his data of reservations).
-2. Make a page for the admins activity logs, that only the super admin can see, also make them appear from the latest to the newest since the logs are too many.
 
 IMPORTANT: create pages in user website:
 

@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Prepare SQL statement
-    $stmt = $conn->prepare("SELECT id, name, email, password, phone FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, name, email, password, phone, blocked FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
 
     // Execute the statement
@@ -22,9 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
-        // Verify password (plain text comparison)
-        if ($password === $user['password']) {
-            // Password is correct, start a new session
+        // Check if user is blocked
+        if ($user['blocked']) {
+            $error_message = "Your account has been blocked. Please contact support.";
+        } elseif ($password === $user['password']) {
+            // User is not blocked and password is correct
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_email'] = $user['email'];
@@ -33,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if there's a redirect URL stored in the session
             if (isset($_SESSION['redirect_after_login'])) {
                 $redirect = $_SESSION['redirect_after_login'];
-                unset($_SESSION['redirect_after_login']); // Clear the stored URL
+                unset($_SESSION['redirect_after_login']);
                 header("Location: $redirect");
                 exit();
             } else {
@@ -55,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 
-// If there was an error, redirect back to the login page with error message
+// Redirect back to login with error
 if (isset($error_message)) {
     $_SESSION['login_error'] = $error_message;
     header("Location: ../pages/index.php");

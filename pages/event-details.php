@@ -128,6 +128,10 @@ $conn->close();
                                 <span class="info-value"><?php echo date('F d, Y', strtotime($event['event_date'])); ?></span>
                             </div>
                             <div class="info-item">
+                                <span class="info-label">Event Time</span>
+                                <span class="info-value"><?php echo date('h:i A', strtotime($event['event_time'])); ?></span>
+                            </div>
+                            <div class="info-item">
                                 <span class="info-label">Number of Guests</span>
                                 <span class="info-value"><?php echo $event['guests']; ?></span>
                             </div>
@@ -187,7 +191,7 @@ $conn->close();
 
                                 <!-- ONLY ALLOW USER TO ALTER AN EVENT IF IT'S PENDING (NOT CONFIRMED YET) -->
                                 <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
-                                    <a href="edit_event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
+                                    <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
                                 <?php endif; ?>
                                 <button class="btn btn-secondary" id="contact-organizer">Contact Organizer</button>
                                 <button class="btn btn-outline" id="cancel-event">Cancel Event</button>

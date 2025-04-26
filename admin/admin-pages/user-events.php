@@ -395,7 +395,11 @@ function formatCurrency($amount)
                                                 </div>
                                                 <div class="event-detail">
                                                     <i class="fas fa-clock"></i>
-                                                    <span><?php echo date('h:i A', strtotime($event['event_date'])); ?></span>
+                                                    <span><?php echo $event['event_date']; ?></span>
+                                                </div>
+                                                <div class="event-detail">
+                                                    <i class="fas fa-clock"></i>
+                                                    <span><?php echo $event['event_time']; ?></span>
                                                 </div>
                                                 <div class="event-detail">
                                                     <i class="fas fa-users"></i>

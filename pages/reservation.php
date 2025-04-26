@@ -123,6 +123,31 @@ if (!$logged_in) {
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="event-time">Event Time*</label>
+                            <select id="event-time" name="event_time" required>
+                                <option value="">Select time</option>
+                                <option value="12:00:00">12:00 PM</option>
+                                <option value="12:30:00">12:30 PM</option>
+                                <option value="13:00:00">1:00 PM</option>
+                                <option value="13:30:00">1:30 PM</option>
+                                <option value="14:00:00">2:00 PM</option>
+                                <option value="14:30:00">2:30 PM</option>
+                                <option value="15:00:00">3:00 PM</option>
+                                <option value="15:30:00">3:30 PM</option>
+                                <option value="16:00:00">4:00 PM</option>
+                                <option value="16:30:00">4:30 PM</option>
+                                <option value="17:00:00">5:00 PM</option>
+                                <option value="17:30:00">5:30 PM</option>
+                                <option value="18:00:00">6:00 PM</option>
+                                <option value="18:30:00">6:30 PM</option>
+                                <option value="19:00:00">7:00 PM</option>
+                                <option value="19:30:00">7:30 PM</option>
+                                <option value="20:00:00">8:00 PM</option>
+                                <option value="20:30:00">8:30 PM</option>
+                                <option value="21:00:00">9:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label>Event Location*</label>
                             <div class="radio-group">
                                 <label class="radio-label">

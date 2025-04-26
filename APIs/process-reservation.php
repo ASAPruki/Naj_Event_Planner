@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = htmlspecialchars($_POST['phone']);
     $event_type = htmlspecialchars($_POST['event_type']);
     $event_date = htmlspecialchars($_POST['event_date']);
+    $event_time = htmlspecialchars($_POST['event_time']);
     $guests = (int)$_POST['guests'];
     $location_type = htmlspecialchars($_POST['location_type']);
     $venue = isset($_POST['venue']) && trim($_POST['venue']) !== '' ? htmlspecialchars($_POST['venue']) : 'Not set';
@@ -49,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_SESSION['user_id'];
 
     // Prepare SQL statement
-    $stmt = $conn->prepare("INSERT INTO reservations (user_id, name, email, phone, event_type, event_date, guests, location_type, venue, accessories, budget, message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("isssssisssss", $user_id, $name, $email, $phone, $event_type, $event_date, $guests, $location_type, $venue, $accessories_string, $budget, $message);
+    $stmt = $conn->prepare("INSERT INTO reservations (user_id, name, email, phone, event_type, event_date, event_time, guests, location_type, venue, accessories, budget, message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("issssssisssss", $user_id, $name, $email, $phone, $event_type, $event_date, $event_time, $guests, $location_type, $venue, $accessories_string, $budget, $message);
 
     // Execute the statement
     if ($stmt->execute()) {
@@ -59,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subject = "Reservation Confirmation - Naj Events";
         $email_message = "Dear $name,
 
-Thank you for your reservation with Naj Events. We have received your request for a $event_type event on $event_date.
+Thank you for your reservation with Naj Events. We have received your request for a $event_type event on $event_date at $event_time.
 
 Our team will contact you shortly to discuss your event details.
 

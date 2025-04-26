@@ -589,7 +589,8 @@ footer {
 #login-email,
 #login-password,
 #password,
-#review-text {
+#review-text,
+#event-time {
   width: 100%;
 }
 

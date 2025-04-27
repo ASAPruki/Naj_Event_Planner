@@ -259,10 +259,6 @@ $conn->close();
                                 <a href="user-events.php?user_id=<?php echo $user_id; ?>" class="admin-btn admin-btn-info">
                                     <i class="fas fa-calendar-alt"></i> View User's Events
                                 </a>
-                                <button class="admin-btn admin-btn-secondary" id="sendEmailBtn">
-                                    <i class="fas fa-envelope"></i> Send Email
-                                </button>
-                                <!-- Note that this button, in a normal production environment, sends a legit email to the email of the user (for example admin@najadmin.com) -->
                             </div>
                         </div>
                     </div>
@@ -270,46 +266,6 @@ $conn->close();
             </div>
         </main>
     </div>
-
-    <!-- Send Email Modal -->
-    <div id="emailModal" class="admin-modal">
-        <div class="admin-modal-content">
-            <div class="admin-modal-header">
-                <h3>Send Email to <?php echo $user['name']; ?></h3>
-                <button class="admin-modal-close">&times;</button>
-            </div>
-            <div class="admin-modal-body">
-                <form id="emailForm" action="#" method="post">
-                    <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-                    <input type="hidden" name="user_email" value="<?php echo $user['email']; ?>">
-                    <div class="admin-form-group">
-                        <label for="email_subject">Subject</label>
-                        <input type="text" id="email_subject" name="email_subject" class="admin-form-control" required>
-                    </div>
-                    <div class="admin-form-group">
-                        <label for="email_message">Message</label>
-                        <textarea id="email_message" name="email_message" rows="5" class="admin-form-control" required></textarea>
-                    </div>
-                    <div class="admin-form-group">
-                        <button type="submit" class="admin-btn admin-btn-primary">Send Email</button>
-                        <button type="button" class="admin-btn admin-btn-light admin-modal-cancel">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Email Form Submission (Demo only - would connect to a real email service in production)
-        const emailForm = document.getElementById('emailForm');
-        emailForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('In a production environment, this would send an email to ' +
-                '<?php echo $user['email']; ?> with the subject and message you provided.');
-            emailModal.style.display = 'none';
-        });
-    </script>
-
 </body>
 
 </html>

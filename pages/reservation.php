@@ -26,6 +26,7 @@ if (!$logged_in) {
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="../styles/reservation.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <script src="../scripts/script.js"></script>
     <script src="../scripts/reservation.js"></script>
@@ -71,15 +72,21 @@ if (!$logged_in) {
                     <p>Fill out the form with your event details, and our team will get back to you within 24 hours to discuss your requirements in detail.</p>
                     <div class="contact-info">
                         <div class="contact-item">
-                            <span class="icon phone-icon"></span>
+                            <span class="icon phone-icon">
+                                <i class="fas fa-phone" style="margin-top: 12px; margin-left: 12px"></i>
+                            </span>
                             <p>(123) 456-7890</p>
                         </div>
                         <div class="contact-item">
-                            <span class="icon email-icon"></span>
+                            <span class="icon email-icon">
+                                <i class="fas fa-envelope" style="margin-top: 12px; margin-left: 12px"></i>
+                            </span>
                             <p>info@najevents.com</p>
                         </div>
                         <div class="contact-item">
-                            <span class="icon location-icon"></span>
+                            <span class="icon location-icon">
+                                <i class="fas fa-map-marker-alt" style="margin-top: 12px; margin-left: 14px"></i>
+                            </span>
                             <p>123 Event Street, City, Country</p>
                         </div>
                     </div>

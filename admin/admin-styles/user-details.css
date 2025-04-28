@@ -115,19 +115,6 @@ html {
   width: 16px;
 }
 
-.password-display {
-  font-family: monospace;
-  background-color: #f8f9fa;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.password-note {
-  color: #dc3545;
-  font-size: 0.8rem;
-}
-
 .user-actions {
   display: flex;
   flex-wrap: wrap;

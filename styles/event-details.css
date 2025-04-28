@@ -153,12 +153,6 @@ html {
   color: var(--dark-color);
 }
 
-.message-content {
-  font-size: 1rem;
-  color: var(--secondary-color);
-  line-height: 1.6;
-}
-
 .event-actions-card {
   background-color: white;
   border-radius: 10px;

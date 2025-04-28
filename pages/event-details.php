@@ -193,7 +193,6 @@ $conn->close();
                                 <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
                                     <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
                                 <?php endif; ?>
-                                <button class="btn btn-secondary" id="contact-organizer">Contact Organizer</button>
                                 <button class="btn btn-outline" id="cancel-event">Cancel Event</button>
                             <?php else: ?> <!-- the review and book similar event only shows if the status of the event is approved or accpeted -->
                                 <button class="btn btn-primary book-again" data-event-type="<?php echo $event['event_type']; ?>">Book Similar Event</button>
@@ -205,28 +204,6 @@ $conn->close();
             </div>
         </div>
     </section>
-
-    <!-- Contact Organizer Modal -->
-    <div id="contact-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Contact Event Organizer</h2>
-            <form id="contact-form" action="send-message.php" method="post">
-                <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" style="resize: vertical;" required></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Cancel Event Modal -->
     <div id="cancel-modal" class="modal">

@@ -383,30 +383,6 @@ header .container {
   background-color: var(--primary-color);
 }
 
-/* Call to Action Section */
-.cta {
-  padding: 80px 0;
-  text-align: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url("images/cta-bg.jpg");
-  background-size: cover;
-  background-position: center;
-  color: white;
-}
-
-.cta h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.cta p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* Footer */
 footer {
   background-color: var(--dark-color);

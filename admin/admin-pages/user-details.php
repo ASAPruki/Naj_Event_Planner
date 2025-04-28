@@ -241,14 +241,6 @@ $conn->close();
                                             <?php echo isset($user['updated_at']) ? date('F d, Y \a\t h:i A', strtotime($user['updated_at'])) : 'Never updated'; ?>
                                         </div>
                                     </div>
-                                    <div class="detail-item">
-                                        <div class="detail-label">Password</div>
-                                        <div class="detail-value">
-                                            <i class="fas fa-key"></i>
-                                            <span class="password-display"><?php echo $user['password']; ?></span>
-                                            <small class="password-note">(Plain text for demo purposes only)</small>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 

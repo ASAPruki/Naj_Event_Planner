@@ -146,15 +146,6 @@ session_start();
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Plan Your Next Event?</h2>
-            <p>Contact us today to start planning your perfect event.</p>
-            <a href="reservation.php" class="btn btn-primary">Book a Consultation</a>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer>
         <div class="container">

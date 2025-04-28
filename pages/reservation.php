@@ -73,19 +73,19 @@ if (!$logged_in) {
                     <div class="contact-info">
                         <div class="contact-item">
                             <span class="icon phone-icon">
-                                <i class="fas fa-phone" style="margin-top: 12px; margin-left: 12px"></i>
+                                <i class="fas fa-phone" style="margin-top: 12px; margin-left: 13px"></i>
                             </span>
                             <p>(123) 456-7890</p>
                         </div>
                         <div class="contact-item">
                             <span class="icon email-icon">
-                                <i class="fas fa-envelope" style="margin-top: 12px; margin-left: 12px"></i>
+                                <i class="fas fa-envelope" style="margin-top: 12px; margin-left: 13px"></i>
                             </span>
                             <p>info@najevents.com</p>
                         </div>
                         <div class="contact-item">
                             <span class="icon location-icon">
-                                <i class="fas fa-map-marker-alt" style="margin-top: 12px; margin-left: 14px"></i>
+                                <i class="fas fa-map-marker-alt" style="margin-top: 12px; margin-left: 15px"></i>
                             </span>
                             <p>123 Event Street, City, Country</p>
                         </div>

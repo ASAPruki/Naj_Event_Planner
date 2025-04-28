@@ -233,6 +233,12 @@ function formatCurrency($amount)
                             Admin Management
                         </a>
                     </li>
+                    <li class="admin-nav-item">
+                        <a href="admin-logs.php" class="admin-nav-link active">
+                            <i class="fas fa-file-alt admin-nav-icon"></i>
+                            Admin Activity Logs
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="admin-sidebar-footer">

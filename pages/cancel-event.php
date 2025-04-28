@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $stmt->close();
 
-        // Now delete the event from the database
-        $delete_query = "DELETE FROM reservations WHERE id = ?";
-        $stmt = $conn->prepare($delete_query);
+        // Now update the event from the database
+        $update_query = "UPDATE reservations SET status = 'cancelled' WHERE id = ?";
+        $stmt = $conn->prepare($update_query);
         $stmt->bind_param("i", $event_id);
 
         if ($stmt->execute()) {

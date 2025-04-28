@@ -3,18 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactButton = document.getElementById("contact-organizer");
   const cancelButton = document.getElementById("cancel-event");
   const reviewButton = document.getElementById("leave-review");
-  const contactModal = document.getElementById("contact-modal");
   const cancelModal = document.getElementById("cancel-modal");
   const reviewModal = document.getElementById("review-modal");
   const closeButtons = document.querySelectorAll(".close, .close-modal");
-
-  // Open Contact Modal
-  if (contactButton) {
-    contactButton.addEventListener("click", () => {
-      contactModal.classList.add("active");
-      document.body.style.overflow = "hidden";
-    });
-  }
 
   // Open Cancel Modal
   if (cancelButton) {
@@ -35,9 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close Modals
   closeButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      contactModal.classList.remove("active");
-      cancelModal.classList.remove("active");
-      reviewModal.classList.remove("active");
+      if (cancelModal) cancelModal.classList.remove("active");
+      if (reviewModal) reviewModal.classList.remove("active");
       document.body.style.overflow = "";
     });
   });
@@ -45,13 +35,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close modal when clicking outside
   window.addEventListener("click", (e) => {
     if (
-      e.target === contactModal ||
-      e.target === cancelModal ||
-      e.target === reviewModal
+      (cancelModal && e.target === cancelModal) ||
+      (reviewModal && e.target === reviewModal)
     ) {
-      contactModal.classList.remove("active");
-      cancelModal.classList.remove("active");
-      reviewModal.classList.remove("active");
+      if (cancelModal) cancelModal.classList.remove("active");
+      if (reviewModal) reviewModal.classList.remove("active");
       document.body.style.overflow = "";
     }
   });

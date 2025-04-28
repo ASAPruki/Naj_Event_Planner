@@ -50,7 +50,6 @@ $log_stmt->bind_param("iss", $admin_id, $action_details, $ip_address);
 $log_stmt->execute();
 $log_stmt->close();
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -104,6 +103,12 @@ $conn->close();
                         <a href="admins.php" class="admin-nav-link">
                             <i class="fas fa-user-shield admin-nav-icon"></i>
                             Admin Management
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="admin-logs.php" class="admin-nav-link active">
+                            <i class="fas fa-file-alt admin-nav-icon"></i>
+                            Admin Activity Logs
                         </a>
                     </li>
                 </ul>
@@ -196,11 +201,37 @@ $conn->close();
                                 <?php endif; ?>
                             </div>
 
-                            <div class="admin-event-actions">
-                                <?php if ($event['status'] === 'cancelled' && !empty($event['admin_notes'])): ?>
+                            <div class="admin-detail-section">
+                                <?php if ($event['status'] === 'cancelled'): ?>
                                     <div style="margin-top: 5px;">
-                                        <strong style="color: red;">Cancellation Reason:</strong><br>
-                                        <?php echo htmlspecialchars($event['admin_notes']); ?>
+                                        <strong class="admin-detail-section-title" style="color: red;">Cancellation Reason:</strong>
+                                        <br><br>
+                                        <?php
+                                        if (!empty($event['admin_notes'])) { // displays the cancel message if exists from the admin_notes
+                                            echo htmlspecialchars($event['admin_notes']);
+                                        } else { // displays the cancel message if exists from the user cancellation modal
+                                            $event_id = $event['id'];
+
+                                            $reservation_id = $event['id']; // event id == reservation id
+
+                                            if ($conn) {
+                                                $stmt = $conn->prepare("SELECT message FROM messages WHERE reservation_id = ? ORDER BY id DESC LIMIT 1");
+                                                if ($stmt) {
+                                                    $stmt->bind_param("i", $reservation_id);
+                                                    $stmt->execute();
+                                                    $stmt->bind_result($userMessage);
+                                                    if ($stmt->fetch()) {
+                                                        echo htmlspecialchars($userMessage);
+                                                    } else {
+                                                        echo "No cancellation reason provided.";
+                                                    }
+                                                    $stmt->close();
+                                                }
+                                            } else {
+                                                echo "Database connection closed.";
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 <?php endif; ?>
                             </div>

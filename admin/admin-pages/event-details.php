@@ -196,6 +196,15 @@ $conn->close();
                                 <?php endif; ?>
                             </div>
 
+                            <div class="admin-event-actions">
+                                <?php if ($event['status'] === 'cancelled' && !empty($event['admin_notes'])): ?>
+                                    <div style="margin-top: 5px;">
+                                        <strong style="color: red;">Cancellation Reason:</strong><br>
+                                        <?php echo htmlspecialchars($event['admin_notes']); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
                             <div class="admin-detail-section">
                                 <h3 class="admin-detail-section-title">Client Information</h3>
                                 <div class="admin-detail-grid">

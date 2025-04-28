@@ -8,17 +8,12 @@ IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessorie
 IMPORTANT: create pages in admin panel:
 
 1. Finance page
-
-IMPORTANT: create pages in user website:
-
-1. edit-event.php in the dashboard section (user edits his event before it gets approved)
    }
 
 {
 ADDITIONAL STUFF TO DO IN FREE TIME
 
 1. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
-2. is there anyway that the "contact organizer" message is shown in the admin panel and not only in the database?
    }
 
 NOTE: When an event is for example is in today's date, and today is already here, the event status doesn't change to past/completed. So admin should do it manually.

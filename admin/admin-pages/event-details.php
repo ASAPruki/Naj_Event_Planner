@@ -106,7 +106,7 @@ $log_stmt->close();
                         </a>
                     </li>
                     <li class="admin-nav-item">
-                        <a href="admin-logs.php" class="admin-nav-link active">
+                        <a href="admin-logs.php" class="admin-nav-link">
                             <i class="fas fa-file-alt admin-nav-icon"></i>
                             Admin Activity Logs
                         </a>

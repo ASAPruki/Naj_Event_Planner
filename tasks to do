@@ -1,20 +1,7 @@
-I want to do these following tasks for me:
-
-1. user-details.php (in "view user's events", all events time is 12:00Am, so add a field for the reservations which is what hour they want their event. NOTE that events start early at 12pm and start late at 9pm).
-
 IMPORTANT FOR LATER: In the accessories page, Dr wants me to make the accessories pressable so the customer can observe the item and its pics and details (color, weight, can endure what weight, etc..).
 
-{
-IMPORTANT: create pages in admin panel:
-
-1. Finance page
-   }
-
-{
-ADDITIONAL STUFF TO DO IN FREE TIME
-
-1. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
-   }
+1. Finance page for the admins
+2. SUBMITTING A REVIEW IS NOT SENDING IT TO THE DATABASE PLEASE CHECK.
 
 NOTE: When an event is for example is in today's date, and today is already here, the event status doesn't change to past/completed. So admin should do it manually.
 
@@ -23,3 +10,6 @@ to push to github:
 1. git add .
 2. git commit -m "message"
 3. git push -u origin master
+
+
+11:06 -> 11:26

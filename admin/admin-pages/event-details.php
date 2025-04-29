@@ -201,8 +201,8 @@ $log_stmt->close();
                                 <?php endif; ?>
                             </div>
 
-                            <div class="admin-detail-section">
-                                <?php if ($event['status'] === 'cancelled'): ?>
+                            <?php if ($event['status'] === 'cancelled'): ?>
+                                <div class="admin-detail-section">
                                     <div style="margin-top: 5px;">
                                         <strong class="admin-detail-section-title" style="color: red;">Cancellation Reason:</strong>
                                         <br><br>
@@ -233,8 +233,8 @@ $log_stmt->close();
                                         }
                                         ?>
                                     </div>
-                                <?php endif; ?>
-                            </div>
+                                </div>
+                            <?php endif; ?>
 
                             <div class="admin-detail-section">
                                 <h3 class="admin-detail-section-title">Client Information</h3>

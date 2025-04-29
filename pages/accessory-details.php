@@ -1,16 +1,59 @@
+<?php
+session_start();
+require "../APIs/connect.php";
+
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p>Invalid accessory ID.</p>";
+    exit;
+}
+
+$id = intval($_GET['id']);
+$sql = "SELECT * FROM accessories_inventory WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo "<p>Accessory not found.</p>";
+    exit;
+}
+
+$accessory = $result->fetch_assoc();
+
+// Fetch associated images
+$imageSql = "SELECT image_url FROM accessory_images WHERE accessory_id = ?";
+$imageStmt = $conn->prepare($imageSql);
+$imageStmt->bind_param("i", $id);
+$imageStmt->execute();
+$imageResult = $imageStmt->get_result();
+
+$images = [];
+while ($row = $imageResult->fetch_assoc()) {
+    $images[] = $row['image_url'];
+}
+
+$imageStmt->close();
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - Naj Events</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?php echo htmlspecialchars($accessory['name']); ?> | Naj Events</title>
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/thank-you.css">
+    <link rel="stylesheet" href="../styles/carousel.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <script src="../scripts/script.js"></script>
+    <link
+        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+    <script src="../scripts/script.js"></script>
+    <script src="../scripts/carousel.js"></script>
 </head>
 
 <body>
@@ -30,48 +73,57 @@
                 </div>
                 <ul class="nav-menu">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="accessories.php">Accessories</a></li>
+                    <li><a href="accessories.php" class="active">Accessories</a></li>
                     <li><a href="reservation.php">Book an Event</a></li>
                     <li><a href="index.php#about">About Us</a></li>
-                    <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                    <?php if (isset($_SESSION['user_name'])): ?>
+                        <li><a href="dashboard.php">My Profile</a></li>
+                    <?php else: ?>
+                        <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Thank You Section -->
-    <section class="thank-you-section">
-        <div class="container">
-            <div class="thank-you-container">
-                <div class="thank-you-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
+    <!-- Accessory details display -->
+    <section class="accessories-hero">
+        <div class="accessories-hero-content">
+            <h2><?php echo htmlspecialchars($accessory['name']); ?></h2>
+            <p><?php echo htmlspecialchars($accessory['description']); ?></p>
+        </div>
+    </section>
+
+    <section class="accessories-categories" style="margin-bottom: 100px;">
+        <div class="section-description">
+            <h3>Accessory Details</h3>
+            <p>Here are the full details for this item:</p>
+        </div>
+
+        <div class="accessory-card">
+            <div class="accessory-image">
+                <div class="carousel">
+                    <?php foreach ($images as $index => $img): ?>
+                        <div class="carousel-slide<?php echo $index === 0 ? ' active' : ''; ?>">
+                            <img src="uploads/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
+                        </div>
+                    <?php endforeach; ?>
+                    <button class="carousel-prev">&#10094;</button>
+                    <button class="carousel-next">&#10095;</button>
                 </div>
-                <h2 class="thank-you-title">Thank You!</h2>
-                <div class="thank-you-message">
-                    <p>Your event reservation has been successfully submitted.</p>
-                    <p>We've sent a confirmation email to your inbox with all the details.</p>
-                </div>
-                <div class="next-steps">
-                    <h3>What Happens Next?</h3>
-                    <ol>
-                        <li>Our team will review your reservation details</li>
-                        <li>We'll contact you within 24 hours to discuss your event</li>
-                        <li>Together, we'll finalize the details and create your perfect event</li>
-                    </ol>
-                </div>
-                <div class="contact-info">
-                    <p>If you have any questions, please contact us:</p>
-                    <p><strong>Phone:</strong> (123) 456-7890</p>
-                    <p><strong>Email:</strong> info@najevents.com</p>
-                </div>
-                <div class="action-buttons">
-                    <a href="index.php" class="btn btn-primary">Return to Home</a>
-                    <a href="dashboard.php" class="btn btn-secondary">View My Events</a>
-                </div>
+            </div>
+            <div class="accessory-content">
+                <h3><?php echo htmlspecialchars($accessory['name']); ?></h3>
+                <p><strong>Category:</strong> <?php echo htmlspecialchars($accessory['category']); ?></p>
+                <p><strong>Material:</strong> <?php echo htmlspecialchars($accessory['material']); ?></p>
+                <p><strong>Color:</strong> <?php echo htmlspecialchars($accessory['color']); ?></p>
+                <p><strong>Dimensions:</strong> <?php echo htmlspecialchars($accessory['dimensions']); ?></p>
+                <p><strong>Weight Capacity:</strong> <?php echo htmlspecialchars($accessory['weight_capacity']); ?></p>
+                <p><strong>In Stock:</strong> <?php echo htmlspecialchars($accessory['quantity']); ?></p>
+                <p><strong>Available:</strong>
+                    <?php echo $accessory['is_available'] ? "Available" : "Not Available"; ?>
+                </p>
+                <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($accessory['description'])); ?></p>
             </div>
         </div>
     </section>
@@ -100,12 +152,10 @@
                         <h3>Follow Us</h3>
                         <div style="display: flex;">
                             <i class="fa-brands fa-instagram" style="font-size:24px; margin-right: 7px;"></i>
-                            <a href="https://www.instagram.com/naj__wedding_planner"
-                                class="social-link instagram">Instagram</a>
+                            <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <i class="fa-solid fa-location-dot"
-                                style="font-size:24px; margin-right: 7px; margin-left: 1px"></i>
+                            <i class="fa-solid fa-location-dot" style="font-size:24px; margin-right: 7px; margin-left: 1px"></i>
                             <a href="https://maps.google.com" class="location-link">Office Location</a>
                         </div>
                     </div>
@@ -168,7 +218,6 @@
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

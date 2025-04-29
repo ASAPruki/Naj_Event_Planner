@@ -76,6 +76,7 @@ html {
   overflow: hidden;
   box-shadow: var(--box-shadow);
   transition: var(--transition);
+  min-height: 370px;
 }
 
 .accessory-card:hover {

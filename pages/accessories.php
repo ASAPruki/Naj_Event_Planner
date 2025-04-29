@@ -103,15 +103,17 @@ require "../APIs/connect.php";
                         $image_path = "../images/accessories/" . htmlspecialchars($image_filename);
 
                         echo "
-                <div class='accessory-card' data-category='$category'>
-                    <div class='accessory-image'>
-                        <img src='$image_path' alt='$name'>
-                    </div>
-                    <div class='accessory-content'>
-                        <h3>$name</h3>
-                        <p>$description</p>
-                    </div>
-                </div>";
+                    <a href='accessory-details.php?id={$row['id']}' class='accessory-card-link'>
+                            <div class='accessory-card' data-category='$category'>
+                                <div class='accessory-image'>
+                                    <img src='$image_path' alt='$name' style='object-fit: fit;'>
+                                </div>
+                            <div class='accessory-content'>
+                                <h3>$name</h3>
+                                <p>$description</p>
+                            </div>
+                        </div>
+                    </a>";
                     }
                 } else {
                     echo "<p>No accessories found.</p>";
@@ -144,8 +146,14 @@ require "../APIs/connect.php";
                     </div>
                     <div class="footer-social">
                         <h3>Follow Us</h3>
-                        <a href="https://instagram.com/najevents" class="social-link instagram">Instagram</a>
-                        <a href="https://maps.google.com" class="location-link">Office Location</a>
+                        <div style="display: flex;">
+                            <i class="fa-brands fa-instagram" style="font-size:24px; margin-right: 7px;"></i>
+                            <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
+                        </div>
+                        <div style="display: flex;">
+                            <i class="fa-solid fa-location-dot" style="font-size:24px; margin-right: 7px; margin-left: 1px"></i>
+                            <a href="https://maps.google.com" class="location-link">Office Location</a>
+                        </div>
                     </div>
                 </div>
             </div>

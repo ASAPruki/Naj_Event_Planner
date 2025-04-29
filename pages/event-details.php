@@ -280,8 +280,14 @@ $conn->close();
                     </div>
                     <div class="footer-social">
                         <h3>Follow Us</h3>
-                        <a href="https://instagram.com/najevents" class="social-link instagram">Instagram</a>
-                        <a href="https://maps.google.com" class="location-link">Office Location</a>
+                        <div style="display: flex;">
+                            <i class="fa-brands fa-instagram" style="font-size:24px; margin-right: 7px;"></i>
+                            <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
+                        </div>
+                        <div style="display: flex;">
+                            <i class="fa-solid fa-location-dot" style="font-size:24px; margin-right: 7px; margin-left: 1px"></i>
+                            <a href="https://maps.google.com" class="location-link">Office Location</a>
+                        </div>
                     </div>
                 </div>
             </div>

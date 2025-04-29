@@ -208,10 +208,10 @@ header .container {
 /* Hero Section */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("images/hero-bg.jpg");
+    url("../images/general/hero-icon.jfif");
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   align-items: center;
   color: white;
@@ -271,19 +271,19 @@ header .container {
 }
 
 .wedding-icon {
-  background-image: url("images/wedding-icon.jpg");
+  background-image: url("../images/general/wedding-icon.jfif");
 }
 
 .birthday-icon {
-  background-image: url("images/birthday-icon.jpg");
+  background-image: url("../images/general/birthday-icon.jfif");
 }
 
 .proposal-icon {
-  background-image: url("images/proposal-icon.jpg");
+  background-image: url("../images/general/proposal-icon.jfif");
 }
 
-.corporate-icon {
-  background-image: url("images/corporate-icon.jpg");
+.katb-kteb-icon {
+  background-image: url("../images/general/katb-kteb.jfif");
 }
 
 .service-card h3 {

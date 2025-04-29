@@ -12,8 +12,9 @@ session_start();
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <script src="../scripts/script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+    <script src="../scripts/script.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@ session_start();
     <header>
         <div class="container">
             <div class="logo">
-                <a href="index.html">
+                <a href="index.php">
                     <h1>Naj Events</h1>
                 </a>
             </div>
@@ -32,7 +33,7 @@ session_start();
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="index.php" class="active">Home</a></li>
                     <li><a href="accessories.php">Accessories</a></li>
                     <li><a href="reservation.php">Book an Event</a></li>
                     <li><a href="#about">About Us</a></li>
@@ -78,9 +79,9 @@ session_start();
                     <p>Create the perfect moment to pop the question with our proposal planning.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon corporate-icon"></div>
-                    <h3>Corporate Events</h3>
-                    <p>Impress your clients and team with professionally organized corporate events.</p>
+                    <div class="service-icon katb-kteb-icon"></div>
+                    <h3>Katb kteb Events</h3>
+                    <p>Impress your clients and team with professional and heartfelt katb kteb events.</p>
                 </div>
             </div>
         </div>
@@ -102,7 +103,7 @@ session_start();
                         event planning industry.</p>
                 </div>
                 <div class="about-image">
-                    <img src="images/about-image.jpg" alt="Naj Events Team">
+                    <img src="../images/general/out-team.jfif" alt="Naj Events Team">
                 </div>
             </div>
         </div>

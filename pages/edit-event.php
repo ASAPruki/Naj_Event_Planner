@@ -4,7 +4,7 @@ session_start();
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
-    header("Location: index.html#login");
+    header("Location: index.php#login");
     exit();
 }
 
@@ -113,6 +113,7 @@ $conn->close();
     <link rel="stylesheet" href="../styles/reservation.css">
     <link rel="stylesheet" href="../styles/edit-event.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
 <body>
@@ -129,10 +130,10 @@ $conn->close();
                     <span></span>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="accessories.html">Accessories</a></li>
                     <li><a href="reservation.php">Book an Event</a></li>
-                    <li><a href="index.html#about">About Us</a></li>
+                    <li><a href="index.php#about">About Us</a></li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <li><a href="dashboard.php">My Account</a></li>
                     <?php else: ?>

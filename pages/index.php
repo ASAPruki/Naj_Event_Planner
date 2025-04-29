@@ -97,13 +97,13 @@ session_start();
                         all occasions. With years of experience in the industry, our team of professional planners works
                         tirelessly to ensure every detail of your event is perfect.</p>
                     <p>We believe that each event should reflect the unique personality and style of our clients.
-                        Whether you're planning a wedding, birthday party, corporate event, or a special proposal, we're
+                        Whether you're planning a wedding, birthday party, katb kteb event, or a special proposal, we're
                         here to bring your vision to life.</p>
                     <p>Our commitment to excellence, attention to detail, and personalized service sets us apart in the
                         event planning industry.</p>
                 </div>
                 <div class="about-image">
-                    <img src="../images/general/out-team.jfif" alt="Naj Events Team">
+                    <img src="../images/general/our-team.jfif" alt="Naj Events Team">
                 </div>
             </div>
         </div>

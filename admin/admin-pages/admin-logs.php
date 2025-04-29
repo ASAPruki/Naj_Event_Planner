@@ -116,6 +116,51 @@ $actions_result = $conn->query($actions_query);
     <link rel="stylesheet" href="../../styles/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .action-delete_accessory,
+        .action-delete_admin {
+            background-color: #ffdddd;
+            color: #c00;
+        }
+
+        .action-update,
+        .action-update_accessory,
+        .action-update_admin,
+        .action-update_status,
+        .action-user_update {
+            background-color: #e0f7fa;
+            color: #00796b;
+        }
+
+        .action-add_admin,
+        .action-add_user,
+        .action-add_accessory {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .action-view {
+            background-color: rgb(245, 236, 189);
+            color: rgb(109, 125, 46);
+        }
+
+        .action-block {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .action-unblock {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .action-login {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+
 </head>
 
 <body class="admin-body">
@@ -149,6 +194,12 @@ $actions_result = $conn->query($actions_query);
                         <a href="users.php" class="admin-nav-link">
                             <i class="fas fa-users admin-nav-icon"></i>
                             User Management
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="user-reviews.php" class="admin-nav-link">
+                            <i class="fas fa-star admin-nav-icon"></i>
+                            User Reviews
                         </a>
                     </li>
                     <li class="admin-nav-item">

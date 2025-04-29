@@ -170,6 +170,12 @@ $conn->close();
                         </a>
                     </li>
                     <li class="admin-nav-item">
+                        <a href="user-reviews.php" class="admin-nav-link">
+                            <i class="fas fa-star admin-nav-icon"></i>
+                            User Reviews
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
                         <a href="admins.php" class="admin-nav-link">
                             <i class="fas fa-user-shield admin-nav-icon"></i>
                             Admin Management

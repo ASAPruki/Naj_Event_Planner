@@ -2,13 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Mobile sidebar toggle
   const sidebarToggle = document.getElementById("sidebar-toggle");
   const dashboardSidebar = document.querySelector(".dashboard-sidebar");
+  const sidebarLinks = document.querySelectorAll(".dashboard-nav a"); // Select all sidebar links
 
   if (sidebarToggle && dashboardSidebar) {
     sidebarToggle.addEventListener("click", function (e) {
       e.stopPropagation(); // Prevent event from bubbling up
       console.log("Sidebar toggle clicked"); // Debugging purposes only
-      dashboardSidebar.classList.toggle("active");
-      this.classList.toggle("active");
+      dashboardSidebar.classList.toggle("active"); // Toggle sidebar visibility
+      this.classList.toggle("active"); // Toggle button active state
     });
 
     // Close sidebar when clicking outside on mobile
@@ -19,9 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
         !dashboardSidebar.contains(e.target) &&
         e.target !== sidebarToggle
       ) {
-        dashboardSidebar.classList.remove("active");
-        sidebarToggle.classList.remove("active");
+        dashboardSidebar.classList.remove("active"); // Hide sidebar
+        sidebarToggle.classList.remove("active"); // Reset button state
       }
+    });
+
+    // Close sidebar when clicking on a sidebar link
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (dashboardSidebar.classList.contains("active")) {
+          dashboardSidebar.classList.remove("active"); // Hide sidebar
+          sidebarToggle.classList.remove("active"); // Reset button state
+        }
+      });
     });
   } else {
     console.error("Sidebar toggle or sidebar elements not found");

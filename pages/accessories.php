@@ -104,17 +104,17 @@ require "../APIs/connect.php";
                         $image_path = "../images/accessories/" . htmlspecialchars($image_filename);
 
                         echo "
-                    <a href='accessory-details.php?id={$row['id']}' class='accessory-card-link'>
-                            <div class='accessory-card' data-category='$category'>
+                        <div class='accessory-card' data-category='$category'>
+                            <a href='accessory-details.php?id={$row['id']}' class='accessory-card-link'>
                                 <div class='accessory-image'>
                                     <img src='$image_path' alt='$name' style='object-fit: fit;'>
                                 </div>
-                            <div class='accessory-content'>
-                                <h3>$name</h3>
-                                <p>$description</p>
-                            </div>
-                        </div>
-                    </a>";
+                                <div class='accessory-content'>
+                                    <h3>$name</h3>
+                                    <p>$description</p>
+                                </div>
+                            </a>
+                        </div>";
                     }
                 } else {
                     echo "<p>No accessories found.</p>";

@@ -459,18 +459,19 @@ html {
   }
 
   .dashboard-sidebar {
-    display: none;
+    background-color: var(--dark-color);
+    padding: 30px 0;
+    height: calc(100vh - 80px);
     position: fixed;
     top: 80px;
-    left: 0;
+    left: -280px;
     width: 280px;
-    height: calc(100vh - 80px);
+    transition: left 0.3s ease;
     z-index: 1000;
-    overflow-y: auto;
   }
 
   .dashboard-sidebar.active {
-    display: block;
+    left: 0;
   }
 
   .sidebar-toggle {

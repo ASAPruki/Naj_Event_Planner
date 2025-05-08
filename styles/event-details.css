@@ -81,6 +81,21 @@ html {
   color: #6c757d;
 }
 
+.status-badge.success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.status-badge.danger {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+.status-badge.pending {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
 .event-details-content {
   padding: 30px;
 }
@@ -164,6 +179,45 @@ html {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+}
+
+/* Payment Details */
+.payment-details {
+  margin-bottom: 20px;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.payment-item:last-child {
+  border-bottom: none;
+}
+
+.payment-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.payment-value {
+  font-weight: 600;
+}
+
+.payment-upload-section {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.payment-upload-section h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
 }
 
 /* Modal Styles */

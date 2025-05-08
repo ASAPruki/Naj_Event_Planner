@@ -1,6 +1,10 @@
 1. Finance page for the admins
 
+IMPORTANT: in the upcoming section in the user dashboard, I want only the confirmed events to be displayed
+
 I was thinking about making an event's status "cancelled" or mark it as "past" event if the date of the event came already and the admins didn't respond to it.
+
+If i have time, try to permit the admin to delete certain pics of a certain accessory in the "edit-accessory" page.
 
 Add facebook and twitter links if there are.
 
@@ -9,3 +13,7 @@ to push to github:
 1. git add .
 2. git commit -m "message"
 3. git push -u origin master
+
+https://www.tiktok.com/@naj_wedding_planner?is_from_webapp=1&sender_device=pc
++961 71 615 159
+najahshafei5@gmail.com

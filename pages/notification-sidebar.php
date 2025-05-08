@@ -49,13 +49,13 @@ if (isset($_SESSION['user_id'])) {
     $database = "najevents_db";
 
     // Create connection
-    $conn = new mysqli($host, $username, $password, $database);
+    $notif_conn = new mysqli($host, $username, $password, $database);
 
     // Check connection
     if (!$conn->connect_error) {
-        $unread_count = getUnreadNotificationsCount($conn, $user_id);
-        $notifications = getUserNotifications($conn, $user_id);
-        $conn->close();
+        $unread_count = getUnreadNotificationsCount($notif_conn, $user_id);
+        $notifications = getUserNotifications($notif_conn, $user_id);
+        $notif_conn->close();
     }
 }
 ?>

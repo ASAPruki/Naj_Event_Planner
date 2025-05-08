@@ -46,7 +46,6 @@ if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
     $update_stmt->close();
 }
 
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -183,22 +182,184 @@ $conn->close();
                         </div>
                     <?php endif; ?>
 
-                    <div class="event-actions-card">
-                        <h3>Actions</h3>
-                        <div class="action-buttons">
-                            <?php if (strtotime($event['event_date']) > time()): ?>
+                    <div class="event-info-card">
+                        <h3>Payment Information</h3>
+                        <?php
+                        // Get payment information
+                        $payment_query = "SELECT * FROM financial_records WHERE reservation_id = ?";
+                        $payment_stmt = $conn->prepare($payment_query);
+                        $payment_stmt->bind_param("i", $event_id);
+                        $payment_stmt->execute();
+                        $payment_result = $payment_stmt->get_result();
 
-                                <!-- ONLY ALLOW USER TO ALTER AN EVENT IF IT'S PENDING (NOT CONFIRMED YET) -->
-                                <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
-                                    <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
-                                <?php endif; ?>
-                                <button class="btn btn-outline" id="cancel-event">Cancel Event</button>
-                            <?php else: ?> <!-- the review and book similar event only shows if the status of the event is approved or accpeted -->
-                                <button class="btn btn-primary book-again" data-event-type="<?php echo $event['event_type']; ?>">Book Similar Event</button>
-                                <button class="btn btn-secondary" id="leave-review">Leave a Review</button>
-                            <?php endif; ?>
+                        if ($payment_result->num_rows > 0) {
+                            $payment = $payment_result->fetch_assoc();
+                        } else {
+                            // Calculate default values if no record exists
+                            $base_price = 0;
+                            switch ($event['event_type']) {
+                                case 'wedding':
+                                    $base_price = 5000;
+                                    break;
+                                case 'birthday':
+                                    $base_price = 2000;
+                                    break;
+                                case 'corporate':
+                                    $base_price = 3500;
+                                    break;
+                                case 'proposal':
+                                    $base_price = 1500;
+                                    break;
+                                default:
+                                    $base_price = 2500;
+                            }
+
+                            // Add price per guest
+                            $price_per_guest = 50;
+                            $full_price = $base_price + ($event['guests'] * $price_per_guest);
+                            $deposit_amount = $full_price * 0.3;
+
+                            // Insert new financial record
+                            $insert_query = "INSERT INTO financial_records (reservation_id, full_price, deposit_amount) VALUES (?, ?, ?)";
+                            $insert_stmt = $conn->prepare($insert_query);
+                            $insert_stmt->bind_param("idd", $event_id, $full_price, $deposit_amount);
+                            $insert_stmt->execute();
+                            $payment_id = $conn->insert_id;
+                            $insert_stmt->close();
+
+                            // Get the newly created record
+                            $payment_stmt->execute();
+                            $payment_result = $payment_stmt->get_result();
+                            $payment = $payment_result->fetch_assoc();
+                        }
+                        $payment_stmt->close();
+                        ?>
+
+                        <div class="payment-details">
+                            <div class="payment-item">
+                                <span class="payment-label">Full Price:</span>
+                                <span class="payment-value">$<?php echo number_format($payment['full_price'], 2); ?></span>
+                            </div>
+                            <div class="payment-item">
+                                <span class="payment-label">Deposit (30%):</span>
+                                <span class="payment-value">$<?php echo number_format($payment['deposit_amount'], 2); ?></span>
+                            </div>
+                            <div class="payment-item">
+                                <span class="payment-label">Remaining (After Desposit):</span>
+                                <span class="payment-value">$<?php echo number_format($payment['full_price'] - $payment['deposit_amount'], 2); ?>
+                                </span>
+                            </div>
+                            <div class="payment-item">
+                                <span class="payment-label">Deposit Status:</span>
+                                <span class="payment-value">
+                                    <?php if ($payment['deposit_paid']): ?>
+                                        <span class="status-badge success">Paid</span>
+                                    <?php elseif ($payment['deposit_receipt']): ?>
+                                        <span class="status-badge pending">Pending Approval</span>
+                                    <?php else: ?>
+                                        <span class="status-badge danger">Unpaid</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
+                            <div class="payment-item">
+                                <span class="payment-label">Full Payment Status:</span>
+                                <span class="payment-value">
+                                    <?php if ($payment['full_amount_paid']): ?>
+                                        <span class="status-badge success">Paid</span>
+                                    <?php elseif ($payment['full_payment_receipt']): ?>
+                                        <span class="status-badge pending">Pending Approval</span>
+                                    <?php else: ?>
+                                        <span class="status-badge danger">Unpaid</span>
+                                    <?php endif; ?>
+                                </span>
+                            </div>
                         </div>
+
+                        <?php
+                        // Get notifications for this user
+                        $notification_query = "
+                        SELECT id, message, type 
+                        FROM notifications 
+                        WHERE user_id = ? 
+                        AND type IN ('deposit_declined', 'full_payment_declined', 'deposit_accepted', 'full_payment_accepted') 
+                        AND is_read = 0 
+                        ORDER BY created_at DESC
+                        ";
+
+                        $notification_stmt = $conn->prepare($notification_query);
+                        $notification_stmt->bind_param("i", $user_id);
+                        $notification_stmt->execute();
+                        $result = $notification_stmt->get_result();
+
+                        // Render notifications
+                        if ($result->num_rows > 0) {
+                            while ($notification = $result->fetch_assoc()) {
+                                // Optionally add icon/color based on type
+                                $typeClass = 'info';
+                                if (strpos($notification['type'], 'declined') !== false) {
+                                    $typeClass = 'danger';
+                                } elseif (strpos($notification['type'], 'accepted') !== false) {
+                                    $typeClass = 'success';
+                                }
+                            }
+                        }
+
+                        $notification_stmt->close();
+                        $conn->close();
+                        ?>
+
+
+                        <?php if ($event['status'] === 'confirmed'): ?>
+                            <?php if (!$payment['deposit_paid'] && !$payment['deposit_receipt']): ?>
+                                <div class="payment-upload-section">
+                                    <h4>Upload Deposit Receipt</h4>
+                                    <form action="upload-receipt.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="record_id" value="<?php echo $payment['id']; ?>">
+                                        <input type="hidden" name="payment_type" value="deposit">
+                                        <div class="form-group">
+                                            <input type="file" name="receipt" required accept="image/*">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Upload Receipt</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            <?php elseif ($payment['deposit_paid'] && !$payment['full_amount_paid'] && !$payment['full_payment_receipt']): ?>
+                                <div class="payment-upload-section">
+                                    <h4>Upload Full Payment Receipt</h4>
+                                    <form action="upload-receipt.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="record_id" value="<?php echo $payment['id']; ?>">
+                                        <input type="hidden" name="payment_type" value="full">
+                                        <div class="form-group">
+                                            <input type="file" name="receipt" required accept="image/*">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Upload Receipt</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </div>
+
+                    <?php if (!$payment['full_amount_paid']):; ?>
+                        <!-- Can't cancel an event after paying the fullprice -->
+                        <div class="event-actions-card">
+                            <h3>Actions</h3>
+                            <div class="action-buttons">
+                                <?php if (strtotime($event['event_date']) > time()): ?>
+                                    <!-- ONLY ALLOW USER TO ALTER AN EVENT IF IT'S PENDING (NOT CONFIRMED YET) -->
+                                    <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
+                                        <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
+                                    <?php endif; ?>
+                                    <button class="btn btn-outline" id="cancel-event">Cancel Event</button>
+                                <?php else: ?> <!-- the review and book similar event only shows if the status of the event is approved or accpeted -->
+                                    <button class="btn btn-primary book-again" data-event-type="<?php echo $event['event_type']; ?>">Book Similar Event</button>
+                                    <button class="btn btn-secondary" id="leave-review">Leave a Review</button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -214,7 +375,7 @@ $conn->close();
                 <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
                 <div class="form-group">
                     <label for="cancel-reason">Reason for Cancellation</label>
-                    <input id="cancel-reason" name="reason" rows="3" required></input>
+                    <input id="cancel-reason" name="reason" required></input>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-outline">Confirm Cancellation</button>

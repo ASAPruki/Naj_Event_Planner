@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_id'])) {
 
 // Check if admin is super_admin
 if ($_SESSION['admin_role'] !== 'super_admin') {
-    header("Location: dashboard.php");
+    header("Location: admin-dashboard.php");
     exit();
 }
 

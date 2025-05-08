@@ -315,7 +315,6 @@ $conn->close();
                                         <option value="">Select Role</option>
                                         <option value="super_admin">Super Admin</option>
                                         <option value="admin">Admin</option>
-                                        <option value="manager">Manager</option>
                                     </select>
                                 </div>
                             </div>
@@ -386,9 +385,6 @@ $conn->close();
                                                             break;
                                                         case 'admin':
                                                             $role_class = 'success';
-                                                            break;
-                                                        case 'manager':
-                                                            $role_class = 'info';
                                                             break;
                                                     }
                                                     ?>

@@ -318,7 +318,9 @@ $conn->close();
                                         <div class="admin-receipt-card">
                                             <h4>Deposit Receipt</h4>
                                             <div class="admin-receipt-image">
-                                                <img src="uploads/receipts/<?php echo $record['deposit_receipt']; ?>" alt="Deposit Receipt">
+                                                <div class="clickable-image" data-img-src="../uploads/receipts/<?php echo htmlspecialchars($record['deposit_receipt']); ?>">
+                                                    <img src="../uploads/receipts/<?php echo htmlspecialchars($record['deposit_receipt']); ?>" alt="Deposit Receipt">
+                                                </div>
                                             </div>
                                             <?php if (!$record['deposit_paid']): ?>
                                                 <div class="admin-receipt-actions">
@@ -343,7 +345,9 @@ $conn->close();
                                         <div class="admin-receipt-card">
                                             <h4>Full Payment Receipt</h4>
                                             <div class="admin-receipt-image">
-                                                <img src="uploads/receipts/<?php echo $record['full_payment_receipt']; ?>" alt="Full Payment Receipt">
+                                                <div class="clickable-image" data-img-src="../uploads/receipts/<?php echo htmlspecialchars($record['full_payment_receipt']); ?>">
+                                                    <img src="../uploads/receipts/<?php echo htmlspecialchars($record['full_payment_receipt']); ?>" alt="Full Payment Receipt">
+                                                </div>
                                             </div>
                                             <?php if (!$record['full_amount_paid']): ?>
                                                 <div class="admin-receipt-actions">
@@ -422,6 +426,56 @@ $conn->close();
             </div>
         </div>
     </div>
+
+    <!-- Modal for viewing full-size receipt -->
+    <div id="image-modal" class="modal" style="display: none;">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modal-img">
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 95%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #f44336;
+        }
+
+        .clickable-image {
+            cursor: pointer;
+            display: inline-block;
+        }
+    </style>
 
     <script>
         // Toggle sidebar on mobile
@@ -526,6 +580,25 @@ $conn->close();
         window.addEventListener('click', function(event) {
             if (event.target === declineModal) {
                 declineModal.style.display = 'none';
+            }
+        });
+
+        document.querySelectorAll('.clickable-image').forEach(function(div) {
+            div.addEventListener('click', function() {
+                const imgSrc = this.getAttribute('data-img-src');
+                document.getElementById('modal-img').src = imgSrc;
+                document.getElementById('image-modal').style.display = 'block';
+            });
+        });
+
+        document.querySelector('.close-modal').addEventListener('click', function() {
+            document.getElementById('image-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('image-modal');
+            if (e.target == modal) {
+                modal.style.display = 'none';
             }
         });
     </script>

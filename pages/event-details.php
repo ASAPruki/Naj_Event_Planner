@@ -46,6 +46,31 @@ if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
     $update_stmt->close();
 }
 
+// Get payment information
+$payment_query = "SELECT * FROM financial_records WHERE reservation_id = ?";
+$payment_stmt = $conn->prepare($payment_query);
+$payment_stmt->bind_param("i", $event_id);
+$payment_stmt->execute();
+$payment_result = $payment_stmt->get_result();
+
+if ($payment_result->num_rows > 0) {
+    $payment = $payment_result->fetch_assoc();
+} else {
+    // Create a new financial record with zero values
+    $insert_query = "INSERT INTO financial_records (reservation_id, full_price, deposit_amount) VALUES (?, 0, 0)";
+    $insert_stmt = $conn->prepare($insert_query);
+    $insert_stmt->bind_param("i", $event_id);
+    $insert_stmt->execute();
+    $payment_id = $conn->insert_id;
+    $insert_stmt->close();
+
+    // Get the newly created record
+    $payment_stmt->execute();
+    $payment_result = $payment_stmt->get_result();
+    $payment = $payment_result->fetch_assoc();
+}
+$payment_stmt->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -184,71 +209,26 @@ if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
 
                     <div class="event-info-card">
                         <h3>Payment Information</h3>
-                        <?php
-                        // Get payment information
-                        $payment_query = "SELECT * FROM financial_records WHERE reservation_id = ?";
-                        $payment_stmt = $conn->prepare($payment_query);
-                        $payment_stmt->bind_param("i", $event_id);
-                        $payment_stmt->execute();
-                        $payment_result = $payment_stmt->get_result();
-
-                        if ($payment_result->num_rows > 0) {
-                            $payment = $payment_result->fetch_assoc();
-                        } else {
-                            // Calculate default values if no record exists
-                            $base_price = 0;
-                            switch ($event['event_type']) {
-                                case 'wedding':
-                                    $base_price = 5000;
-                                    break;
-                                case 'birthday':
-                                    $base_price = 2000;
-                                    break;
-                                case 'corporate':
-                                    $base_price = 3500;
-                                    break;
-                                case 'proposal':
-                                    $base_price = 1500;
-                                    break;
-                                default:
-                                    $base_price = 2500;
-                            }
-
-                            // Add price per guest
-                            $price_per_guest = 50;
-                            $full_price = $base_price + ($event['guests'] * $price_per_guest);
-                            $deposit_amount = $full_price * 0.3;
-
-                            // Insert new financial record
-                            $insert_query = "INSERT INTO financial_records (reservation_id, full_price, deposit_amount) VALUES (?, ?, ?)";
-                            $insert_stmt = $conn->prepare($insert_query);
-                            $insert_stmt->bind_param("idd", $event_id, $full_price, $deposit_amount);
-                            $insert_stmt->execute();
-                            $payment_id = $conn->insert_id;
-                            $insert_stmt->close();
-
-                            // Get the newly created record
-                            $payment_stmt->execute();
-                            $payment_result = $payment_stmt->get_result();
-                            $payment = $payment_result->fetch_assoc();
-                        }
-                        $payment_stmt->close();
-                        ?>
-
                         <div class="payment-details">
-                            <div class="payment-item">
-                                <span class="payment-label">Full Price:</span>
-                                <span class="payment-value">$<?php echo number_format($payment['full_price'], 2); ?></span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">Deposit (30%):</span>
-                                <span class="payment-value">$<?php echo number_format($payment['deposit_amount'], 2); ?></span>
-                            </div>
-                            <div class="payment-item">
-                                <span class="payment-label">Remaining (After Desposit):</span>
-                                <span class="payment-value">$<?php echo number_format($payment['full_price'] - $payment['deposit_amount'], 2); ?>
-                                </span>
-                            </div>
+                            <?php if ($payment['full_price'] > 0): ?>
+                                <div class="payment-item">
+                                    <span class="payment-label">Full Price:</span>
+                                    <span class="payment-value">$<?php echo number_format($payment['full_price'], 2); ?></span>
+                                </div>
+                                <div class="payment-item">
+                                    <span class="payment-label">Deposit Amount:</span>
+                                    <span class="payment-value">$<?php echo number_format($payment['deposit_amount'], 2); ?>
+                                        (<?php echo round(($payment['deposit_amount'] / $payment['full_price']) * 100); ?>%)
+                                    </span>
+                                </div>
+                            <?php else: ?>
+                                <div class="payment-item">
+                                    <span class="payment-label">Pricing:</span>
+                                    <span class="payment-value">
+                                        <span class="status-badge info">Pricing will be set by the admin</span>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                             <div class="payment-item">
                                 <span class="payment-label">Deposit Status:</span>
                                 <span class="payment-value">
@@ -309,7 +289,7 @@ if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
                         ?>
 
 
-                        <?php if ($event['status'] === 'confirmed'): ?>
+                        <?php if ($event['status'] === 'confirmed' && $payment['full_price'] > 0): ?>
                             <?php if (!$payment['deposit_paid'] && !$payment['deposit_receipt']): ?>
                                 <div class="payment-upload-section">
                                     <h4>Upload Deposit Receipt</h4>
@@ -339,6 +319,10 @@ if (isset($_GET['notification_id']) && is_numeric($_GET['notification_id'])) {
                                     </form>
                                 </div>
                             <?php endif; ?>
+                        <?php elseif ($event['status'] === 'confirmed' && $payment['full_price'] <= 0): ?>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> The admin will set the pricing for your event. Once pricing is set, you will be able to upload payment receipts.
+                            </div>
                         <?php endif; ?>
                     </div>
 

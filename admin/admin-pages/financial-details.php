@@ -59,6 +59,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_payment'])) {
     exit();
 }
 
+// Process price update if form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_price'])) {
+    $full_price = floatval($_POST['full_price']);
+    $deposit_amount = floatval($_POST['deposit_amount']);
+    $reservation_id = $_POST['reservation_id'];
+
+    // Validate prices
+    if ($full_price <= 0 || $deposit_amount <= 0) {
+        $error_message = "Prices must be greater than zero.";
+    } elseif ($deposit_amount > $full_price) {
+        $error_message = "Deposit amount cannot be greater than the full price.";
+    } else {
+        // Update the financial record
+        $update_query = "UPDATE financial_records SET full_price = ?, deposit_amount = ? WHERE id = ?";
+        $stmt = $conn->prepare($update_query);
+        $stmt->bind_param("ddi", $full_price, $deposit_amount, $record_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // Log admin activity
+        $action_details = "Updated pricing for financial record #" . $record_id;
+        $log_query = "INSERT INTO admin_activity_log (admin_id, action_type, action_details, ip_address) VALUES (?, 'price_update', ?, ?)";
+        $log_stmt = $conn->prepare($log_query);
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+        $log_stmt->bind_param("iss", $admin_id, $action_details, $ip_address);
+        $log_stmt->execute();
+        $log_stmt->close();
+
+        // Redirect to avoid form resubmission
+        header("Location: financial-details.php?id=" . $record_id . "&price_updated=1");
+        exit();
+    }
+}
+
 // Get financial record details
 $query = "SELECT f.*, r.id as reservation_id, r.name, r.email, r.phone, r.event_type, r.event_date, r.status, 
           a1.name as deposit_approver, a2.name as full_payment_approver
@@ -201,6 +235,22 @@ $conn->close();
                     </div>
                 <?php endif; ?>
 
+                <?php if (isset($_GET['price_updated'])): ?>
+                    <div class="admin-alert admin-alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        Pricing has been successfully updated.
+                        <button class="admin-alert-close">&times;</button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($error_message)): ?>
+                    <div class="admin-alert admin-alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <?php echo $error_message; ?>
+                        <button class="admin-alert-close">&times;</button>
+                    </div>
+                <?php endif; ?>
+
                 <div class="admin-card">
                     <div class="admin-card-header">
                         <div class="admin-card-header-left">
@@ -253,15 +303,22 @@ $conn->close();
                         </div>
 
                         <div class="admin-detail-section">
-                            <h3 class="admin-detail-section-title">Payment Information</h3>
-                            <div class="admin-detail-grid">
+                            <h3 class="admin-detail-section-title">
+                                Payment Information
+                                <button class="admin-btn admin-btn-primary admin-btn-sm edit-price-btn" style="float: right;">
+                                    <i class="fas fa-edit"></i> Edit Pricing
+                                </button>
+                            </h3>
+
+                            <!-- Price Display View -->
+                            <div id="price-display" class="admin-detail-grid">
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Full Price</div>
                                     <div class="admin-detail-value">$<?php echo number_format($record['full_price'], 2); ?></div>
                                 </div>
                                 <div class="admin-detail-item">
-                                    <div class="admin-detail-label">Deposit Amount (30%)</div>
-                                    <div class="admin-detail-value">$<?php echo number_format($record['deposit_amount'], 2); ?></div>
+                                    <div class="admin-detail-label">Deposit Amount</div>
+                                    <div class="admin-detail-value">$<?php echo number_format($record['deposit_amount'], 2); ?> (<?php echo round(($record['deposit_amount'] / $record['full_price']) * 100); ?>%)</div>
                                 </div>
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Deposit Status</div>
@@ -307,6 +364,33 @@ $conn->close();
                                         <div class="admin-detail-value"><?php echo date('F d, Y H:i', strtotime($record['full_payment_approved_at'])); ?></div>
                                     </div>
                                 <?php endif; ?>
+                            </div>
+                            <!-- Price Edit Form -->
+                            <div id="price-edit-form" style="display: none;">
+                                <form action="financial-details.php?id=<?php echo $record_id; ?>" method="post">
+                                    <input type="hidden" name="reservation_id" value="<?php echo $record['reservation_id']; ?>">
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label for="full_price">Full Price ($)</label>
+                                            <input type="number" id="full_price" name="full_price" class="admin-form-control" value="<?php echo $record['full_price']; ?>" step="0.01" min="0" required>
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label for="deposit_amount">Deposit Amount ($)</label>
+                                            <input type="number" id="deposit_amount" name="deposit_amount" class="admin-form-control" value="<?php echo $record['deposit_amount']; ?>" step="0.01" min="0" required>
+                                            <small class="admin-form-text" id="deposit-percentage">
+                                                <?php echo round(($record['deposit_amount'] / $record['full_price']) * 100); ?>% of full price
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-actions">
+                                        <button type="submit" name="update_price" class="admin-btn admin-btn-primary">
+                                            <i class="fas fa-save"></i> Save Changes
+                                        </button>
+                                        <button type="button" class="admin-btn admin-btn-light cancel-edit-btn">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 
@@ -601,6 +685,42 @@ $conn->close();
                 modal.style.display = 'none';
             }
         });
+
+        // Price editing functionality
+        const editPriceBtn = document.querySelector('.edit-price-btn');
+        const cancelEditBtn = document.querySelector('.cancel-edit-btn');
+        const priceDisplay = document.getElementById('price-display');
+        const priceEditForm = document.getElementById('price-edit-form');
+
+        editPriceBtn.addEventListener('click', function() {
+            priceDisplay.style.display = 'none';
+            priceEditForm.style.display = 'block';
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            priceDisplay.style.display = 'grid';
+            priceEditForm.style.display = 'none';
+        });
+
+        // Calculate deposit percentage
+        const fullPriceInput = document.getElementById('full_price');
+        const depositAmountInput = document.getElementById('deposit_amount');
+        const depositPercentage = document.getElementById('deposit-percentage');
+
+        function updateDepositPercentage() {
+            const fullPrice = parseFloat(fullPriceInput.value);
+            const depositAmount = parseFloat(depositAmountInput.value);
+
+            if (fullPrice > 0 && depositAmount > 0) {
+                const percentage = (depositAmount / fullPrice) * 100;
+                depositPercentage.textContent = percentage.toFixed(2) + '% of full price';
+            } else {
+                depositPercentage.textContent = '0% of full price';
+            }
+        }
+
+        fullPriceInput.addEventListener('input', updateDepositPercentage);
+        depositAmountInput.addEventListener('input', updateDepositPercentage);
     </script>
 
     <style>
@@ -702,6 +822,12 @@ $conn->close();
             border-left: 4px solid var(--admin-success);
         }
 
+        .admin-alert-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--admin-danger);
+            border-left: 4px solid var(--admin-danger);
+        }
+
         .admin-alert-close {
             position: absolute;
             right: 10px;
@@ -767,6 +893,60 @@ $conn->close();
             padding: 20px;
         }
 
+        .admin-form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .admin-form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .admin-form-control {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--admin-dark);
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid var(--admin-border);
+            border-radius: 4px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .admin-form-control:focus {
+            border-color: var(--admin-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .admin-form-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.875rem;
+            color: var(--admin-gray);
+        }
+
+        .admin-form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .admin-btn-danger {
+            background-color: var(--admin-danger);
+            color: white;
+        }
+
+        .admin-btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
         @keyframes modalFadeIn {
             from {
                 opacity: 0;
@@ -787,15 +967,11 @@ $conn->close();
             .admin-receipts-container {
                 grid-template-columns: 1fr;
             }
-        }
 
-        .admin-btn-danger {
-            background-color: var(--admin-danger);
-            color: white;
-        }
+            .admin-form-row {
+                flex-direction: column;
+            }
 
-        .admin-btn-danger:hover {
-            background-color: #d32f2f;
         }
     </style>
 </body>

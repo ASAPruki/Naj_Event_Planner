@@ -98,26 +98,11 @@ $query .= " LIMIT $offset, $records_per_page";
 $result = $conn->query($query);
 $events = [];
 while ($row = $result->fetch_assoc()) {
-    // If financial record doesn't exist, calculate default values
+    // If financial record doesn't exist, create a new one with default values
     if (!isset($row['financial_id'])) {
-        // Default price calculation based on event type and guests
-        $base_price = 0;
-        switch ($row['event_type']) {
-            case 'wedding':
-                $base_price = 5000;
-                break;
-            case 'birthday':
-                $base_price = 2000;
-                break;
-            case 'corporate':
-                $base_price = 3500;
-                break;
-            case 'proposal':
-                $base_price = 1500;
-                break;
-            default:
-                $base_price = 2500;
-        }
+        // Default values
+        $full_price = 0;
+        $deposit_amount = 0;
 
         // Add price per guest
         $price_per_guest = 50;
@@ -345,8 +330,23 @@ $conn->close();
                                                         <?php echo ucfirst($event['status']); ?>
                                                     </span>
                                                 </td>
-                                                <td>$<?php echo number_format($event['full_price'], 2); ?></td>
-                                                <td>$<?php echo number_format($event['deposit_amount'], 2); ?></td>
+                                                <td>
+                                                    <?php if ($event['full_price'] > 0): ?>
+                                                        $<?php echo number_format($event['full_price'], 2); ?>
+                                                    <?php else: ?>
+                                                        <span class="admin-badge warning">Not Set</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if ($event['deposit_amount'] > 0): ?>
+                                                        $<?php echo number_format($event['deposit_amount'], 2); ?>
+                                                        <?php if ($event['full_price'] > 0): ?>
+                                                            (<?php echo round(($event['deposit_amount'] / $event['full_price']) * 100); ?>%)
+                                                        <?php endif; ?>
+                                                    <?php else: ?>
+                                                        <span class="admin-badge warning">Not Set</span>
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td>
                                                     <?php if ($event['deposit_paid']): ?>
                                                         <span class="admin-badge success">Paid</span>

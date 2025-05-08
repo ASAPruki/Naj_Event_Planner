@@ -196,7 +196,7 @@ $conn->close();
                     </li>
                     <li class="admin-nav-item">
                         <a href="financials.php" class="admin-nav-link active">
-                            <i class="fas fa-star admin-nav-icon"></i>
+                            <i class="fas fa-dollar-sign admin-nav-icon" style="font-size: 1.3rem;"></i>
                             Financials
                         </a>
                     </li>

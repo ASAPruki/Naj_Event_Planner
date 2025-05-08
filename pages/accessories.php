@@ -136,8 +136,8 @@ require "../APIs/connect.php";
                 <div class="footer-info">
                     <div class="footer-contact">
                         <h3>Contact Us</h3>
-                        <p><strong>Phone:</strong> (123) 456-7890</p>
-                        <p><strong>Email:</strong> info@najevents.com</p>
+                        <p><strong>Phone:</strong> +961 71 615 159</p>
+                        <p><strong>Email:</strong> najahshafei5@gmail.com</p>
                     </div>
                     <div class="footer-hours">
                         <h3>Business Hours</h3>
@@ -150,6 +150,10 @@ require "../APIs/connect.php";
                         <div style="display: flex;">
                             <i class="fa-brands fa-instagram" style="font-size:24px; margin-right: 7px;"></i>
                             <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
+                        </div>
+                        <div style="display: flex;">
+                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok" style="width: 24px; height: 24px; margin-right: 3px">
+                            <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>
                         <div style="display: flex;">
                             <i class="fa-solid fa-location-dot" style="font-size:24px; margin-right: 7px; margin-left: 1px"></i>

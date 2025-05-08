@@ -162,6 +162,12 @@ $conn->close();
                         </a>
                     </li>
                     <li class="admin-nav-item">
+                        <a href="financials.php" class="admin-nav-link">
+                            <i class="fas fa-dollar-sign admin-nav-icon" style="font-size: 1.3rem;"></i>
+                            Financials
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
                         <a href="users.php" class="admin-nav-link">
                             <i class="fas fa-users admin-nav-icon"></i>
                             User Management

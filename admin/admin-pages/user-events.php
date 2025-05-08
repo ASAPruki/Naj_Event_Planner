@@ -234,6 +234,12 @@ function formatCurrency($amount)
                         </a>
                     </li>
                     <li class="admin-nav-item">
+                        <a href="financials.php" class="admin-nav-link">
+                            <i class="fas fa-dollar-sign admin-nav-icon" style="font-size: 1.3rem;"></i>
+                            Financials
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
                         <a href="admins.php" class="admin-nav-link">
                             <i class="fas fa-user-shield admin-nav-icon"></i>
                             Admin Management

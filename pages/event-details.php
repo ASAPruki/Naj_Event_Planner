@@ -429,7 +429,8 @@ $payment_stmt->close();
                             <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok" style="width: 24px; height: 24px; margin-right: 3px">
+                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok"
+                                style="width: 24px; height: 24px; margin-right: 4px; margin-left: -1px;">
                             <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>
                         <div style="display: flex;">

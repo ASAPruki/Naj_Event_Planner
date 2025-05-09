@@ -116,8 +116,24 @@ $conn->close();
                 <p><strong>Category:</strong> <?php echo htmlspecialchars($accessory['category']); ?></p>
                 <p><strong>Material:</strong> <?php echo htmlspecialchars($accessory['material']); ?></p>
                 <p><strong>Color:</strong> <?php echo htmlspecialchars($accessory['color']); ?></p>
-                <p><strong>Dimensions:</strong> <?php echo htmlspecialchars($accessory['dimensions']); ?></p>
-                <p><strong>Weight Capacity:</strong> <?php echo htmlspecialchars($accessory['weight_capacity']); ?></p>
+                <p><strong>Dimensions:</strong>
+                    <?php
+                    if (!empty($accessory['dimensions'])) {
+                        echo htmlspecialchars($accessory['dimensions']);
+                    } else {
+                        echo "Not set";
+                    }
+                    ?>
+                </p>
+                <p><strong>Weight Capacity:</strong>
+                    <?php
+                    if (!empty($accessory['weight_capacity'])) {
+                        echo htmlspecialchars($accessory['weight_capacity']);
+                    } else {
+                        echo "Not set";
+                    }
+                    ?>
+                </p>
                 <p><strong>In Stock:</strong> <?php echo htmlspecialchars($accessory['quantity']); ?></p>
                 <p><strong>Available:</strong>
                     <?php echo $accessory['is_available'] ? "Available" : "Not Available"; ?>

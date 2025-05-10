@@ -411,6 +411,7 @@ $conn->close();
                                             <option value="birthday" <?php echo $event['event_type'] === 'birthday' ? 'selected' : ''; ?>>Birthday</option>
                                             <option value="corporate" <?php echo $event['event_type'] === 'corporate' ? 'selected' : ''; ?>>Corporate</option>
                                             <option value="proposal" <?php echo $event['event_type'] === 'proposal' ? 'selected' : ''; ?>>Proposal</option>
+                                            <option value="katb kteb" <?php echo $event['event_type'] == 'katb kteb' ? 'selected' : ''; ?>>Katb Kteb</option>
                                             <option value="other" <?php echo $event['event_type'] === 'other' ? 'selected' : ''; ?>>Other</option>
                                         </select>
                                     </div>
@@ -442,10 +443,15 @@ $conn->close();
                                         <label for="budget">Budget Range</label>
                                         <select id="budget" name="budget" class="admin-form-select">
                                             <option value="">Select Budget Range</option>
-                                            <option value="$1,000 - $5,000" <?php echo $event['budget'] === '$1,000 - $5,000' ? 'selected' : ''; ?>>$1,000 - $5,000</option>
-                                            <option value="$5,000 - $10,000" <?php echo $event['budget'] === '$5,000 - $10,000' ? 'selected' : ''; ?>>$5,000 - $10,000</option>
-                                            <option value="$10,000 - $20,000" <?php echo $event['budget'] === '$10,000 - $20,000' ? 'selected' : ''; ?>>$10,000 - $20,000</option>
-                                            <option value="$20,000+" <?php echo $event['budget'] === '$20,000+' ? 'selected' : ''; ?>>$20,000+</option>
+                                            <option value="under-1000" <?php echo $event['budget'] === 'under-1000' ? 'selected' : ''; ?>>Under $1000</option>
+                                            <option value="$1,000 - $2,000" <?php echo ($event['budget'] === '$1,000 - $2,000') ? 'selected' : ''; ?>>$1,000 - $2,000</option>
+                                            <option value="$2,000 - $3,000" <?php echo ($event['budget'] === '$2,000 - $3,000') ? 'selected' : ''; ?>>$2,000 - $3,000</option>
+                                            <option value="$3,000 - $4,000" <?php echo ($event['budget'] === '$3,000 - $4,000') ? 'selected' : ''; ?>>$3,000 - $4,000</option>
+                                            <option value="$4,000 - $5,000" <?php echo ($event['budget'] === '$4,000 - $5,000') ? 'selected' : ''; ?>>$4,000 - $5,000</option>
+                                            <option value="$5,000 - $7,000" <?php echo ($event['budget'] === '$5,000 - $7,000') ? 'selected' : ''; ?>>$5,000 - $7,000</option>
+                                            <option value="$7,000 - $10,000" <?php echo ($event['budget'] === '$7,000 - $10,000') ? 'selected' : ''; ?>>$7,000 - $10,000</option>
+                                            <option value="$10,000 - $20,000" <?php echo ($event['budget'] === '$10,000 - $20,000') ? 'selected' : ''; ?>>$10,000 - $20,000</option>
+                                            <option value="$20,000+" <?php echo ($event['budget'] === '$20,000+') ? 'selected' : ''; ?>>$20,000+</option>
                                         </select>
                                     </div>
                                 </div>

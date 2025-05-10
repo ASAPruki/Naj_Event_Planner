@@ -3,8 +3,6 @@
 IMPORTANT: in the upcoming section in the user dashboard, I want only the confirmed events to be displayed
 Work on exporting the financial page as excel, pdf, etc...
 
-I was thinking about making an event's status "cancelled" or mark it as "past" event if the date of the event came already and the admins didn't respond to it.
-
 If i have time, try to let the admin to delete certain pics of a certain accessory in the "edit-accessory" page.
 
 to push to github:

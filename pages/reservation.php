@@ -116,6 +116,7 @@ if (!$logged_in) {
                                 <option value="birthday">Birthday Party</option>
                                 <option value="proposal">Proposal</option>
                                 <option value="corporate">Corporate Event</option>
+                                <option value="katb kteb">Katb Kteb</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
@@ -212,11 +213,15 @@ if (!$logged_in) {
                             <label for="budget">Estimated Budget (USD)</label>
                             <select id="budget" name="budget">
                                 <option value="">Select Budget Range</option>
-                                <option value="1000-3000">$1,000 - $3,000</option>
-                                <option value="3000-5000">$3,000 - $5,000</option>
-                                <option value="5000-10000">$5,000 - $10,000</option>
-                                <option value="10000-20000">$10,000 - $20,000</option>
-                                <option value="20000+">$20,000+</option>
+                                <option value="under-1000">Under $1000</option>
+                                <option value="$1,000-$2,000">$1,000 - $2,000</option>
+                                <option value="$2,000-$3,000">$2,000 - $3,000</option>
+                                <option value="$3,000-$4,000">$3,000 - $4,000</option>
+                                <option value="$4,000-$5,000">$4,000 - $5,000</option>
+                                <option value="$5,000-$7,000">$5,000 - $7,000</option>
+                                <option value="$7,000-$10,000">$7,000 - $10,000</option>
+                                <option value="$10,000-$20,000">$10,000 - $20,000</option>
+                                <option value="$20,000+">$20,000+</option>
                             </select>
                         </div>
                         <div class="form-group">

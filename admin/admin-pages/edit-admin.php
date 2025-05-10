@@ -248,7 +248,6 @@ $conn->close();
                                     <select id="role" name="role" class="admin-form-select" required>
                                         <option value="super_admin" <?php echo $admin_data['role'] === 'super_admin' ? 'selected' : ''; ?>>Super Admin</option>
                                         <option value="admin" <?php echo $admin_data['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                        <option value="manager" <?php echo $admin_data['role'] === 'manager' ? 'selected' : ''; ?>>Manager</option>
                                     </select>
                                 </div>
                             </div>

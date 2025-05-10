@@ -484,11 +484,13 @@ $conn->close();
                                 </div>
                             </div>
 
+                            <br>
+
                             <div class="admin-form-section">
                                 <h3 class="admin-form-section-title">Additional Information</h3>
                                 <div class="admin-form-group">
                                     <label for="message">Message / Special Requests</label>
-                                    <textarea id="message" name="message" class="admin-form-control" rows="5"><?php echo htmlspecialchars($event['message']); ?></textarea>
+                                    <textarea id="message" name="message" class="admin-form-control" rows="5" style="resize: vertical;"><?php echo htmlspecialchars($event['message']); ?></textarea>
                                 </div>
                             </div>
 

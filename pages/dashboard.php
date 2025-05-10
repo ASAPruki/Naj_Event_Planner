@@ -15,28 +15,31 @@ $user_email = $_SESSION['user_email'];
 
 require "../APIs/connect.php";
 
-// Get user's upcoming events
-$upcoming_events_query = "SELECT * FROM reservations WHERE email = ? AND event_date >= CURDATE() AND status != 'cancelled' AND status != 'completed' ORDER BY event_date ASC";
+// Get current date at the start of the day (00:00:00)
+$today = date('Y-m-d');
+
+// Get user's upcoming events - now includes events happening today
+$upcoming_events_query = "SELECT * FROM reservations WHERE email = ? AND DATE(event_date) >= ? AND status != 'cancelled' AND status != 'completed' ORDER BY event_date ASC";
 $stmt = $conn->prepare($upcoming_events_query);
-$stmt->bind_param("s", $user_email);
+$stmt->bind_param("ss", $user_email, $today);
 $stmt->execute();
 $upcoming_events_result = $stmt->get_result();
 $upcoming_events = $upcoming_events_result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Get user's past events (events with past dates or completed status)
-$past_events_query = "SELECT * FROM reservations WHERE email = ? AND (event_date < CURDATE() OR status = 'completed') ORDER BY event_date DESC";
+// Get user's past events - now only includes events with dates before today or with completed status
+$past_events_query = "SELECT * FROM reservations WHERE email = ? AND (DATE(event_date) < ? OR status = 'completed') ORDER BY event_date DESC";
 $stmt = $conn->prepare($past_events_query);
-$stmt->bind_param("s", $user_email);
+$stmt->bind_param("ss", $user_email, $today);
 $stmt->execute();
 $past_events_result = $stmt->get_result();
 $past_events = $past_events_result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Get user's pending events (events that are in draft or review status)
-$pending_events_query = "SELECT * FROM reservations WHERE email = ? AND status = 'pending' AND event_date >= CURDATE() ORDER BY created_at DESC";
+// Get user's pending events (events that are in pending status)
+$pending_events_query = "SELECT * FROM reservations WHERE email = ? AND status = 'pending' AND DATE(event_date) >= ? ORDER BY created_at DESC";
 $stmt = $conn->prepare($pending_events_query);
-$stmt->bind_param("s", $user_email);
+$stmt->bind_param("ss", $user_email, $today);
 $stmt->execute();
 $pending_events_result = $stmt->get_result();
 $pending_events = $pending_events_result->fetch_all(MYSQLI_ASSOC);

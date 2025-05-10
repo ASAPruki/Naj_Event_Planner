@@ -128,10 +128,16 @@ $payment_stmt->close();
                     </div>
                     <h2 class="event-title"><?php echo ucfirst($event['event_type']); ?> Event Details</h2>
                     <div class="event-status">
-                        <?php if (strtotime($event['event_date']) < time()): ?>
+                        <?php
+                        // Get current date at the start of the day
+                        $today = date('Y-m-d');
+                        $event_date = date('Y-m-d', strtotime($event['event_date']));
+                        if ($event_date < $today): ?>
                             <span class="status-badge past">Past Event</span>
                         <?php elseif (isset($event['status']) && $event['status'] === 'pending'): ?>
                             <span class="status-badge pending">Pending Approval</span>
+                        <?php elseif ($event_date == $today): ?>
+                            <span class="status-badge today">Today's Event</span>
                         <?php else: ?>
                             <span class="status-badge upcoming">Upcoming Event</span>
                         <?php endif; ?>
@@ -331,7 +337,12 @@ $payment_stmt->close();
                         <div class="event-actions-card">
                             <h3>Actions</h3>
                             <div class="action-buttons">
-                                <?php if (strtotime($event['event_date']) > time()): ?>
+                                <?php
+                                // Get current date at the start of the day
+                                $today = date('Y-m-d');
+                                $event_date = date('Y-m-d', strtotime($event['event_date']));
+                                if ($event_date >= $today): // Includes today's events
+                                ?>
                                     <!-- ONLY ALLOW USER TO ALTER AN EVENT IF IT'S PENDING (NOT CONFIRMED YET) -->
                                     <?php if (!isset($event['status']) || $event['status'] === 'pending'): ?>
                                         <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>

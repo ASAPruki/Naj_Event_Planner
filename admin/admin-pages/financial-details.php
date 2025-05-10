@@ -320,7 +320,17 @@ $conn->close();
                                 </div>
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Deposit Amount</div>
-                                    <div class="admin-detail-value">$<?php echo number_format($record['deposit_amount'], 2); ?> (<?php echo round(($record['deposit_amount'] / $record['full_price']) * 100); ?>%)</div>
+                                    <div class="admin-detail-value">
+                                        $<?php echo number_format($record['deposit_amount'], 2); ?>
+                                        (
+                                        <?php
+                                        if ($record['full_price'] != 0) {
+                                            echo round(($record['deposit_amount'] / $record['full_price']) * 100);
+                                        } else {
+                                            echo "0";
+                                        }
+                                        ?>%)
+                                    </div>
                                 </div>
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Deposit Status</div>
@@ -380,7 +390,13 @@ $conn->close();
                                             <label for="deposit_amount">Deposit Amount ($)</label>
                                             <input type="number" id="deposit_amount" name="deposit_amount" class="admin-form-control" value="<?php echo $record['deposit_amount']; ?>" step="0.01" min="0" required>
                                             <small class="admin-form-text" id="deposit-percentage">
-                                                <?php echo round(($record['deposit_amount'] / $record['full_price']) * 100); ?>% of full price
+                                                <?php
+                                                if ($record['full_price'] != 0) {
+                                                    echo round(($record['deposit_amount'] / $record['full_price']) * 100) . "% of full price";
+                                                } else {
+                                                    echo "Full price is zero";
+                                                }
+                                                ?>
                                             </small>
                                         </div>
                                     </div>

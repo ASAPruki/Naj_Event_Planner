@@ -76,6 +76,11 @@ html {
   color: #ffc107;
 }
 
+.status-badge.today {
+  background-color: #ff9800;
+  color: white;
+}
+
 .status-badge.past {
   background-color: rgba(108, 117, 125, 0.1);
   color: #6c757d;

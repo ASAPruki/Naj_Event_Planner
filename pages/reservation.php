@@ -213,7 +213,7 @@ if (!$logged_in) {
                             <label for="budget">Estimated Budget (USD)</label>
                             <select id="budget" name="budget">
                                 <option value="">Select Budget Range</option>
-                                <option value="under-1000">Under $1000</option>
+                                <option value="under-$1000">Under $1000</option>
                                 <option value="$1,000-$2,000">$1,000 - $2,000</option>
                                 <option value="$2,000-$3,000">$2,000 - $3,000</option>
                                 <option value="$3,000-$4,000">$3,000 - $4,000</option>

@@ -1,12 +1,19 @@
-1. Finance page for the admins
-
 IMPORTANT: in the upcoming section in the user dashboard, I want only the confirmed events to be displayed
 Work on exporting the financial page as excel, pdf, etc...
 
 If i have time, try to let the admin to delete certain pics of a certain accessory in the "edit-accessory" page.
+
+Note that a user can't pay the receipts if the event becomes "past"
 
 to push to github:
 
 1. git add .
 2. git commit -m "message"
 3. git push -u origin master
+
+Run the localhost query to check the statuses of the 2 events:
+1st one was pending and the 2nd was confirmed
+both dates are 5/11/2025
+this is the query: select all from reservations where user_id = 1 and event_date = "2025-05-11"
+Also the events were: 4 upcoming, 1 pending, and 12 past events
+And total of financial records: 16

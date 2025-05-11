@@ -33,6 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_payment'])) {
     $payment_type = $_POST['payment_type'];
     $reservation_id = $_POST['reservation_id'];
 
+    // Get the user ID for the notification
+    $user_query = "SELECT r.user_id FROM financial_records f 
+                  JOIN reservations r ON f.reservation_id = r.id 
+                  WHERE f.id = ?";
+    $user_stmt = $conn->prepare($user_query);
+    $user_stmt->bind_param("i", $record_id);
+    $user_stmt->execute();
+    $user_result = $user_stmt->get_result();
+    $user_id = $user_result->fetch_assoc()['user_id'];
+    $user_stmt->close();
+
     // Update the financial record
     if ($payment_type === 'deposit') {
         $update_query = "UPDATE financial_records SET deposit_paid = 1, deposit_approved_by = ?, deposit_approved_at = NOW() WHERE id = ?";
@@ -44,6 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_payment'])) {
     $stmt->bind_param("ii", $admin_id, $record_id);
     $stmt->execute();
     $stmt->close();
+
+    // Create notification for user
+    $notification_type = $payment_type === 'deposit' ? 'deposit_approved' : 'full_payment_approved';
+    $notification_message = "Your " . ($payment_type === 'deposit' ? 'deposit' : 'full payment') . " receipt for reservation #" . $reservation_id . " has been approved.";
+
+    $notification_query = "INSERT INTO notifications (user_id, event_id, message, type, is_read) VALUES (?, ?, ?, 'success', 0)";
+    $notification_stmt = $conn->prepare($notification_query);
+    $notification_stmt->bind_param("iis", $user_id, $reservation_id, $notification_message);
+    $notification_stmt->execute();
+    $notification_stmt->close();
 
     // Log admin activity
     $action_details = "Approved " . $payment_type . " payment for financial record #" . $record_id;
@@ -241,6 +262,14 @@ $conn->close();
                     <div class="admin-alert admin-alert-success">
                         <i class="fas fa-check-circle"></i>
                         Pricing has been successfully updated.
+                        <button class="admin-alert-close">&times;</button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_GET['declined'])): ?>
+                    <div class="admin-alert admin-alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        Receipt has been successfully declined.
                         <button class="admin-alert-close">&times;</button>
                     </div>
                 <?php endif; ?>

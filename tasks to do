@@ -11,9 +11,6 @@ to push to github:
 2. git commit -m "message"
 3. git push -u origin master
 
-Run the localhost query to check the statuses of the 2 events:
-1st one was pending and the 2nd was confirmed
-both dates are 5/11/2025
-this is the query: select all from reservations where user_id = 1 and event_date = "2025-05-11"
-Also the events were: 4 upcoming, 1 pending, and 12 past events
-And total of financial records: 16
+The windows task scheduler part didn't work.
+I want the status of the events which date has already passed to be marked as "missing", they get the display status of "past" in the user dashoard, so the same.
+Missed is when the event has already passed and the admin didn't work on it (still pending), or no deposit receipt is available.

@@ -71,7 +71,7 @@ Naj Events Team";
         mail($to, $subject, $email_message, $headers);
 
         // Redirect to thank you page
-        header("Location: ../pages/thank-you.html");
+        header("Location: ../pages/thank-you.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;

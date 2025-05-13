@@ -222,6 +222,11 @@ $payment_stmt->close();
                                     <span class="payment-value">$<?php echo number_format($payment['full_price'], 2); ?></span>
                                 </div>
                                 <div class="payment-item">
+                                    <span class="payment-label">Remaining Amount:</span>
+                                    <span class="payment-value">$<?php echo number_format($payment['full_price'] - $payment['deposit_amount'], 2); ?>
+                                    </span>
+                                </div>
+                                <div class="payment-item">
                                     <span class="payment-label">Deposit Amount:</span>
                                     <span class="payment-value">$<?php echo number_format($payment['deposit_amount'], 2); ?>
                                         (<?php echo round(($payment['deposit_amount'] / $payment['full_price']) * 100); ?>%)

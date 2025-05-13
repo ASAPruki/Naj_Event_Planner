@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_price'])) {
 }
 
 // Get financial record details
-$query = "SELECT f.*, r.id as reservation_id, r.name, r.email, r.phone, r.event_type, r.event_date, r.status, 
+$query = "SELECT f.*, r.id as reservation_id, r.name, r.email, r.phone, r.event_type, r.event_date, r.status, r.budget,
           a1.name as deposit_approver, a2.name as full_payment_approver
           FROM financial_records f 
           JOIN reservations r ON f.reservation_id = r.id 
@@ -303,6 +303,10 @@ $conn->close();
                             <h3 class="admin-detail-section-title">Event Information</h3>
                             <div class="admin-detail-grid">
                                 <div class="admin-detail-item">
+                                    <div class="admin-detail-label">Event ID</div>
+                                    <div class="admin-detail-value"><?php echo $record['reservation_id']; ?></div>
+                                </div>
+                                <div class="admin-detail-item">
                                     <div class="admin-detail-label">Client Name</div>
                                     <div class="admin-detail-value"><?php echo $record['name']; ?></div>
                                 </div>
@@ -321,6 +325,10 @@ $conn->close();
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Event Date</div>
                                     <div class="admin-detail-value"><?php echo date('F d, Y', strtotime($record['event_date'])); ?></div>
+                                </div>
+                                <div class="admin-detail-item">
+                                    <div class="admin-detail-label">Budget</div>
+                                    <div class="admin-detail-value"><?php echo !empty($record['budget']) ? $record['budget'] : 'Open Budget'; ?></div>
                                 </div>
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Status</div>

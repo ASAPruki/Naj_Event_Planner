@@ -14,3 +14,5 @@ to push to github:
 The windows task scheduler part didn't work.
 I want the status of the events which date has already passed to be marked as "missing", they get the display status of "past" in the user dashoard, so the same.
 Missed is when the event has already passed and the admin didn't work on it (still pending), or no deposit receipt is available.
+
+Note: the notifications of the accept and decline receipts are taking the (event_id) as null, fix it.

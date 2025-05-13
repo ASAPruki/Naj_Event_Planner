@@ -100,14 +100,6 @@ $events = [];
 while ($row = $result->fetch_assoc()) {
     // If financial record doesn't exist, create a new one with default values
     if (!isset($row['financial_id'])) {
-        // Default values
-        $full_price = 0;
-        $deposit_amount = 0;
-
-        // Add price per guest
-        $price_per_guest = 50;
-        $full_price = $base_price + ($row['guests'] * $price_per_guest);
-        $deposit_amount = $full_price * 0.3;
 
         // Insert new financial record
         $insert_query = "INSERT INTO financial_records (reservation_id, full_price, deposit_amount) VALUES (?, ?, ?)";

@@ -295,18 +295,18 @@ $log_stmt->close();
                                         <div class="admin-detail-label">Location Type</div>
                                         <div class="admin-detail-value"><?php echo ucfirst($event['location_type']); ?></div>
                                     </div>
-                                    <?php if (!empty($event['venue'])): ?>
-                                        <div class="admin-detail-item">
-                                            <div class="admin-detail-label">Venue</div>
-                                            <div class="admin-detail-value"><?php echo $event['venue']; ?></div>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($event['budget'])): ?>
-                                        <div class="admin-detail-item">
-                                            <div class="admin-detail-label">Budget Range</div>
+                                    <div class="admin-detail-item">
+                                        <div class="admin-detail-label">Venue</div>
+                                        <div class="admin-detail-value"><?php echo $event['venue']; ?></div>
+                                    </div>
+                                    <div class="admin-detail-item">
+                                        <div class="admin-detail-label">Budget Range</div>
+                                        <?php if (!empty($event['budget'])): ?>
                                             <div class="admin-detail-value"><?php echo $event['budget']; ?></div>
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php else : ?>
+                                            <div class="admin-detail-value"><?php echo "Not set"; ?></div>
+                                        <?php endif; ?>
+                                    </div>
                                     <div class="admin-detail-item">
                                         <div class="admin-detail-label">Booking Date</div>
                                         <div class="admin-detail-value"><?php echo date('F d, Y', strtotime($event['created_at'])); ?></div>

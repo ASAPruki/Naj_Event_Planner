@@ -295,7 +295,7 @@ $conn->close();
                             <label for="budget">Estimated Budget (USD)</label>
                             <select id="budget" name="budget">
                                 <option value="">Select Budget Range</option>
-                                <option value="under-$1000" <?php echo $event['budget'] === 'under-1000' ? 'selected' : ''; ?>>Under $1000</option>
+                                <option value="under $1000" <?php echo $event['budget'] === 'under-$1000' ? 'selected' : ''; ?>>Under $1000</option>
                                 <option value="$1,000 - $2,000" <?php echo ($event['budget'] === '$1,000 - $2,000') ? 'selected' : ''; ?>>$1,000 - $2,000</option>
                                 <option value="$2,000 - $3,000" <?php echo ($event['budget'] === '$2,000 - $3,000') ? 'selected' : ''; ?>>$2,000 - $3,000</option>
                                 <option value="$3,000 - $4,000" <?php echo ($event['budget'] === '$3,000 - $4,000') ? 'selected' : ''; ?>>$3,000 - $4,000</option>

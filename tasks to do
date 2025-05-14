@@ -1,8 +1,6 @@
 IMPORTANT: in the upcoming section in the user dashboard, I want only the confirmed events to be displayed
 Work on exporting the financial page as excel, pdf, etc...
 
-If i have time, try to let the admin to delete certain pics of a certain accessory in the "edit-accessory" page.
-
 Note that a user can't pay the receipts if the event becomes "past"
 
 to push to github:
@@ -16,3 +14,9 @@ I want the status of the events which date has already passed to be marked as "m
 Missed is when the event has already passed and the admin didn't work on it (still pending), or no deposit receipt is available.
 
 Note: the notifications of the accept and decline receipts are taking the (event_id) as null, fix it.
+
+Fadel:
+4 upcoming 1 pending 3 past
+upcoming tab: both exist there
+pending: katb kteb only
+past: none of the both

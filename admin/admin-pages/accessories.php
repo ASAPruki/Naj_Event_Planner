@@ -472,6 +472,7 @@ $conn->close();
                                                 </td>
                                                 <td>
                                                     <div class="admin-table-actions">
+                                                        <a href="view-accessory.php?id=<?php echo $accessory['id']; ?>" class="admin-btn admin-btn-info admin-btn-sm">View</a>
                                                         <a href="edit-accessory.php?id=<?php echo $accessory['id']; ?>" class="admin-btn admin-btn-primary admin-btn-sm">Edit</a>
                                                         <button type="button" class="admin-btn admin-btn-danger admin-btn-sm delete-accessory" data-id="<?php echo $accessory['id']; ?>" data-name="<?php echo $accessory['name']; ?>">Delete</button>
                                                     </div>

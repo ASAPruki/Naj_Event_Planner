@@ -119,7 +119,9 @@ $actions_result = $conn->query($actions_query);
 
     <style>
         .action-delete_accessory,
-        .action-delete_admin {
+        .action-delete_admin,
+        .action-delete_image,
+        .action-payment_decline {
             background-color: #ffdddd;
             color: #c00;
         }
@@ -128,19 +130,22 @@ $actions_result = $conn->query($actions_query);
         .action-update_accessory,
         .action-update_admin,
         .action-update_status,
-        .action-user_update {
+        .action-user_update,
+        .action-price_update {
             background-color: #e0f7fa;
             color: #00796b;
         }
 
         .action-add_admin,
         .action-add_user,
-        .action-add_accessory {
+        .action-add_accessory,
+        .action-payment_approval {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
 
-        .action-view {
+        .action-view,
+        .action-view_accessory {
             background-color: rgb(245, 236, 189);
             color: rgb(109, 125, 46);
         }

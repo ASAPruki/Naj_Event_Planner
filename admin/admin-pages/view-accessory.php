@@ -76,116 +76,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../styles/styles.css">
     <link rel="stylesheet" href="../admin-styles/admin-styles.css">
-    <style>
-        .accessory-image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .accessory-image-item {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            position: relative;
-            aspect-ratio: 1 / 1;
-        }
-
-        .accessory-image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .accessory-image-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .accessory-image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 8px;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .accessory-image-item:hover .accessory-image-overlay {
-            opacity: 1;
-        }
-
-        .accessory-detail-value {
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-
-        .accessory-detail-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .accessory-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .accessory-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .accessory-title {
-            font-size: 1.8rem;
-            margin: 0;
-        }
-
-        .accessory-status {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .accessory-status.available {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .accessory-status.unavailable {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .no-images-message {
-            text-align: center;
-            padding: 40px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            color: #6c757d;
-        }
-
-        .image-upload-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        @media (max-width: 768px) {
-            .accessory-detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../admin-styles/view-accessory.css">
 </head>
 
 <body class="admin-body">
@@ -410,38 +301,7 @@ $conn->close();
         </main>
     </div>
 
-    <script>
-        // Toggle sidebar on mobile
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const adminSidebar = document.getElementById('adminSidebar');
-        const adminMain = document.getElementById('adminMain');
-
-        if (toggleSidebar) {
-            toggleSidebar.addEventListener('click', function() {
-                adminSidebar.classList.toggle('active');
-                adminMain.classList.toggle('sidebar-active');
-            });
-        }
-
-        // Toggle image upload form
-        const showUploadForm = document.getElementById('showUploadForm');
-        const imageUploadForm = document.getElementById('imageUploadForm');
-        const cancelUpload = document.getElementById('cancelUpload');
-
-        if (showUploadForm && imageUploadForm) {
-            showUploadForm.addEventListener('click', function() {
-                imageUploadForm.style.display = 'block';
-                showUploadForm.style.display = 'none';
-            });
-        }
-
-        if (cancelUpload && imageUploadForm && showUploadForm) {
-            cancelUpload.addEventListener('click', function() {
-                imageUploadForm.style.display = 'none';
-                showUploadForm.style.display = 'inline-block';
-            });
-        }
-    </script>
+    <script src="../admin-scripts/view-accessory.js"></script>
 </body>
 
 </html>

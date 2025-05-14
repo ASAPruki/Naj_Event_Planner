@@ -73,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Initialize variables for user listing
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+$status_filter = isset($_GET['status']) ? $_GET['status'] : 'all'; // Add this line
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 10;
 $offset = ($page - 1) * $per_page;
@@ -85,13 +86,35 @@ if (!empty($search)) {
     $search_term = "%$search%";
     $query .= " AND (name LIKE ? OR email LIKE ? OR phone LIKE ?)";
     $count_query .= " AND (name LIKE ? OR email LIKE ? OR phone LIKE ?)";
+}
 
-    // Prepare and execute count query with search parameters
+// Add status filter
+if ($status_filter !== 'all') {
+    $blocked = ($status_filter === 'blocked') ? 1 : 0;
+    $query .= " AND blocked = ?";
+    $count_query .= " AND blocked = ?";
+}
+
+// Prepare and execute count query with parameters
+if (!empty($search) && $status_filter !== 'all') {
+    // With search and status filter
+    $count_stmt = $conn->prepare($count_query);
+    $blocked = ($status_filter === 'blocked') ? 1 : 0;
+    $count_stmt->bind_param("sssi", $search_term, $search_term, $search_term, $blocked);
+    $count_stmt->execute();
+} else if (!empty($search)) {
+    // With search only
     $count_stmt = $conn->prepare($count_query);
     $count_stmt->bind_param("sss", $search_term, $search_term, $search_term);
     $count_stmt->execute();
+} else if ($status_filter !== 'all') {
+    // With status filter only
+    $count_stmt = $conn->prepare($count_query);
+    $blocked = ($status_filter === 'blocked') ? 1 : 0;
+    $count_stmt->bind_param("i", $blocked);
+    $count_stmt->execute();
 } else {
-    // Execute count query without parameters
+    // Without parameters
     $count_stmt = $conn->prepare($count_query);
     $count_stmt->execute();
 }
@@ -106,9 +129,18 @@ $query .= " ORDER BY created_at DESC LIMIT ?, ?";
 
 // Prepare and execute main query
 $stmt = $conn->prepare($query);
-if (!empty($search)) {
-    // With search parameters
+
+if (!empty($search) && $status_filter !== 'all') {
+    // With search and status filter
+    $blocked = ($status_filter === 'blocked') ? 1 : 0;
+    $stmt->bind_param("sssiii", $search_term, $search_term, $search_term, $blocked, $offset, $per_page);
+} else if (!empty($search)) {
+    // With search only
     $stmt->bind_param("sssii", $search_term, $search_term, $search_term, $offset, $per_page);
+} else if ($status_filter !== 'all') {
+    // With status filter only
+    $blocked = ($status_filter === 'blocked') ? 1 : 0;
+    $stmt->bind_param("iii", $blocked, $offset, $per_page);
 } else {
     // Without search parameters, only limit
     $stmt->bind_param("ii", $offset, $per_page);
@@ -288,6 +320,14 @@ $conn->close();
                     <div class="admin-card-body">
                         <form method="get" action="users.php" class="admin-filters">
                             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <div style="flex: 0 0 200px;">
+                                    <label for="status">Status</label>
+                                    <select id="status" name="status" class="admin-form-select">
+                                        <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All Users</option>
+                                        <option value="active" <?php echo $status_filter === 'active' ? 'selected' : ''; ?>>Active Users</option>
+                                        <option value="blocked" <?php echo $status_filter === 'blocked' ? 'selected' : ''; ?>>Blocked Users</option>
+                                    </select>
+                                </div>
                                 <div style="flex: 1; min-width: 200px;">
                                     <label for="search">Search</label>
                                     <input type="text" id="search" name="search" class="admin-form-control" placeholder="Search by name, email or phone" value="<?php echo htmlspecialchars($search); ?>">
@@ -358,25 +398,19 @@ $conn->close();
                             <div class="admin-pagination">
                                 <?php if ($page > 1): ?>
                                     <div class="admin-pagination-item">
-                                        <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>" class="admin-pagination-link">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </a>
+                                        <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>&status=<?php echo $status_filter; ?>" class="admin-pagination-link">
                                     </div>
                                 <?php endif; ?>
 
                                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                                     <div class="admin-pagination-item">
-                                        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>" class="admin-pagination-link <?php echo $i === $page ? 'active' : ''; ?>">
-                                            <?php echo $i; ?>
-                                        </a>
+                                        <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&status=<?php echo $status_filter; ?>" class="admin-pagination-link <?php echo $i === $page ? 'active' : ''; ?>">
                                     </div>
                                 <?php endfor; ?>
 
                                 <?php if ($page < $total_pages): ?>
                                     <div class="admin-pagination-item">
-                                        <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>" class="admin-pagination-link">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </a>
+                                        <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>&status=<?php echo $status_filter; ?>" class="admin-pagination-link">
                                     </div>
                                 <?php endif; ?>
                             </div>

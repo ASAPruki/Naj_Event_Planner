@@ -381,7 +381,8 @@ $conn->close();
                                     </div>
                                     <div class="admin-form-group">
                                         <label for="email">Email <span class="required">*</span></label>
-                                        <input type="email" id="email" name="email" class="admin-form-control" value="<?php echo htmlspecialchars($event['email']); ?>" required>
+                                        <input type="email" id="email" name="email" class="admin-form-control" value="<?php echo htmlspecialchars($event['email']); ?>" readonly required>
+                                        <p class="field-note">This field is automatically filled with the account email of the user and cannot be changed.</p>
                                     </div>
                                 </div>
                                 <div class="admin-form-row">

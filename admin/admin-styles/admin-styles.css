@@ -633,6 +633,19 @@ body.admin-body {
   pointer-events: none;
 }
 
+.field-note {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+input[readonly] {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
   .admin-toggle-sidebar {

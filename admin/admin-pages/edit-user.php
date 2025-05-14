@@ -254,7 +254,8 @@ $conn->close();
                             </div>
                             <div class="admin-form-group">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="admin-form-control" value="<?php echo $user['email']; ?>" required>
+                                <input type="email" id="email" name="email" class="admin-form-control" value="<?php echo $user['email']; ?>" readonly required>
+                                <p class="field-note">This field is automatically filled with the user account email and cannot be changed.</p>
                             </div>
                             <div class="admin-form-group">
                                 <label for="phone">Phone Number</label>

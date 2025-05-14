@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         $check_stmt->close();
+        $check_stmt2->close();
     }
 }
 

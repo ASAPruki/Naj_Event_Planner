@@ -40,7 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Email already exists";
     }
 
+    // Check if phone number already exists
+    $stmt2 = $conn->prepare("SELECT id FROM users WHERE phone = ?");
+    $stmt2->bind_param("s", $phone);
+    $stmt2->execute();
+    $result2 = $stmt2->get_result();
+
+    if ($result2->num_rows > 0) {
+        $errors[] = "Phone number already exists";
+    }
+
     $stmt->close();
+    $stmt2->close();
 
     // If no errors, proceed with registration
     if (empty($errors)) {

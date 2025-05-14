@@ -208,7 +208,7 @@ header .container {
 /* Hero Section */
 .hero {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("../images/general/hero-icon.jfif");
+    url("../admin/uploads/general/hero-icon.jfif");
   background-size: cover;
   background-position: center;
   height: 90vh;
@@ -271,19 +271,19 @@ header .container {
 }
 
 .wedding-icon {
-  background-image: url("../images/general/wedding-icon.jfif");
+  background-image: url("../admin/uploads/general/wedding-icon.jfif");
 }
 
 .birthday-icon {
-  background-image: url("../images/general/birthday-icon.jfif");
+  background-image: url("../admin/uploads/general/birthday-icon.jfif");
 }
 
 .proposal-icon {
-  background-image: url("../images/general/proposal-icon.jfif");
+  background-image: url("../admin/uploads/general/proposal-icon.jfif");
 }
 
 .katb-kteb-icon {
-  background-image: url("../images/general/katb-kteb.jfif");
+  background-image: url("../admin/uploads/general/katb-kteb.jfif");
 }
 
 .service-card h3 {

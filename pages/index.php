@@ -103,7 +103,7 @@ session_start();
                         event planning industry.</p>
                 </div>
                 <div class="about-image">
-                    <img src="../images/general/our-team.jfif" alt="Naj Events Team">
+                    <img src="../admin/uploads/general/our-team.jfif" alt="Naj Events Team">
                 </div>
             </div>
         </div>
@@ -174,7 +174,7 @@ session_start();
                             <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok"
+                            <img src="../admin/uploads/general/tiktok-white-icon.png" alt="TikTok"
                                 style="width: 24px; height: 24px; margin-right: 4px; margin-left: -1px;">
                             <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>

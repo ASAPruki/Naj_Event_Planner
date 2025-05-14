@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $accessory_id = $stmt->insert_id; // Get the inserted accessory ID
 
             // Directory to store uploaded images
-            $upload_dir = "../../images/accessories/";
+            $upload_dir = "../uploads/accessories/";
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0755, true); // Create directory if not exists
             }
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
                     if (move_uploaded_file($file_tmp, $destination)) {
                         // Store the relative path (you can also store full URL if needed)
-                        $relative_path = "../../images/accessories/" . $new_file_name;
+                        $relative_path = "../uploads/accessories/" . $new_file_name;
 
                         // Insert image into accessory_images
                         $img_stmt = $conn->prepare("INSERT INTO accessory_images (accessory_id, image_url) VALUES (?, ?)");

@@ -42,6 +42,21 @@ if ($result->num_rows === 1) {
 
 $stmt->close();
 
+// Get images for this accessory
+$images = [];
+$images_stmt = $conn->prepare("SELECT * FROM accessory_images WHERE accessory_id = ? ORDER BY id ASC");
+if ($images_stmt) {
+    $images_stmt->bind_param("i", $accessory_id);
+    $images_stmt->execute();
+    $images_result = $images_stmt->get_result();
+
+    while ($image = $images_result->fetch_assoc()) {
+        $images[] = $image;
+    }
+
+    $images_stmt->close();
+}
+
 // Process form if submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
@@ -73,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uploaded_images = [];
 
     if (!empty($_FILES['pictures']['name'][0])) {
-        $upload_dir = '../../images/accessories/';
+        $upload_dir = '../uploads/accessories/';
 
         foreach ($_FILES['pictures']['tmp_name'] as $index => $tmp_name) {
             $original_name = basename($_FILES['pictures']['name'][$index]);
@@ -147,6 +162,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../styles/styles.css">
     <link rel="stylesheet" href="../admin-styles/admin-styles.css">
+    <link rel="stylesheet" href="../admin-styles/edit-accessory.css">
 </head>
 
 <body class="admin-body">
@@ -296,10 +312,6 @@ $conn->close();
                                     <label for="quantity">Quantity*</label>
                                     <input type="number" id="quantity" name="quantity" class="admin-form-control" min="0" value="<?php echo $accessory['quantity']; ?>" required>
                                 </div>
-                                <div class="admin-form-group">
-                                    <label for="pictures">Accessory Images*</label>
-                                    <input type="file" id="pictures" name="pictures[]" class="admin-form-control" accept="image/*" multiple required>
-                                </div>
                             </div>
                             <div class="admin-form-group">
                                 <label for="description">Description</label>
@@ -313,6 +325,60 @@ $conn->close();
                                 <button type="submit" class="admin-btn admin-btn-primary">Update Accessory</button>
                             </div>
                         </form>
+                        <!-- Add the image gallery section after the form -->
+                        <div class="admin-card" style="margin-top: 20px;">
+                            <div class="admin-card-header">
+                                <h3 class="admin-card-title">Accessory Images</h3>
+                                <div>
+                                    <button id="showUploadForm" class="admin-btn admin-btn-primary admin-btn-sm">
+                                        <i class="fas fa-plus"></i> Add Images
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="admin-card-body">
+                                <?php if (count($images) > 0): ?>
+                                    <div class="accessory-image-gallery">
+                                        <?php foreach ($images as $image): ?>
+                                            <div class="accessory-image-item">
+                                                <img src="../uploads/accessories/<?php echo htmlspecialchars($image['image_url']); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
+                                                <div class="accessory-image-overlay">
+                                                    <form method="post" action="delete-accessory-image.php" style="display: inline;">
+                                                        <input type="hidden" name="image_id" value="<?php echo $image['id']; ?>">
+                                                        <input type="hidden" name="accessory_id" value="<?php echo $accessory_id; ?>">
+                                                        <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="no-images-message">
+                                        <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 15px; color: #adb5bd;"></i>
+                                        <p>No images available for this accessory.</p>
+                                        <p>Click "Add Images" to upload photos.</p>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Image Upload Form (Hidden by default) -->
+                                <div id="imageUploadForm" class="image-upload-section" style="display: none;">
+                                    <h4>Upload Images</h4>
+                                    <form action="upload-accessory-image.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="accessory_id" value="<?php echo $accessory_id; ?>">
+                                        <div class="admin-form-group">
+                                            <label for="accessory_images">Select Images (Multiple files allowed)</label>
+                                            <input type="file" id="accessory_images" name="accessory_images[]" class="admin-form-control" multiple accept="image/*" required>
+                                            <small class="form-text text-muted">Supported formats: JPG, PNG, GIF, JFIF. Max size: 5MB per image.</small>
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <button type="submit" class="admin-btn admin-btn-primary">Upload Images</button>
+                                            <button type="button" id="cancelUpload" class="admin-btn admin-btn-light">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -342,6 +408,25 @@ $conn->close();
                 adminMain.classList.remove('sidebar-active');
             }
         });
+
+        // Toggle image upload form
+        const showUploadForm = document.getElementById('showUploadForm');
+        const imageUploadForm = document.getElementById('imageUploadForm');
+        const cancelUpload = document.getElementById('cancelUpload');
+
+        if (showUploadForm && imageUploadForm) {
+            showUploadForm.addEventListener('click', function() {
+                imageUploadForm.style.display = 'block';
+                showUploadForm.style.display = 'none';
+            });
+        }
+
+        if (cancelUpload && imageUploadForm && showUploadForm) {
+            cancelUpload.addEventListener('click', function() {
+                imageUploadForm.style.display = 'none';
+                showUploadForm.style.display = 'inline-block';
+            });
+        }
     </script>
 </body>
 

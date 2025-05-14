@@ -101,7 +101,7 @@ require "../APIs/connect.php";
                         $image_filename = $row['first_image'] ?? 'no-image.png';
 
                         // Use correct relative path to the images folder
-                        $image_path = "../images/accessories/" . htmlspecialchars($image_filename);
+                        $image_path = "../admin/" . htmlspecialchars($image_filename);
 
                         echo "
                         <div class='accessory-card' data-category='$category'>
@@ -152,7 +152,7 @@ require "../APIs/connect.php";
                             <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok"
+                            <img src="../admin/uploads/general/tiktok-white-icon.png" alt="TikTok"
                                 style="width: 24px; height: 24px; margin-right: 4px; margin-left: -1px;">
                             <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>

@@ -91,7 +91,7 @@ foreach ($_FILES['accessory_images']['tmp_name'] as $key => $tmp_name) {
         // Upload file
         if (move_uploaded_file($file_tmp, $upload_path)) {
             // Insert into database
-            $stmt = $conn->prepare("INSERT INTO accessory_images (accessory_id, image_path) VALUES (?, ?)");
+            $stmt = $conn->prepare("INSERT INTO accessory_images (accessory_id, image_url) VALUES (?, ?)");
             $stmt->bind_param("is", $accessory_id, $db_path);
 
             if ($stmt->execute()) {

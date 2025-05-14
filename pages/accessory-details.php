@@ -104,7 +104,7 @@ $conn->close();
                 <div class="carousel">
                     <?php foreach ($images as $index => $img): ?>
                         <div class="carousel-slide<?php echo $index === 0 ? ' active' : ''; ?>">
-                            <img src="uploads/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
+                            <img src="../admin/<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
                         </div>
                     <?php endforeach; ?>
                     <button class="carousel-prev">&#10094;</button>
@@ -170,7 +170,7 @@ $conn->close();
                             <a href="https://www.instagram.com/naj__wedding_planner" class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok"
+                            <img src="../admin/uploads/general/tiktok-white-icon.png" alt="TikTok"
                                 style="width: 24px; height: 24px; margin-right: 4px; margin-left: -1px;">
                             <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>

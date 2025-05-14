@@ -256,7 +256,7 @@ $conn->close();
                                     <div class="accessory-image-gallery">
                                         <?php foreach ($images as $image): ?>
                                             <div class="accessory-image-item">
-                                                <img src="../../images/accessories/<?php echo htmlspecialchars($image['image_url']); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
+                                                <img src="../<?php echo htmlspecialchars($image['image_url']); ?>" alt="<?php echo htmlspecialchars($accessory['name']); ?>">
                                                 <div class="accessory-image-overlay">
                                                     <form method="post" action="delete-accessory-image.php" style="display: inline;">
                                                         <input type="hidden" name="image_id" value="<?php echo $image['id']; ?>">

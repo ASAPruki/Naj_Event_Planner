@@ -26,7 +26,7 @@ $path_result = $path_stmt->get_result();
 
 if ($path_result->num_rows === 1) {
     $image_data = $path_result->fetch_assoc();
-    $image_url = "../../images/accessories/" . $image_data['image_url'];
+    $image_url = "../uploads/accessories/" . $image_data['image_url'];
 
     // Delete from database
     $delete_stmt = $conn->prepare("DELETE FROM accessory_images WHERE id = ? AND accessory_id = ?");

@@ -113,7 +113,7 @@ session_start();
                                 class="social-link instagram">Instagram</a>
                         </div>
                         <div style="display: flex;">
-                            <img src="../images/general/tiktok-white-icon.png" alt="TikTok"
+                            <img src="../admin/uploads/general/tiktok-white-icon.png" alt="TikTok"
                                 style="width: 24px; height: 24px; margin-right: 4px; margin-left: -1px;">
                             <a href="https://www.tiktok.com/@naj_wedding_planner" class="social-link tiktok">Tiktok</a>
                         </div>

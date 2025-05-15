@@ -60,9 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_payment'])) {
     $notification_type = $payment_type === 'deposit' ? 'deposit_approved' : 'full_payment_approved';
     $notification_message = "Your " . ($payment_type === 'deposit' ? 'deposit' : 'full payment') . " receipt for reservation #" . $reservation_id . " has been approved.";
 
-    $notification_query = "INSERT INTO notifications (user_id, event_id, message, type, is_read) VALUES (?, ?, ?, 'success', 0)";
+    $notification_query = "INSERT INTO notifications (user_id, event_id, message, type, is_read) VALUES (?, ?, ?, ?, 0)";
     $notification_stmt = $conn->prepare($notification_query);
-    $notification_stmt->bind_param("iis", $user_id, $reservation_id, $notification_message);
+    $notification_stmt->bind_param("iiss", $user_id, $reservation_id, $notification_message, $notification_type);
     $notification_stmt->execute();
     $notification_stmt->close();
 

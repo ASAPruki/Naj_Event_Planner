@@ -79,9 +79,9 @@ $update_stmt->close();
 $notification_type = $payment_type === 'deposit' ? 'deposit_declined' : 'full_payment_declined';
 $notification_message = "Your " . ($payment_type === 'deposit' ? 'deposit' : 'full payment') . " receipt for reservation #" . $reservation_id . " has been declined. Reason: " . $decline_reason;
 
-$notification_query = "INSERT INTO notifications (user_id, type, message) VALUES (?, ?, ?)";
+$notification_query = "INSERT INTO notifications (user_id, type, message, event_id) VALUES (?, ?, ?, ?)";
 $notification_stmt = $conn->prepare($notification_query);
-$notification_stmt->bind_param("iss", $user_id, $notification_type, $notification_message);
+$notification_stmt->bind_param("issi", $user_id, $notification_type, $notification_message, $reservation_id);
 $notification_stmt->execute();
 $notification_stmt->close();
 

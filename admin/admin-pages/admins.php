@@ -3,7 +3,7 @@ session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: ../admin-login.php");
+    header("Location: admin-login.php");
     exit();
 }
 
@@ -399,6 +399,7 @@ $conn->close();
                                                 <td><?php echo date('M d, Y', strtotime($admin_user['created_at'])); ?></td>
                                                 <td>
                                                     <div class="admin-table-actions">
+                                                        <a href="admin-details.php?id=<?php echo $admin_user['id']; ?>" class="admin-btn admin-btn-info admin-btn-sm">View</a>
                                                         <a href="edit-admin.php?id=<?php echo $admin_user['id']; ?>" class="admin-btn admin-btn-primary admin-btn-sm">Edit</a>
                                                         <?php if ($admin_user['id'] !== $admin_id): ?>
                                                             <button type="button" class="admin-btn admin-btn-danger admin-btn-sm delete-admin" data-id="<?php echo $admin_user['id']; ?>" data-name="<?php echo $admin_user['name']; ?>">Delete</button>

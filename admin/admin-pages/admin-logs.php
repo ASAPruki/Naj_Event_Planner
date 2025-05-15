@@ -139,7 +139,8 @@ $actions_result = $conn->query($actions_query);
         .action-add_admin,
         .action-add_user,
         .action-add_accessory,
-        .action-payment_approval {
+        .action-payment_approval,
+        .action-upload_image {
             background-color: #e8f5e9;
             color: #2e7d32;
         }

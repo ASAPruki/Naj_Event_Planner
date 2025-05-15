@@ -182,6 +182,10 @@ $log_stmt->close();
                                         $status_class = 'info';
                                         $status_text = 'Completed';
                                         break;
+                                    case 'missed':
+                                        $status_class = 'danger';
+                                        $status_text = 'Missed';
+                                        break;
                                     default:
                                         $status_class = 'warning';
                                         $status_text = 'Pending';
@@ -193,25 +197,27 @@ $log_stmt->close();
                     </div>
                     <div class="admin-card-body">
                         <div class="admin-event-details">
-                            <div class="admin-event-actions">
-                                <a href="edit-event.php?id=<?php echo $event['id']; ?>" class="admin-btn admin-btn-primary">
-                                    <i class="fas fa-edit"></i> Edit Event
-                                </a>
-                                <?php if ($event['status'] === 'pending'): ?>
-                                    <button class="admin-btn admin-btn-success" id="confirmEventBtn">
-                                        <i class="fas fa-check"></i> Confirm Event
-                                    </button>
-                                <?php elseif ($event['status'] === 'confirmed'): ?>
-                                    <button class="admin-btn admin-btn-info" id="completeEventBtn">
-                                        <i class="fas fa-flag-checkered"></i> Mark as Completed
-                                    </button>
-                                <?php endif; ?>
-                                <?php if ($event['status'] !== 'cancelled'): ?>
-                                    <button class="admin-btn admin-btn-danger" id="cancelEventBtn">
-                                        <i class="fas fa-times"></i> Cancel Event
-                                    </button>
-                                <?php endif; ?>
-                            </div>
+                            <?php if ($event['status'] !== 'missed' && $event['status'] !== 'completed'): ?>
+                                <div class="admin-event-actions">
+                                    <a href="edit-event.php?id=<?php echo $event['id']; ?>" class="admin-btn admin-btn-primary">
+                                        <i class="fas fa-edit"></i> Edit Event
+                                    </a>
+                                    <?php if ($event['status'] === 'pending'): ?>
+                                        <button class="admin-btn admin-btn-success" id="confirmEventBtn">
+                                            <i class="fas fa-check"></i> Confirm Event
+                                        </button>
+                                    <?php elseif ($event['status'] === 'confirmed'): ?>
+                                        <button class="admin-btn admin-btn-info" id="completeEventBtn">
+                                            <i class="fas fa-flag-checkered"></i> Mark as Completed
+                                        </button>
+                                    <?php endif; ?>
+                                    <?php if ($event['status'] !== 'cancelled'): ?>
+                                        <button class="admin-btn admin-btn-danger" id="cancelEventBtn">
+                                            <i class="fas fa-times"></i> Cancel Event
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
 
                             <?php if ($event['status'] === 'cancelled'): ?>
                                 <div class="admin-detail-section">

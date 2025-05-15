@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once "../APIs/include_auto_update.php";
 ?>
 
 <!DOCTYPE html>

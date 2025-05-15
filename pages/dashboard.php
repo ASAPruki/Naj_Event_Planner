@@ -14,6 +14,7 @@ $user_name = $_SESSION['user_name'];
 $user_email = $_SESSION['user_email'];
 
 require "../APIs/connect.php";
+include_once "../APIs/include_auto_update.php";
 
 // Get current date at the start of the day (00:00:00)
 $today = date('Y-m-d');

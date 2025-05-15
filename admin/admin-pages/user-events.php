@@ -168,6 +168,8 @@ function getStatusBadgeClass($status)
             return 'badge-danger';
         case 'completed':
             return 'badge-info';
+        case 'missed':
+            return 'badge-danger';
         default:
             return 'badge-secondary';
     }
@@ -333,6 +335,10 @@ function formatCurrency($amount)
                                 Cancelled
                                 <span class="status-count"><?php echo $status_counts['cancelled'] ?? 0; ?></span>
                             </a>
+                            <a href="?user_id=<?php echo $user_id; ?>&status=missed" class="status-tab <?php echo $status_filter === 'missed' ? 'active' : ''; ?>">
+                                Missed
+                                <span class="status-count"><?php echo $status_counts['missed'] ?? 0; ?></span>
+                            </a>
                         </div>
 
                         <!-- Search and Filter -->
@@ -471,49 +477,6 @@ function formatCurrency($amount)
                 </div>
             </div>
         </main>
-    </div>
-
-    <!-- Status Update Modal -->
-    <div id="statusModal" class="admin-modal">
-        <div class="admin-modal-content">
-            <div class="admin-modal-header">
-                <h3>Update Event Status</h3>
-                <button class="admin-modal-close">&times;</button>
-            </div>
-            <div class="admin-modal-body">
-                <form id="statusForm" action="update-event-status.php" method="post">
-                    <input type="hidden" name="event_id" id="event_id">
-                    <input type="hidden" name="redirect_url" value="user-events.php?user_id=<?php echo $user_id; ?><?php echo !empty($status_filter) ? '&status=' . $status_filter : ''; ?><?php echo !empty($date_filter) ? '&date_range=' . $date_filter : ''; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?><?php echo !empty($page) ? '&page=' . $page : ''; ?>">
-
-                    <div class="admin-form-group">
-                        <label for="event_status">Status</label>
-                        <select id="event_status" name="status" class="admin-form-control">
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-form-group">
-                        <label for="status_notes">Notes (Optional)</label>
-                        <textarea id="status_notes" name="notes" rows="3" class="admin-form-control"></textarea>
-                    </div>
-
-                    <div class="admin-form-group">
-                        <label>
-                            <input type="checkbox" name="notify_user" value="1" checked>
-                            Notify user about this status change
-                        </label>
-                    </div>
-
-                    <div class="admin-form-group">
-                        <button type="submit" class="admin-btn admin-btn-primary">Update Status</button>
-                        <button type="button" class="admin-btn admin-btn-light admin-modal-cancel">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="../admin-scripts/user-events.js"></script>

@@ -13,6 +13,7 @@ $admin_name = $_SESSION['admin_name'];
 $admin_role = $_SESSION['admin_role'];
 
 require "../../APIs/connect.php";
+include_once "../../APIs/include_auto_update.php";
 
 // Get dashboard statistics
 // Total users
@@ -239,6 +240,10 @@ $conn->close();
                                                             case 'completed':
                                                                 $status_class = 'info';
                                                                 $status_text = 'Completed';
+                                                                break;
+                                                            case 'missed':
+                                                                $status_class = 'danger';
+                                                                $status_text = 'Missed';
                                                                 break;
                                                             default:
                                                                 $status_class = 'warning';

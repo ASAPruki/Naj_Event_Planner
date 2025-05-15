@@ -62,7 +62,7 @@ $query = "SELECT r.id, r.name, r.email, r.phone, r.event_type, r.event_date, r.s
           f.deposit_receipt, f.full_payment_receipt 
           FROM reservations r 
           LEFT JOIN financial_records f ON r.id = f.reservation_id 
-          WHERE (r.status = 'confirmed' OR r.status = 'completed')";
+          WHERE (r.status = 'confirmed' OR r.status = 'completed' OR r.status = 'missed')";
 
 // Add status filter
 if ($status_filter !== 'all') {
@@ -269,6 +269,7 @@ $conn->close();
                                     <option value="all" <?php echo $status_filter === 'all' ? 'selected' : ''; ?>>All</option>
                                     <option value="confirmed" <?php echo $status_filter === 'confirmed' ? 'selected' : ''; ?>>Confirmed</option>
                                     <option value="completed" <?php echo $status_filter === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                    <option value="missed" <?php echo $status_filter === 'missed' ? 'selected' : ''; ?>>Missed</option>
                                 </select>
                             </div>
                             <div class="admin-filter-group">
@@ -324,7 +325,14 @@ $conn->close();
                                                 <td><?php echo ucfirst($event['event_type']); ?></td>
                                                 <td><?php echo date('M d, Y', strtotime($event['event_date'])); ?></td>
                                                 <td>
-                                                    <span class="admin-badge <?php echo $event['status'] === 'confirmed' ? 'success' : 'info'; ?>">
+                                                    <span class="admin-badge <?php
+                                                                                if ($event['status'] === 'confirmed') {
+                                                                                    echo 'success';
+                                                                                } else if ($event['status'] === 'completed') {
+                                                                                    echo 'info';
+                                                                                } else {
+                                                                                    echo 'danger';
+                                                                                } ?>">
                                                         <?php echo ucfirst($event['status']); ?>
                                                     </span>
                                                 </td>

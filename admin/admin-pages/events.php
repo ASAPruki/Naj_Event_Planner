@@ -305,6 +305,10 @@ $conn->close();
                                                                 $status_class = 'info';
                                                                 $status_text = 'Completed';
                                                                 break;
+                                                            case 'missed':
+                                                                $status_class = 'danger';
+                                                                $status_text = 'Missed';
+                                                                break;
                                                             default:
                                                                 $status_class = 'warning';
                                                                 $status_text = 'Pending';

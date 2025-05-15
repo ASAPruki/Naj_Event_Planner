@@ -333,7 +333,14 @@ $conn->close();
                                 <div class="admin-detail-item">
                                     <div class="admin-detail-label">Status</div>
                                     <div class="admin-detail-value">
-                                        <span class="admin-badge <?php echo $record['status'] === 'confirmed' ? 'success' : 'info'; ?>">
+                                        <span class="admin-badge <?php
+                                                                    if ($record['status'] === 'confirmed') {
+                                                                        echo 'success';
+                                                                    } else if ($record['status'] === 'completed') {
+                                                                        echo 'info';
+                                                                    } else {
+                                                                        echo 'danger';
+                                                                    } ?>">
                                             <?php echo ucfirst($record['status']); ?>
                                         </span>
                                     </div>

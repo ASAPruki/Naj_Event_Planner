@@ -457,7 +457,7 @@ $payment_stmt->close();
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Naj Events. All rights reserved.</p>
+                <p>&copy; 2025 Naj Events. All rights reserved.</p>
             </div>
         </div>
     </footer>

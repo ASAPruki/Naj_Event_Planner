@@ -120,7 +120,7 @@ include_once "../APIs/include_auto_update.php";
                         to enjoy our special day without worry."</p>
                     <div class="client-info">
                         <h4>Sarah & Michael</h4>
-                        <p>Wedding, June 2023</p>
+                        <p>Wedding, June 2025</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
@@ -128,7 +128,7 @@ include_once "../APIs/include_auto_update.php";
                         and coordination were all flawless."</p>
                     <div class="client-info">
                         <h4>Jennifer L.</h4>
-                        <p>Birthday Party, March 2023</p>
+                        <p>Birthday Party, March 2025</p>
                     </div>
                 </div>
                 <div class="testimonial-slide">
@@ -136,7 +136,7 @@ include_once "../APIs/include_auto_update.php";
                         a pleasure to work with!"</p>
                     <div class="client-info">
                         <h4>Robert T.</h4>
-                        <p>Corporate Event, September 2023</p>
+                        <p>Corporate Event, September 2025</p>
                     </div>
                 </div>
             </div>
@@ -187,7 +187,7 @@ include_once "../APIs/include_auto_update.php";
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Naj Events. All rights reserved.</p>
+                <p>&copy; 2025 Naj Events. All rights reserved.</p>
             </div>
         </div>
     </footer>

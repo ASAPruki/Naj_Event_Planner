@@ -26,7 +26,7 @@ if ($should_run) {
     $today = date('Y-m-d');
 
     // Start transaction for better data integrity
-    $conn1->begin_transaction();
+    $conn->begin_transaction();
 
     try {
         // 1. Update events to "Missed" status
@@ -39,7 +39,7 @@ if ($should_run) {
                          AND r.event_date < ?
                          AND (f.deposit_receipt IS NULL OR f.id IS NULL)";
 
-        $stmt1 = $conn1->prepare($missed_query1);
+        $stmt1 = $conn->prepare($missed_query1);
         $stmt1->bind_param("s", $today);
         $stmt1->execute();
         $missed_count1 = $stmt1->affected_rows;
@@ -54,7 +54,7 @@ if ($should_run) {
                          AND r.event_date < ?
                          AND (f.deposit_receipt IS NULL OR f.id IS NULL)";
 
-        $stmt2 = $conn1->prepare($missed_query2);
+        $stmt2 = $conn->prepare($missed_query2);
         $stmt2->bind_param("s", $today);
         $stmt2->execute();
         $missed_count2 = $stmt2->affected_rows;
@@ -70,14 +70,14 @@ if ($should_run) {
                            AND r.event_date < ?
                            AND f.deposit_receipt IS NOT NULL";
 
-        $stmt3 = $conn1->prepare($completed_query);
+        $stmt3 = $conn->prepare($completed_query);
         $stmt3->bind_param("s", $today);
         $stmt3->execute();
         $completed_count = $stmt3->affected_rows;
         $stmt3->close();
 
         // Commit the transaction
-        $conn1->commit();
+        $conn->commit();
 
         // Log the results
         $total_updated = $missed_count1 + $missed_count2 + $completed_count;
@@ -91,9 +91,7 @@ if ($should_run) {
         file_put_contents($last_run_file, time());
     } catch (Exception $e) {
         // Rollback in case of error
-        $conn1->rollback();
+        $conn->rollback();
         error_log("Error updating event statuses: " . $e->getMessage());
     }
-
-    $conn1->close();
 }

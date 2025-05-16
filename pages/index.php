@@ -1,5 +1,6 @@
 <?php
 session_start();
+require "../APIs/connect.php";
 include_once "../APIs/include_auto_update.php";
 ?>
 
@@ -115,35 +116,79 @@ include_once "../APIs/include_auto_update.php";
         <div class="container">
             <h2 class="section-title">What Our Clients Say</h2>
             <div class="testimonial-slider">
-                <div class="testimonial-slide">
-                    <p>"Naj Events made our wedding day absolutely perfect! Every detail was taken care of, allowing us
-                        to enjoy our special day without worry."</p>
-                    <div class="client-info">
-                        <h4>Sarah & Michael</h4>
-                        <p>Wedding, June 2025</p>
+                <?php
+                // Get top 3 highest-rated reviews
+                $query = "SELECT r.rating, r.review_text, r.created_at, u.name, res.event_type, res.event_date 
+                     FROM reviews r 
+                     JOIN users u ON r.user_id = u.id 
+                     JOIN reservations res ON r.reservation_id = res.id 
+                     WHERE r.rating >= 4 
+                     ORDER BY r.rating DESC, r.created_at DESC 
+                     LIMIT 3";
+
+                $result = $conn->query($query);
+
+                if ($result->num_rows > 0) {
+                    $dot_index = 0;
+                    while ($row = $result->fetch_assoc()) {
+                        $event_date = date('F Y', strtotime($row['event_date']));
+                        $event_type = ucfirst($row['event_type']);
+                        $active_class = ($dot_index == 0) ? 'active' : '';
+                ?>
+                        <div class="testimonial-slide <?php echo $active_class; ?>">
+                            <div class="rating">
+                                <?php for ($i = 1; $i <= 5; $i++) { ?>
+                                    <i class="fas fa-star <?php echo ($i <= $row['rating']) ? 'filled' : ''; ?>"></i>
+                                <?php } ?>
+                            </div>
+                            <p>"<?php echo htmlspecialchars($row['review_text']); ?>"</p>
+                            <div class="client-info">
+                                <h4><?php echo htmlspecialchars($row['name']); ?></h4>
+                                <p><?php echo $event_type; ?>, <?php echo $event_date; ?></p>
+                            </div>
+                        </div>
+                    <?php
+                        $dot_index++;
+                    }
+                } else {
+                    // Fallback to static testimonials if no reviews in database
+                    ?>
+                    <div class="testimonial-slide active">
+                        <p>"Naj Events made our wedding day absolutely perfect! Every detail was taken care of, allowing us
+                            to enjoy our special day without worry."</p>
+                        <div class="client-info">
+                            <h4>Sarah & Michael</h4>
+                            <p>Wedding, June 2025</p>
+                        </div>
                     </div>
-                </div>
-                <div class="testimonial-slide">
-                    <p>"The birthday party they organized for my daughter was magical. The decorations, entertainment,
-                        and coordination were all flawless."</p>
-                    <div class="client-info">
-                        <h4>Jennifer L.</h4>
-                        <p>Birthday Party, March 2025</p>
+                    <div class="testimonial-slide">
+                        <p>"The birthday party they organized for my daughter was magical. The decorations, entertainment,
+                            and coordination were all flawless."</p>
+                        <div class="client-info">
+                            <h4>Jennifer L.</h4>
+                            <p>Birthday Party, March 2025</p>
+                        </div>
                     </div>
-                </div>
-                <div class="testimonial-slide">
-                    <p>"Our company retreat was a huge success thanks to Naj Events. Professional, detail-oriented, and
-                        a pleasure to work with!"</p>
-                    <div class="client-info">
-                        <h4>Robert T.</h4>
-                        <p>Corporate Event, September 2025</p>
+                    <div class="testimonial-slide">
+                        <p>"Our company retreat was a huge success thanks to Naj Events. Professional, detail-oriented, and
+                            a pleasure to work with!"</p>
+                        <div class="client-info">
+                            <h4>Robert T.</h4>
+                            <p>Corporate Event, September 2025</p>
+                        </div>
                     </div>
-                </div>
+                <?php
+                }
+                ?>
             </div>
             <div class="testimonial-dots">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <?php
+                $num_slides = ($result && $result->num_rows > 0) ? $result->num_rows : 3;
+                for ($i = 0; $i < $num_slides; $i++) {
+                    $active_class = ($i == 0) ? 'active' : '';
+                    echo '<span class="dot ' . $active_class . '"></span>';
+                }
+                ?>
             </div>
         </div>
     </section>

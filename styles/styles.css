@@ -590,6 +590,31 @@ footer {
   color: var(--primary-color);
 }
 
+/* Additional CSS for star ratings */
+.testimonial-slide .rating {
+  margin-bottom: 10px;
+}
+
+.testimonial-slide .rating .fa-star {
+  color: #ccc;
+  margin-right: 2px;
+}
+
+.testimonial-slide .rating .fa-star.filled {
+  color: #ffd700;
+}
+
+.testimonial-slide {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.testimonial-slide.active {
+  display: block;
+  opacity: 1;
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
   .about-content {

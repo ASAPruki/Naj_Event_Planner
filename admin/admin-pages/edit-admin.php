@@ -72,8 +72,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check_stmt->execute();
         $check_result = $check_stmt->get_result();
 
+        // Check if phone number already exists
+        $check_stmt2 = $conn->prepare("SELECT id FROM admins WHERE phone = ?");
+        $check_stmt2->bind_param("s", $phone);
+        $check_stmt2->execute();
+        $check_result2 = $check_stmt2->get_result();
+
         if ($check_result->num_rows > 0) {
             $error_message = "Email already exists.";
+        } else if ($check_result2->num_rows > 0) {
+            $error_message = "Phone number already exists.";
         } else {
             // Update admin data
             if ($change_password) {

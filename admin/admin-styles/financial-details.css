@@ -14,7 +14,8 @@
 .modal-content {
   margin: auto;
   display: block;
-  max-width: 95%;
+  max-width: 60%;
+  max-height: 120%;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }

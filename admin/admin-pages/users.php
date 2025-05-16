@@ -302,8 +302,8 @@ $conn->close();
                                     <input type="email" id="email" name="email" class="admin-form-control" required>
                                 </div>
                                 <div class="admin-form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" id="phone" name="phone" class="admin-form-control">
+                                    <label for="phone">Phone Number*</label>
+                                    <input type="tel" id="phone" name="phone" class="admin-form-control" required>
                                 </div>
                                 <div class="admin-form-group">
                                     <label for="password">Password*</label>

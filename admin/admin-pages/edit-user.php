@@ -66,15 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error[] = "Please enter a valid phone number.";
     }
 
-    // Check if email already exists for another user
+    // Check if email or phone number already exists for another user
     if ($email !== $user['email']) {
         $check_stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
         $check_stmt->bind_param("si", $email, $user_id);
         $check_stmt->execute();
         $check_result = $check_stmt->get_result();
 
-        if ($check_result->num_rows > 0) {
-            $errors[] = "Email already in use by another user";
+        $check_stmt2 = $conn->prepare("SELECT id FROM users WHERE phone = ? AND id != ?");
+        $check_stmt2->bind_param("si", $phone, $user_id);
+        $check_stmt2->execute();
+        $check_result2 = $check_stmt2->get_result();
+
+        if ($check_result2->num_rows > 0) {
+            $errors[] = "Phone number already in use by another user";
         }
 
         $check_stmt->close();

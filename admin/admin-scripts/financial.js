@@ -72,12 +72,4 @@ document.addEventListener("DOMContentLoaded", function () {
       approveModal.style.display = "none";
     }
   });
-
-  // Export functionality
-  document
-    .getElementById("exportFinancials")
-    .addEventListener("click", function (e) {
-      e.preventDefault();
-      alert("Export functionality will be implemented here.");
-    });
 });

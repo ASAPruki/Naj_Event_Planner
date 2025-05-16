@@ -294,8 +294,8 @@ $conn->close();
                     <div class="admin-card-header">
                         <h2 class="admin-card-title">Financial Records</h2>
                         <div class="admin-card-actions">
-                            <a href="#" class="admin-btn admin-btn-primary admin-btn-sm" id="exportFinancials">
-                                <i class="fas fa-file-export"></i> Export
+                            <a href="export_financials_excel.php?status=<?php echo $status_filter; ?>&payment=<?php echo $payment_filter; ?>" class="admin-btn admin-btn-success admin-btn-sm" id="exportExcel">
+                                <i class="fas fa-file-excel"></i> Export as Excel
                             </a>
                         </div>
                     </div>

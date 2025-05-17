@@ -55,7 +55,7 @@ if (!$logged_in) {
                     <?php if ($logged_in): ?>
                         <li><a href="dashboard.php">My Account</a></li>
                     <?php else: ?>
-                        <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                        <li><a href="#" id="login-button">Login | Sign up</a></li>
                     <?php endif; ?>
                 </ul>
             </nav>

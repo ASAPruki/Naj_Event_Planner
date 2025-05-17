@@ -78,7 +78,7 @@ $conn->close();
                     <?php if (isset($_SESSION['user_name'])): ?>
                         <li><a href="dashboard.php">My Profile</a></li>
                     <?php else: ?>
-                        <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                        <li><a href="#" id="login-button">Login | Sign up</a></li>
                     <?php endif; ?>
                 </ul>
             </nav>
@@ -92,6 +92,13 @@ $conn->close();
             <p><?php echo htmlspecialchars($accessory['description']); ?></p>
         </div>
     </section>
+
+    <!-- Back to Accessories button -->
+    <div class="container" style="margin-top: 30px;">
+        <a href="accessories.php" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Accessories
+        </a>
+    </div>
 
     <section class="accessories-categories" style="margin-bottom: 100px;">
         <div class="section-description">

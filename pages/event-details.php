@@ -353,7 +353,7 @@ $payment_stmt->close();
                                         <a href="edit-event.php?id=<?php echo $event_id; ?>" class="btn btn-primary">Edit Event</a>
                                     <?php endif; ?>
                                     <button class="btn btn-outline" id="cancel-event">Cancel Event</button>
-                                <?php else: ?> <!-- the review and book similar event only shows if the status of the event is approved or accpeted -->
+                                <?php else: ?> <!-- the review and book similar event only shows if the status of the event is completed -->
                                     <button class="btn btn-primary book-again" data-event-type="<?php echo $event['event_type']; ?>">Book Similar Event</button>
                                     <button class="btn btn-secondary" id="leave-review">Leave a Review</button>
                                 <?php endif; ?>

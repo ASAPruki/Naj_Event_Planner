@@ -45,7 +45,7 @@ require "../APIs/connect.php";
                     <?php if (isset($_SESSION['user_name'])): ?>
                         <li><a href="dashboard.php">My Profile</a></li>
                     <?php else: ?>
-                        <li><a href="#" id="login-button">Login / Sign Up</a></li>
+                        <li><a href="#" id="login-button">Login | Sign up</a></li>
                     <?php endif; ?>
                 </ul>
             </nav>

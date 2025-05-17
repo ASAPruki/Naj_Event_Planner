@@ -146,7 +146,8 @@ $actions_result = $conn->query($actions_query);
         }
 
         .action-view,
-        .action-view_accessory {
+        .action-view_accessory,
+        .action-view_admin {
             background-color: rgb(245, 236, 189);
             color: rgb(109, 125, 46);
         }

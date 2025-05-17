@@ -164,6 +164,12 @@ $conn->close();
                         </a>
                     </li>
                     <li class="admin-nav-item">
+                        <a href="users.php" class="admin-nav-link">
+                            <i class="fas fa-users admin-nav-icon"></i>
+                            User Management
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
                         <a href="user-reviews.php" class="admin-nav-link">
                             <i class="fas fa-star admin-nav-icon"></i>
                             User Reviews
@@ -176,15 +182,15 @@ $conn->close();
                         </a>
                     </li>
                     <li class="admin-nav-item">
-                        <a href="users.php" class="admin-nav-link">
-                            <i class="fas fa-users admin-nav-icon"></i>
-                            User Management
-                        </a>
-                    </li>
-                    <li class="admin-nav-item">
                         <a href="admins.php" class="admin-nav-link active">
                             <i class="fas fa-user-shield admin-nav-icon"></i>
                             Admin Management
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="admin-logs.php" class="admin-nav-link">
+                            <i class="fas fa-file-alt admin-nav-icon"></i>
+                            Admin Activity Logs
                         </a>
                     </li>
                 </ul>
